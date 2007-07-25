@@ -1,0 +1,22 @@
+#summary Example BDL and Genero code.
+#labels Featured
+= Introduction =
+
+This wiki contains useful example code for working with BDS and Genero.
+
+= Adding Entries =
+
+If you want to add an entry, the easiest way is to add a link (in the relevant section) on this page, and then follow the link to create the new page. You will need to a project member to login to edit pages. You will need to contact one of the project owners with your Google account id so they can set you up as a member.
+
+If there isn't already an appropriate section, then add your link to Misc or create a new section. 
+
+
+= Sections =
+
+==Getting Started==
+
+  * [http://www.4js.com//online_documentation/fjs-fgl-2.02.01-manual-html/User/TutIndex.html Genero BDL Tutorial]
+  
+
+==Misc==
+
