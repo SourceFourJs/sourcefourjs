@@ -111,3 +111,8 @@ DEFINE
 END FUNCTION
 }}}
 
+Running the example produces:
+{{{
+$ fglrun openClientSocketEx.42m
+ text/html; charset=utf-8
+}}}
