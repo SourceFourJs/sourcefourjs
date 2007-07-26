@@ -66,6 +66,7 @@ FUNCTION doGetRequest(p_host, p_port, p_path, p_timeout)
 
 END FUNCTION
 #---------------------------------------------------------------------------------------#
+FUNCTION getResponse(p_ch)
 # Populate response record structure.
 DEFINE
     p_ch           base.Channel,
