@@ -19,6 +19,6 @@ If there isn't already an appropriate section, then add your link to Misc or cre
   
 ==Web/Network==
 
-  * FetchingAWebPage - fetch a web page using openClientSocket.
+  * [FetchingAWebPage Fetch a web page using openClientSocket.]
 
 ==Misc==
