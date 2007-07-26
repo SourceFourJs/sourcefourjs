@@ -17,6 +17,8 @@ If there isn't already an appropriate section, then add your link to Misc or cre
 
   * [http://www.4js.com//online_documentation/fjs-fgl-2.02.01-manual-html/User/TutIndex.html Genero BDL Tutorial]
   
+==Web/Network==
+
+  * FetchingAWebPage - fetch a web page using openClientSocket.
 
 ==Misc==
-
