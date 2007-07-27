@@ -58,8 +58,7 @@ FUNCTION doGetRequest(p_host, p_port, p_path, p_timeout)
     END IF
     LET p_req = 'GET ',p_path,' HTTP/1.0'
     CALL ch.openClientSocket(p_host,p_port,'ub', p_timeout)
-    CALL ch.writeLine(p_req)
-    CALL ch.writeLine('\r')
+    CALL ch.writeLine(SFMT("%1\r", p_req))
     CALL ch.writeLine('\r')
     CALL getResponse(ch)
     CALL ch.close()
@@ -105,7 +104,7 @@ DEFINE
             LET s_resp.headers[s_resp.headers.getLength()].value = p_line.substring(i+1,p_line.getLength())
         ELSE
             CALL s_resp.content.appendElement()
-            LET s_resp.content[s_resp.headers.getLength()] = p_line
+            LET s_resp.content[s_resp.content.getLength()] = p_line
         END IF
     END WHILE
 
