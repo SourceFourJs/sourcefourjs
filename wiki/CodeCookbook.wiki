@@ -16,6 +16,10 @@ If there isn't already an appropriate section, then add your link to Misc or cre
 ==Getting Started==
 
   * [http://www.4js.com//online_documentation/fjs-fgl-2.02.01-manual-html/User/TutIndex.html Genero BDL Tutorial]
+
+==General==
+
+  * [TryCatchBlocks Usage and Limitations of the try...catch Syntax]
   
 ==Web/Network==
 
