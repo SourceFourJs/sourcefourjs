@@ -2,9 +2,9 @@
 
 = Introduction =
 
-The base.channel.openClientSocket can be used to connect to SMTP servers and send email. Below is a basic framework for such a connection.
+The base.channel.openClientSocket can be used to allow us to connect to a SMTP server and send email. To do this we need to know the SMTP protocol which can be found in RFC-2821.
 
-The SMTP protocal at its simplest requires the following sequence of commands:
+At its simplest though the SMTP protocol requires the following sequence of commands:
 {{{
 HELO domain.com
 MAIL FROM: <from.address@example.com>
@@ -17,7 +17,7 @@ DATA
 QUIT
 }}}
 
-The framework code for this looks as follows (no error checking is done):
+One way of doing this in Genero is given below (minus any error checking):
 
 {{{
 # $Id$
