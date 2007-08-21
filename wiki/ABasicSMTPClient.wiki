@@ -2,8 +2,22 @@
 
 = Introduction =
 
-Add your content here.
+The base.channel.openClientSocket can be used to connect to SMTP servers and send email. Below is a basic framework for such a connection.
 
+The SMTP protocal at its simplest requires the following sequence of commands:
+{{{
+HELO domain.com
+MAIL FROM: <from.address@example.com>
+RCPT TO: <to.address@example.com>
+DATA
+... the data for the email including headers and teminated with
+<CR><LF>
+.
+<CR><LF>
+QUIT
+}}}
+
+The framework code for this looks as follows (no error checking is done):
 
 {{{
 # $Id$
