@@ -24,6 +24,6 @@ If there isn't already an appropriate section, then add your link to Misc or cre
 ==Web/Network==
 
   * [FetchingAWebPage Fetch a web page using openClientSocket.]
-  * [A Basic SMTP Client using openClientSocket]
+  * [ABasicSMTPClient A basic SMTP client using openClientSocket.]
 
 ==Misc==
