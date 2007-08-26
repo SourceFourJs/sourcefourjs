@@ -1,0 +1,35 @@
+The Genero Toolkit 
+
+The Genero Toolkit is designed to provide some basic infrastructure on which to build applications. Although it will not satisfy the needs of everyone hopefully it will be a good starting point, if only for ideas rather than code.
+
+Coding Standards used:
+
+Naming:
+p_ - Private functions. 
+
+Variables:
+g_ - Global variables.
+l_ - Local variables.
+c_ - Cursors.
+
+Forms:
+Each form widget is prefixed with an identifier indicating what sort of widget it is:
+FIELD - f
+EDIT - e
+BUTTON - bt
+BUTTONEDIT - be 
+CANVAS - c
+COMBOBOX - cb
+CHECKBOX - cx
+DATEEDIT - dt
+GROUP - g 
+IMAGE - i
+LABEL - lbl 
+PROGRESSBAR - pb 
+RADIOGROUP - rg
+SCROLLGRID - sg 
+SLIDER - sl 
+SPINEDIT - sp 
+TABLE - t
+TEXTEDIT - te
+TIMEEDIT - tt
