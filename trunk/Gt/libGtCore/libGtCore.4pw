@@ -1,0 +1,43 @@
+<!DOCTYPE Project_View>
+<PROJECT_CONFIGURATION PMVERSION="1" >
+ <APPLICATION NAME="PM_admin" >
+  <CUSTOM>
+   <OPTION NAME="APPLICATIONID" VALUE="27" />
+  </CUSTOM>
+ </APPLICATION>
+ <PROJECT_VIEW>
+  <PROJECT USE_IMPLICIT_REF="1" BETA="" ROOTPATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore" STATUS="m" FGLLDPATH_OVERRODE="" DESCRIPTION="" CATEGORY="m" VERSION="" OVERRIDE_FGLLDPATH="0" DATABASE="" NAMESPACE="" ORDER="0" ALPHA="" TYPE="" ID="2" PARENT="0" NAME="libGtCore" FGLLDPATH_EXTENDED="" REPOSITORY="/" LABEL="Genero Toolkit Core Library" >
+   <APPLICATIONS>
+    <APPLICATION USE_IMPLICIT_REF="1" ROOTPATH="." STATUS="m" FGLLDPATH_OVERRODE="" DESCRIPTION="" CATEGORY="l" OVERRIDE_FGLLDPATH="0" DATABASE="" NAMESPACE="" ORDER="0" ID="3" PARENT="2" BUILD="1" NAME="libgtcore" FGLLDPATH_EXTENDED="" REPOSITORY="//" LABEL="libgtcore" >
+     <FILES>
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_binary.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="5" PARENT="3" NAME="lib_binary.4gl" LABEL="lib_binary.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_exception.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="6" PARENT="3" NAME="lib_exception.4gl" LABEL="lib_exception.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_md5.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="8" PARENT="3" NAME="lib_md5.4gl" LABEL="lib_md5.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_smtp_client.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="9" PARENT="3" NAME="lib_smtp_client.4gl" LABEL="lib_smtp_client.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_binary_utils.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="15" PARENT="3" NAME="lib_binary_utils.4gl" LABEL="lib_binary_utils.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_getopt.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="16" PARENT="3" NAME="lib_getopt.4gl" LABEL="lib_getopt.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_encryption.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="17" PARENT="3" NAME="lib_encryption.4gl" LABEL="lib_encryption.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_unittest.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="22" PARENT="3" NAME="lib_unittest.4gl" LABEL="lib_unittest.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_unittest.per" ORDER="0" TYPE="Form File(.per)" ID="23" PARENT="3" NAME="lib_unittest.per" LABEL="lib_unittest.per" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_unittest.4ad" ORDER="0" TYPE="Fgl default actions file (*.4ad)" ID="24" PARENT="3" NAME="lib_unittest.4ad" LABEL="lib_unittest.4ad" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_unittest.4tb" ORDER="0" TYPE="Fgl toolbar file (*.4tb)" ID="25" PARENT="3" NAME="lib_unittest.4tb" LABEL="lib_unittest.4tb" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_unittest.4tm" ORDER="0" TYPE="All Files (*)" ID="26" PARENT="3" NAME="lib_unittest.4tm" LABEL="lib_unittest.4tm" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/gt.4st" ORDER="0" TYPE="Window Style File(.4st)" PARENT="3" ID="27" NAME="gt.4st" LABEL="gt.4st" />
+     </FILES>
+    </APPLICATION>
+    <APPLICATION USE_IMPLICIT_REF="1" ROOTPATH="unittest" STATUS="m" FGLLDPATH_OVERRODE="" DESCRIPTION="" CATEGORY="a" OVERRIDE_FGLLDPATH="0" DATABASE="" NAMESPACE="" ORDER="0" ID="4" PARENT="2" BUILD="1" NAME="libgtcore_test" FGLLDPATH_EXTENDED="" REPOSITORY="//" LABEL="Unit tests for libgtcore" >
+     <FILES>
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/lib_exception_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="10" PARENT="4" NAME="lib_exception_test.4gl" LABEL="lib_exception_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/libgtcore_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="12" PARENT="4" NAME="libgtcore_test.4gl" LABEL="libgtcore_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/lib_md5_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="13" PARENT="4" NAME="lib_md5_test.4gl" LABEL="lib_md5_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/lib_smtp_client_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="14" PARENT="4" NAME="lib_smtp_client_test.4gl" LABEL="lib_smtp_client_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/lib_binary_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="18" PARENT="4" NAME="lib_binary_test.4gl" LABEL="lib_binary_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/lib_binary_utils_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="19" PARENT="4" NAME="lib_binary_utils_test.4gl" LABEL="lib_binary_utils_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/lib_encryption_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="20" PARENT="4" NAME="lib_encryption_test.4gl" LABEL="lib_encryption_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/unittest/lib_getopt_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="21" PARENT="4" NAME="lib_getopt_test.4gl" LABEL="lib_getopt_test.4gl" />
+     </FILES>
+    </APPLICATION>
+   </APPLICATIONS>
+  </PROJECT>
+ </PROJECT_VIEW>
+</PROJECT_CONFIGURATION>
