@@ -43,20 +43,30 @@ FUNCTION test_binary_lib()
 
 
    CALL ut_log("Testing rotateleftlong...")
+   CALL ut_log(rotateleftlong("10001000000100011000100000010001", 3))
+   RETURN FALSE
 
    CALL ut_log("Testing rotaterightlong...")
+   CALL ut_log(rotaterightlong("10001000000100011000100000010001", 3))
 
    CALL ut_log("Testing shiftleftlong...")
+   CALL ut_log(shiftleftlong("10001000000100011000100000010001", 3))
 
    CALL ut_log("Testing shiftrightlong...")
+   CALL ut_log(shiftrightlong("10001000000100011000100000010001", 3))
 
    CALL ut_log("Testing rotateleft...")
+   CALL ut_log(rotateleft("1000100000010001", 3))
 
    CALL ut_log("Testing rotateright...")
+   CALL ut_log(rotateright("1000100000010001", 3))
 
    CALL ut_log("Testing shiftleft...")
+   CALL ut_log(shiftleft("1000100000010001", 3))
 
    CALL ut_log("Testing shiftright...")
+   CALL ut_log(shiftright("1000100000010001", 3))
+   RETURN FALSE
 
    CALL ut_log("Testing byte2binary...")
 
