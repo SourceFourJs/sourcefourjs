@@ -46,7 +46,7 @@ FUNCTION lib_getopt_id()
 DEFINE
 	l_id   STRING
 
-	WHENEVER ANY ERROR CALL system_error
+	WHENEVER ANY ERROR CALL gt_system_error
 	LET l_id = "$Id$"
 
 END FUNCTION
@@ -57,7 +57,7 @@ END FUNCTION
 # @return l_exists Returns TRUE if the argument exists, FALSE otherwise.
 #
 
-FUNCTION find_argument(l_argument)
+FUNCTION gt_find_argument(l_argument)
 
 DEFINE
    l_argument   STRING
@@ -69,7 +69,7 @@ DEFINE
    LET l_exists = FALSE
 
    IF NOT m_parsed THEN
-      CALL p_parse_arguments()
+      CALL p_gt_parse_arguments()
    END IF
 
    IF l_argument.substring(1,2) == "--" THEN
@@ -97,7 +97,7 @@ END FUNCTION
 # @return l_value Returns the value of the argument if found, NULL otherwise.
 #
 
-FUNCTION get_argument(l_argument)
+FUNCTION gt_get_argument(l_argument)
 
 DEFINE
    l_argument   STRING
@@ -109,7 +109,7 @@ DEFINE
    LET l_value = NULL
 
    IF NOT m_parsed THEN
-      CALL p_parse_arguments()
+      CALL p_gt_parse_arguments()
    END IF
 
    IF l_argument.substring(1,2) == "--" THEN
@@ -140,7 +140,7 @@ END FUNCTION
 # @private
 #
 
-FUNCTION p_parse_arguments()
+FUNCTION p_gt_parse_arguments()
 
 DEFINE
    i            INTEGER,
@@ -174,7 +174,7 @@ DEFINE
             LET i = i + 1
          END IF
       ELSE
-         CALL set_error("ERROR", SFMT(%"Unknown argument found %1", l_argument))
+         CALL gt_set_error("ERROR", SFMT(%"Unknown argument found %1", l_argument))
       END IF
    END FOR
 

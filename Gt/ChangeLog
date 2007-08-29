@@ -1,0 +1,7 @@
+2007-08-29 scottn
+  * Added lib_4gl_parser.4gl
+  * Added lib_binary unit tests
+  * Added gt_ to all functions to avoid naming conflicts
+
+2007-08-27 scottn
+  * Initial commit to SVN

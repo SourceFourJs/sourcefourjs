@@ -43,12 +43,12 @@ DEFINE
 # Function to set ID and WHENEVER ANY ERROR                                    #
 #------------------------------------------------------------------------------#
 
-FUNCTION syl_cfl_exception_id()
+FUNCTION lib_exception_id()
 
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -57,7 +57,7 @@ END FUNCTION
 # The final resting place of the program on an unrecoverable error.
 #
 
-FUNCTION system_error()
+FUNCTION gt_system_error()
 
    LET m_count = m_count + 1
    LET m_exception_list[m_count].type = "CRITICAL"
@@ -74,7 +74,7 @@ END FUNCTION
 # @param l_text The text of the error.
 #
 
-FUNCTION set_error(l_exception_code, l_text)
+FUNCTION gt_set_error(l_exception_code, l_text)
 
 DEFINE
    l_exception_code   STRING,
@@ -95,7 +95,7 @@ END FUNCTION
 # @param l_text The text of the warning.
 #
 
-FUNCTION set_warning(l_exception_code, l_text)
+FUNCTION gt_set_warning(l_exception_code, l_text)
 
 DEFINE
    l_exception_code   STRING,
@@ -115,7 +115,7 @@ END FUNCTION
 # @param l_text The text of the message.
 #
 
-FUNCTION set_message(l_exception_code, l_text)
+FUNCTION gt_set_message(l_exception_code, l_text)
 
 DEFINE
    l_exception_code   STRING,
@@ -138,7 +138,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION get_last_exception()
+FUNCTION gt_get_last_exception()
 
    IF m_count == 0 THEN
       RETURN NULL, NULL, NULL, NULL, NULL
@@ -162,7 +162,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION get_last_error()
+FUNCTION gt_get_last_error()
 
 DEFINE
    i   INTEGER
@@ -187,7 +187,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION get_last_warning()
+FUNCTION gt_get_last_warning()
 
 DEFINE
    i   INTEGER
@@ -212,7 +212,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION get_last_message()
+FUNCTION gt_get_last_message()
 
 DEFINE
    i   INTEGER
@@ -232,7 +232,7 @@ END FUNCTION
 # @return The number of exceptions in the exception list.
 
 
-FUNCTION get_exception_count()
+FUNCTION gt_get_exception_count()
 
    RETURN m_count
 
@@ -243,7 +243,7 @@ END FUNCTION
 # @return l_errors The number of errors.
 #
 
-FUNCTION get_error_count()
+FUNCTION gt_get_error_count()
 
 DEFINE
    i          INTEGER,
@@ -266,7 +266,7 @@ END FUNCTION
 # @return l_warnings The number of warnings.
 #
 
-FUNCTION get_warning_count()
+FUNCTION gt_get_warning_count()
 
 DEFINE
    i            INTEGER,
@@ -288,7 +288,7 @@ END FUNCTION
 # @return l_messages The number of messages.
 #
 
-FUNCTION get_message_count()
+FUNCTION gt_get_message_count()
 
 DEFINE
    i            INTEGER,
@@ -317,7 +317,7 @@ END FUNCTION
 #
 
 
-FUNCTION get_exception(l_count)
+FUNCTION gt_get_exception(l_count)
 
 DEFINE
    l_count   INTEGER

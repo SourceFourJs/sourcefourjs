@@ -67,7 +67,7 @@ FUNCTION lib_binary_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -79,7 +79,7 @@ END FUNCTION
 # @return l_long The rotated output.
 #
 
-FUNCTION rotateleftlong(l_long, l_bits)
+FUNCTION gt_rotateleftlong(l_long, l_bits)
 
 DEFINE
    l_long   FLOAT,
@@ -89,9 +89,9 @@ DEFINE
    l_src   STRING,
    l_tmp   STRING
 
-   LET l_tmp = long2binary(l_long)
+   LET l_tmp = gt_long2binary(l_long)
    LET l_src = l_tmp.subString(l_bits + 1, 32), l_tmp.subString(1, l_bits + 1)
-   LET l_long = binary2long(l_src)
+   LET l_long = gt_binary2long(l_src)
 
    RETURN l_long
 
@@ -104,7 +104,7 @@ END FUNCTION
 # @return l_long The rotated output.
 #
 
-FUNCTION rotaterightlong(l_long, l_bits)
+FUNCTION gt_rotaterightlong(l_long, l_bits)
 
 DEFINE
    l_long   FLOAT,
@@ -114,9 +114,9 @@ DEFINE
    l_src   STRING,
    l_tmp   STRING
 
-   LET l_tmp = long2binary(l_long)
+   LET l_tmp = gt_long2binary(l_long)
    LET l_src = l_tmp.subString(32 - l_bits + 1, 32), l_tmp.subString(1, 32 - l_bits + 1)
-   LET l_long = binary2long(l_src)
+   LET l_long = gt_binary2long(l_src)
 
    RETURN l_long
 
@@ -129,7 +129,7 @@ END FUNCTION
 # @return l_long The shifted output.
 #
 
-FUNCTION shiftleftlong(l_long, l_bits)
+FUNCTION gt_shiftleftlong(l_long, l_bits)
 
 DEFINE
    l_long   FLOAT,
@@ -141,9 +141,9 @@ DEFINE
    l_dummy   STRING
 
    LET l_dummy = "00000000000000000000000000000000"
-   LET l_tmp = long2binary(l_long)
+   LET l_tmp = gt_long2binary(l_long)
    LET l_src = l_tmp.subString(l_bits + 1, 32), l_dummy.subString(1, l_bits + 1)
-   LET l_long = binary2long(l_src)
+   LET l_long = gt_binary2long(l_src)
 
    RETURN l_long
 
@@ -156,7 +156,7 @@ END FUNCTION
 # @return l_long The shifted output.
 #
 
-FUNCTION shiftrightlong(l_long, l_bits)
+FUNCTION gt_shiftrightlong(l_long, l_bits)
 
 DEFINE
    l_long   FLOAT,
@@ -168,9 +168,9 @@ DEFINE
    l_dummy   STRING
 
    LET l_dummy = "00000000000000000000000000000000"
-   LET l_tmp = long2binary(l_long)
+   LET l_tmp = gt_long2binary(l_long)
    LET l_src = l_dummy.subString(32 - l_bits + 1, 32), l_tmp.subString(1, 32 - l_bits + 1)
-   LET l_long = binary2long(l_src)
+   LET l_long = gt_binary2long(l_src)
 
    RETURN l_long
 
@@ -183,7 +183,7 @@ END FUNCTION
 # @return l_long The rotated output.
 #
 
-FUNCTION rotateleft(l_word, l_bits)
+FUNCTION gt_rotateleft(l_word, l_bits)
 
 DEFINE
    l_word   INTEGER,
@@ -193,9 +193,9 @@ DEFINE
    l_src   STRING,
    l_tmp   STRING
 
-   LET l_tmp = word2binary(l_word)
+   LET l_tmp = gt_word2binary(l_word)
    LET l_src = l_tmp.subString(l_bits + 1, 16), l_tmp.subString(1, l_bits + 1)
-   LET l_word = binary2word(l_src)
+   LET l_word = gt_binary2word(l_src)
 
    RETURN l_word
 
@@ -208,7 +208,7 @@ END FUNCTION
 # @return l_long The rotated output.
 #
 
-FUNCTION rotateright(l_word, l_bits)
+FUNCTION gt_rotateright(l_word, l_bits)
 
 DEFINE
    l_word   INTEGER,
@@ -218,9 +218,9 @@ DEFINE
    l_src   STRING,
    l_tmp   STRING
 
-   LET l_tmp = word2binary(l_word)
+   LET l_tmp = gt_word2binary(l_word)
    LET l_src = l_tmp.subString(16 - l_bits + 1, 16), l_tmp.subString(1, 16 - l_bits + 1)
-   LET l_word = binary2word(l_src)
+   LET l_word = gt_binary2word(l_src)
 
    RETURN l_word
 
@@ -233,7 +233,7 @@ END FUNCTION
 # @return l_long The shifted output.
 #
 
-FUNCTION shiftleft(l_word, l_bits)
+FUNCTION gt_shiftleft(l_word, l_bits)
 
 DEFINE
    l_word   INTEGER,
@@ -245,9 +245,9 @@ DEFINE
    l_dummy   STRING
 
    LET l_dummy = "0000000000000000"
-   LET l_tmp = word2binary(l_word)
+   LET l_tmp = gt_word2binary(l_word)
    LET l_src = l_tmp.subString(l_bits + 1, 16), l_dummy.subString(1, l_bits + 1)
-   LET l_word = binary2word(l_src)
+   LET l_word = gt_binary2word(l_src)
 
    RETURN l_word
 
@@ -260,7 +260,7 @@ END FUNCTION
 # @return l_long The shifted output.
 #
 
-FUNCTION shiftright(l_word, l_bits)
+FUNCTION gt_shiftright(l_word, l_bits)
 
 DEFINE
    l_word   INTEGER,
@@ -272,9 +272,9 @@ DEFINE
    l_dummy   STRING
 
    LET l_dummy = "0000000000000000"
-   LET l_tmp = word2binary(l_word)
+   LET l_tmp = gt_word2binary(l_word)
    LET l_src = l_dummy.subString(16 - l_bits + 1, 16), l_tmp.subString(1, 16 - l_bits + 1)
-   LET l_word = binary2word(l_src)
+   LET l_word = gt_binary2word(l_src)
 
    RETURN l_word
 
@@ -286,7 +286,7 @@ END FUNCTION
 # @return l_binary The output in binary.
 #
 
-FUNCTION byte2binary(l_source)
+FUNCTION gt_byte2binary(l_source)
 
 DEFINE
    l_source   INTEGER
@@ -350,7 +350,7 @@ END FUNCTION
 # @return l_binary The output in binary.
 #
 
-FUNCTION word2binary(l_source)
+FUNCTION gt_word2binary(l_source)
 
 DEFINE
    l_source   INTEGER
@@ -454,7 +454,7 @@ END FUNCTION
 # @return l_binary The output in binary.
 #
 
-FUNCTION long2binary(l_source)
+FUNCTION gt_long2binary(l_source)
 
 DEFINE
    l_source   FLOAT
@@ -638,7 +638,7 @@ END FUNCTION
 # @return l_binary The output as a byte.
 #
 
-FUNCTION binary2byte(l_source)
+FUNCTION gt_binary2byte(l_source)
 
 DEFINE
    l_source   STRING
@@ -691,7 +691,7 @@ END FUNCTION
 # @return l_binary The output as a word.
 #
 
-FUNCTION binary2word(l_source)
+FUNCTION gt_binary2word(l_source)
 
 DEFINE
    l_source   STRING
@@ -776,7 +776,7 @@ END FUNCTION
 # @return l_binary The output as a long.
 #
 
-FUNCTION binary2long(l_source)
+FUNCTION gt_binary2long(l_source)
 
 DEFINE
    l_source   STRING
@@ -926,7 +926,7 @@ END FUNCTION
 # @return l_source The resulting byte.
 #
 
-FUNCTION bitclearbyte(l_source, l_bit_position)
+FUNCTION gt_bitclearbyte(l_source, l_bit_position)
 
 DEFINE
    l_source         INTEGER,
@@ -936,9 +936,9 @@ DEFINE
    l_bits   base.StringBuffer
 
    LET l_bits = base.StringBuffer.create()
-   CALL l_bits.append(byte2binary(l_source))
+   CALL l_bits.append(gt_byte2binary(l_source))
    CALL l_bits.replaceAt(9 - l_bit_position, 1, "0")
-   LET l_source = binary2byte(l_bits.toString())
+   LET l_source = gt_binary2byte(l_bits.toString())
 
    RETURN l_source
 
@@ -951,7 +951,7 @@ END FUNCTION
 # @return l_source The resulting word.
 #
 
-FUNCTION bitclearword(l_source, l_bit_position)
+FUNCTION gt_bitclearword(l_source, l_bit_position)
 
 DEFINE
    l_source         INTEGER,
@@ -961,9 +961,9 @@ DEFINE
    l_bits   base.StringBuffer
 
    LET l_bits = base.StringBuffer.create()
-   CALL l_bits.append(word2binary(l_source))
+   CALL l_bits.append(gt_word2binary(l_source))
    CALL l_bits.replaceAt(17 - l_bit_position, 1, "0")
-   LET l_source = binary2word(l_bits.toString())
+   LET l_source = gt_binary2word(l_bits.toString())
 
    RETURN l_source
 
@@ -976,7 +976,7 @@ END FUNCTION
 # @return l_source The resulting long.
 #
 
-FUNCTION bitclearlong(l_source, l_bit_position)
+FUNCTION gt_bitclearlong(l_source, l_bit_position)
 
 DEFINE
    l_source         FLOAT,
@@ -986,9 +986,9 @@ DEFINE
    l_bits   base.StringBuffer
 
    LET l_bits = base.StringBuffer.create()
-   CALL l_bits.append(long2binary(l_source))
+   CALL l_bits.append(gt_long2binary(l_source))
    CALL l_bits.replaceAt(33 - l_bit_position, 1, "0")
-   LET l_source = binary2long(l_bits.toString())
+   LET l_source = gt_binary2long(l_bits.toString())
 
    RETURN l_source
 
@@ -1001,7 +1001,7 @@ END FUNCTION
 # @return l_source The resulting byte.
 #
 
-FUNCTION bitsetbyte(l_source, l_bit_position)
+FUNCTION gt_bitsetbyte(l_source, l_bit_position)
 
 DEFINE
    l_source         INTEGER,
@@ -1011,9 +1011,9 @@ DEFINE
    l_bits   base.StringBuffer
 
    LET l_bits = base.StringBuffer.create()
-   CALL l_bits.append(byte2binary(l_source))
+   CALL l_bits.append(gt_byte2binary(l_source))
    CALL l_bits.replaceAt(9 - l_bit_position, 1, "1")
-   LET l_source = binary2byte(l_bits.toString())
+   LET l_source = gt_binary2byte(l_bits.toString())
 
    RETURN l_source
 
@@ -1026,7 +1026,7 @@ END FUNCTION
 # @return l_source The resulting word.
 #
 
-FUNCTION bitsetword(l_source, l_bit_position)
+FUNCTION gt_bitsetword(l_source, l_bit_position)
 
 DEFINE
    l_source         INTEGER,
@@ -1036,9 +1036,9 @@ DEFINE
    l_bits   base.StringBuffer
 
    LET l_bits = base.StringBuffer.create()
-   CALL l_bits.append(word2binary(l_source))
+   CALL l_bits.append(gt_word2binary(l_source))
    CALL l_bits.replaceAt(17 - l_bit_position, 1, "1")
-   LET l_source = binary2word(l_bits.toString())
+   LET l_source = gt_binary2word(l_bits.toString())
 
    RETURN l_source
 
@@ -1051,7 +1051,7 @@ END FUNCTION
 # @return l_source The resulting long.
 #
 
-FUNCTION bitsetlong(l_source, l_bit_position)
+FUNCTION gt_bitsetlong(l_source, l_bit_position)
 
 DEFINE
    l_source         FLOAT,
@@ -1061,9 +1061,9 @@ DEFINE
    l_bits   base.StringBuffer
 
    LET l_bits = base.StringBuffer.create()
-   CALL l_bits.append(long2binary(l_source))
+   CALL l_bits.append(gt_long2binary(l_source))
    CALL l_bits.replaceAt(33 - l_bit_position, 1, "1")
-   LET l_source = binary2long(l_bits.toString())
+   LET l_source = gt_binary2long(l_bits.toString())
 
    RETURN l_source
 
@@ -1076,7 +1076,7 @@ END FUNCTION
 # @return l_source The resulting byte.
 #
 
-FUNCTION bitorbyte(l_source1, l_source2)
+FUNCTION gt_bitorbyte(l_source1, l_source2)
 
 DEFINE
    l_source1   INTEGER,
@@ -1090,8 +1090,8 @@ DEFINE
    l_bits_result   CHAR(8)
 
    LET l_bits_result = "00000000"
-   LET l_bits1 = byte2binary(l_source1)
-   LET l_bits2 = byte2binary(l_source2)
+   LET l_bits1 = gt_byte2binary(l_source1)
+   LET l_bits2 = gt_byte2binary(l_source2)
 
    FOR i = 1 TO 8
       IF l_bits1[i,i] == "1"
@@ -1100,7 +1100,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2byte(l_bits_result)
+   LET l_result = gt_binary2byte(l_bits_result)
 
    RETURN l_result
 
@@ -1113,7 +1113,7 @@ END FUNCTION
 # @return l_source The resulting word.
 #
 
-FUNCTION bitorword(l_source1, l_source2)
+FUNCTION gt_bitorword(l_source1, l_source2)
 
 DEFINE
    l_source1   INTEGER,
@@ -1127,8 +1127,8 @@ DEFINE
    l_bits_result   CHAR(16)
 
    LET l_bits_result = "0000000000000000"
-   LET l_bits1 = word2binary(l_source1)
-   LET l_bits2 = word2binary(l_source2)
+   LET l_bits1 = gt_word2binary(l_source1)
+   LET l_bits2 = gt_word2binary(l_source2)
 
    FOR i = 1 TO 16
       IF l_bits1[i,i] == "1"
@@ -1137,7 +1137,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2word(l_bits_result)
+   LET l_result = gt_binary2word(l_bits_result)
 
    RETURN l_result
 
@@ -1150,7 +1150,7 @@ END FUNCTION
 # @return l_source The resulting long.
 #
 
-FUNCTION bitorlong(l_source1, l_source2)
+FUNCTION gt_bitorlong(l_source1, l_source2)
 
 DEFINE
    l_source1   FLOAT,
@@ -1163,8 +1163,8 @@ DEFINE
    l_bits2         CHAR(32),
    l_bits_result   CHAR(32)
 
-   LET l_bits1 = long2binary(l_source1)
-   LET l_bits2 = long2binary(l_source2)
+   LET l_bits1 = gt_long2binary(l_source1)
+   LET l_bits2 = gt_long2binary(l_source2)
    LET l_bits_result = "00000000000000000000000000000000"
 
    FOR i = 1 TO 32
@@ -1174,7 +1174,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2long(l_bits_result)
+   LET l_result = gt_binary2long(l_bits_result)
 
    RETURN l_result
 
@@ -1187,7 +1187,7 @@ END FUNCTION
 # @return l_source The resulting byte.
 #
 
-FUNCTION bitandbyte(l_source1, l_source2)
+FUNCTION gt_bitandbyte(l_source1, l_source2)
 
 DEFINE
    l_source1   INTEGER,
@@ -1201,8 +1201,8 @@ DEFINE
    l_bits_result   CHAR(8)
 
    LET l_bits_result = "00000000"
-   LET l_bits1 = byte2binary(l_source1)
-   LET l_bits2 = byte2binary(l_source2)
+   LET l_bits1 = gt_byte2binary(l_source1)
+   LET l_bits2 = gt_byte2binary(l_source2)
 
    FOR i = 1 TO 8
       IF l_bits1[i,i] == "1"
@@ -1211,7 +1211,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2byte(l_bits_result)
+   LET l_result = gt_binary2byte(l_bits_result)
 
    RETURN l_result
 
@@ -1224,7 +1224,7 @@ END FUNCTION
 # @return l_source The resulting word.
 #
 
-FUNCTION bitandword(l_source1, l_source2)
+FUNCTION gt_bitandword(l_source1, l_source2)
 
 DEFINE
    l_source1   INTEGER,
@@ -1238,8 +1238,8 @@ DEFINE
    l_bits_result   CHAR(16)
 
    LET l_bits_result = "0000000000000000"
-   LET l_bits1 = word2binary(l_source1)
-   LET l_bits2 = word2binary(l_source2)
+   LET l_bits1 = gt_word2binary(l_source1)
+   LET l_bits2 = gt_word2binary(l_source2)
 
    FOR i = 1 TO 16
       IF l_bits1[i,i] == "1"
@@ -1248,7 +1248,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2word(l_bits_result)
+   LET l_result = gt_binary2word(l_bits_result)
 
    RETURN l_result
 
@@ -1261,7 +1261,7 @@ END FUNCTION
 # @return l_source The resulting long.
 #
 
-FUNCTION bitandlong(l_source1, l_source2)
+FUNCTION gt_bitandlong(l_source1, l_source2)
 
 DEFINE
    l_source1   FLOAT,
@@ -1274,8 +1274,8 @@ DEFINE
    l_bits2         CHAR(32),
    l_bits_result   CHAR(32)
 
-   LET l_bits1 = long2binary(l_source1)
-   LET l_bits2 = long2binary(l_source2)
+   LET l_bits1 = gt_long2binary(l_source1)
+   LET l_bits2 = gt_long2binary(l_source2)
    LET l_bits_result = "00000000000000000000000000000000"
 
    FOR i = 1 TO 32
@@ -1285,7 +1285,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2long(l_bits_result)
+   LET l_result = gt_binary2long(l_bits_result)
 
    RETURN l_result
 
@@ -1298,7 +1298,7 @@ END FUNCTION
 # @return l_source The resulting byte.
 #
 
-FUNCTION bitxorbyte(l_source1, l_source2)
+FUNCTION gt_bitxorbyte(l_source1, l_source2)
 
 DEFINE
    l_source1   INTEGER,
@@ -1312,8 +1312,8 @@ DEFINE
    l_bits_result   CHAR(8)
 
    LET l_bits_result = "00000000"
-   LET l_bits1 = byte2binary(l_source1)
-   LET l_bits2 = byte2binary(l_source2)
+   LET l_bits1 = gt_byte2binary(l_source1)
+   LET l_bits2 = gt_byte2binary(l_source2)
 
    FOR i = 1 TO 8
       IF l_bits1[i,i] == "1"
@@ -1327,7 +1327,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2byte(l_bits_result)
+   LET l_result = gt_binary2byte(l_bits_result)
 
    RETURN l_result
 
@@ -1340,7 +1340,7 @@ END FUNCTION
 # @return l_source The resulting word.
 #
 
-FUNCTION bitxorword(l_source1, l_source2)
+FUNCTION gt_bitxorword(l_source1, l_source2)
 
 DEFINE
    l_source1   INTEGER,
@@ -1354,8 +1354,8 @@ DEFINE
    l_bits_result   CHAR(16)
 
    LET l_bits_result = "0000000000000000"
-   LET l_bits1 = word2binary(l_source1)
-   LET l_bits2 = word2binary(l_source2)
+   LET l_bits1 = gt_word2binary(l_source1)
+   LET l_bits2 = gt_word2binary(l_source2)
 
     FOR i = 1 TO 16
       IF l_bits1[i,i] == "1"
@@ -1369,7 +1369,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result=binary2word(l_bits_result)
+   LET l_result=gt_binary2word(l_bits_result)
 
    RETURN l_result
 
@@ -1382,7 +1382,7 @@ END FUNCTION
 # @return l_source The resulting long.
 #
 
-FUNCTION bitxorlong(l_source1, l_source2)
+FUNCTION gt_bitxorlong(l_source1, l_source2)
 
 DEFINE
    l_source1   FLOAT,
@@ -1395,8 +1395,8 @@ DEFINE
    l_bits2         CHAR(32),
    l_bits_result   CHAR(32)
 
-   LET l_bits1 = long2binary(l_source1)
-   LET l_bits2 = long2binary(l_source2)
+   LET l_bits1 = gt_long2binary(l_source1)
+   LET l_bits2 = gt_long2binary(l_source2)
    LET l_bits_result = "00000000000000000000000000000000"
 
    FOR i = 1 TO 32
@@ -1411,7 +1411,7 @@ DEFINE
       END IF
    END FOR
 
-   LET l_result = binary2long(l_bits_result)
+   LET l_result = gt_binary2long(l_bits_result)
 
    RETURN l_result
 
@@ -1423,12 +1423,12 @@ END FUNCTION
 # @return l_source The resulting byte.
 #
 
-FUNCTION bitnotbyte(l_value)
+FUNCTION gt_bitnotbyte(l_value)
 
 DEFINE
    l_value   SMALLINT
 
-   RETURN 255 - l_value # 255=0xff  or 0b11111111
+   RETURN 255 - l_value # 255 = 0xff  or 0b11111111
 
 END FUNCTION
 
@@ -1438,12 +1438,12 @@ END FUNCTION
 # @return l_source The resulting word.
 #
 
-FUNCTION bitnotword(l_value)
+FUNCTION gt_bitnotword(l_value)
 
 DEFINE
    l_value   INTEGER
 
-   RETURN 65535 - l_value # 65535=0xffff
+   RETURN 65535 - l_value # 65535 = 0xffff
 
 END FUNCTION
 
@@ -1453,12 +1453,12 @@ END FUNCTION
 # @return l_source The resulting long.
 #
 
-FUNCTION bitnotlong(l_value)
+FUNCTION gt_bitnotlong(l_value)
 
 DEFINE
    l_value   FLOAT
 
-   RETURN 4294967295.0 - l_value # 4294967295=0x00ffffff
+   RETURN 4294967295.0 - l_value # 4294967295 = 0x00ffffff
 
 END FUNCTION
 

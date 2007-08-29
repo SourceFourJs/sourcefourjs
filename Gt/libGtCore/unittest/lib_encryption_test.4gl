@@ -29,7 +29,7 @@ FUNCTION lib_encryption_test_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -48,21 +48,21 @@ DEFINE
                   ASCII(51), ASCII(93), ASCII(90), ASCII(79),
                   ASCII(75), ASCII(66)
 
-   CALL ut_log("Testing XORString encryption...")
+   CALL gt_ut_log("Testing gt_XORString encryption...")
 
-   IF xorstring("TestString", "") == l_string THEN
-      CALL ut_log("Passed")
+   IF gt_xorstring("TestString", "") == l_string THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing XORString decryption...")
+   CALL gt_ut_log("Testing gt_XORString decryption...")
 
-   IF xorstring(l_string, "") == "TestString" THEN
-      CALL ut_log("Passed")
+   IF gt_xorstring(l_string, "") == "TestString" THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 

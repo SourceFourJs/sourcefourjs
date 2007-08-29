@@ -29,7 +29,7 @@ FUNCTION lib_getopt_test_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -41,21 +41,21 @@ END FUNCTION
 
 FUNCTION test_getopt_lib()
 
-   CALL ut_log("Testing find_argument...")
+   CALL gt_ut_log("Testing gt_find_argument...")
 
-   IF find_argument("no-of-arguments") THEN
-      CALL ut_log("Passed")
+   IF gt_find_argument("no-of-arguments") THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN
    END IF
 
-   CALL ut_log("Testing get_argument...")
+   CALL gt_ut_log("Testing gt_get_argument...")
 
-   IF get_argument("no-of-arguments") == base.application.getargumentcount() THEN
-      CALL ut_log("Passed")
+   IF gt_get_argument("no-of-arguments") == base.application.getargumentcount() THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN
    END IF
 

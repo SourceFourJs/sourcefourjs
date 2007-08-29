@@ -42,7 +42,7 @@ FUNCTION lib_smtp_client_id()
 DEFINE
    l_id   STRING
 
-   #WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -51,7 +51,7 @@ END FUNCTION
 # Function to initialize the SMTP client network statistics.
 #
 
-FUNCTION smtp_client_init()
+FUNCTION gt_smtp_client_init()
 
    LET m_connections = 0
    LET m_bytesread = 0
@@ -68,7 +68,7 @@ END FUNCTION
 # @return m_byteswritten The total number of bytes written.
 #
 
-FUNCTION get_smtp_client_statistics()
+FUNCTION gt_get_smtp_client_statistics()
 
    RETURN m_connections USING "<<<,<<<,<<<,<<<,<<<,<<<",
           m_bytesread USING "<<<,<<<,<<<,<<<,<<<,<<<",
@@ -84,7 +84,7 @@ END FUNCTION
 # @return l_sockethdl The handle to the opened socket.
 #
 
-FUNCTION connect_to_smtp_server(l_mailserver, l_port)
+FUNCTION gt_connect_to_smtp_server(l_mailserver, l_port)
 
 DEFINE
    l_mailserver   STRING,
@@ -139,7 +139,7 @@ END FUNCTION
 # @return l_ok Returns TRUE if the greeting was accepted, FALSE otherwise.
 #
 
-FUNCTION smtp_helo(l_sockethdl, l_domainname)
+FUNCTION gt_smtp_helo(l_sockethdl, l_domainname)
 
 DEFINE
    l_sockethdl    base.channel,
@@ -183,7 +183,7 @@ END FUNCTION
 #              otherwise.
 #
 
-FUNCTION smtp_mail_from(l_sockethdl, l_from)
+FUNCTION gt_smtp_mail_from(l_sockethdl, l_from)
 
 DEFINE
    l_sockethdl   base.channel,
@@ -228,7 +228,7 @@ END FUNCTION
 #              otherwise.
 #
 
-FUNCTION smtp_rcpt_to(l_sockethdl, l_to)
+FUNCTION gt_smtp_rcpt_to(l_sockethdl, l_to)
 
 DEFINE
    l_sockethdl   base.channel,
@@ -272,7 +272,7 @@ END FUNCTION
 # @return l_ok Returns TRUE if the email was successfully sent, FALSE otherwise.
 #
 
-FUNCTION smtp_data(l_sockethdl, l_email)
+FUNCTION gt_smtp_data(l_sockethdl, l_email)
 
 DEFINE
    l_sockethdl   base.channel,
@@ -340,7 +340,7 @@ END FUNCTION
 #              otherwise.
 #
 
-FUNCTION smtp_quit(l_sockethdl)
+FUNCTION gt_smtp_quit(l_sockethdl)
 
 DEFINE
    l_sockethdl   base.channel

@@ -29,7 +29,7 @@ FUNCTION lib_md5_test_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -49,71 +49,71 @@ DEFINE
    l_end_time             DATETIME MINUTE TO FRACTION(3),
    l_start_time           DATETIME MINUTE TO FRACTION(3)
 
-   CALL ut_log("Testing MD5 with \"\"...")
+   CALL gt_ut_log("Testing MD5 with \"\"...")
 
-   IF md5string("") == "D41D8CD98F00B204E9800998ECF8427E" THEN
-    	CALL ut_log("Passed")
+   IF gt_md5string("") == "D41D8CD98F00B204E9800998ECF8427E" THEN
+    	CALL gt_ut_log("Passed")
    ELSE
-   	CALL ut_log("FAILED")
+   	CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-	CALL ut_log("Testing MD5 with \"a\"...")
+	CALL gt_ut_log("Testing MD5 with \"a\"...")
 
-	IF md5string("a") == "0CC175B9C0F1B6A831C399E269772661" THEN
-		CALL ut_log("Passed")
+	IF gt_md5string("a") == "0CC175B9C0F1B6A831C399E269772661" THEN
+		CALL gt_ut_log("Passed")
 	ELSE
-		CALL ut_log("FAILED")
+		CALL gt_ut_log("FAILED")
 		RETURN FALSE
 	END IF
 
- 	CALL ut_log("Testing MD5 with \"abc\"...")
+ 	CALL gt_ut_log("Testing MD5 with \"abc\"...")
 
- 	IF md5string("abc") == "900150983CD24FB0D6963F7D28E17F72" THEN
- 		CALL ut_log("Passed")
+ 	IF gt_md5string("abc") == "900150983CD24FB0D6963F7D28E17F72" THEN
+ 		CALL gt_ut_log("Passed")
  	ELSE
- 		CALL ut_log("FAILED")
+ 		CALL gt_ut_log("FAILED")
  		RETURN FALSE
  	END IF
 
- 	CALL ut_log("Testing MD5 with \"message digest\"...")
+ 	CALL gt_ut_log("Testing MD5 with \"message digest\"...")
 
- 	IF md5string("message digest") == "F96B697D7CB7938D525A2F31AAF161D0" THEN
- 		CALL ut_log("Passed")
+ 	IF gt_md5string("message digest") == "F96B697D7CB7938D525A2F31AAF161D0" THEN
+ 		CALL gt_ut_log("Passed")
  	ELSE
- 		CALL ut_log("FAILED")
+ 		CALL gt_ut_log("FAILED")
  		RETURN FALSE
  	END IF
 
- 	CALL ut_log("Testing MD5 with \"abcdefghijklmnopqrstuvwxyz\"...")
+ 	CALL gt_ut_log("Testing MD5 with \"abcdefghijklmnopqrstuvwxyz\"...")
 
- 	IF md5string("abcdefghijklmnopqrstuvwxyz") == "C3FCD3D76192E4007DFB496CCA67E13B" THEN
- 		CALL ut_log("Passed")
+ 	IF gt_md5string("abcdefghijklmnopqrstuvwxyz") == "C3FCD3D76192E4007DFB496CCA67E13B" THEN
+ 		CALL gt_ut_log("Passed")
  	ELSE
- 		CALL ut_log("FAILED")
+ 		CALL gt_ut_log("FAILED")
  		RETURN FALSE
  	END IF
 
-	CALL ut_log("Testing MD5 with \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"...")
+	CALL gt_ut_log("Testing MD5 with \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"...")
 
-	IF md5string("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") == "D174AB98D277D9F5A5611C2C9F419D9F" THEN
-		CALL ut_log("Passed")
+	IF gt_md5string("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") == "D174AB98D277D9F5A5611C2C9F419D9F" THEN
+		CALL gt_ut_log("Passed")
 	ELSE
-		CALL ut_log("FAILED")
+		CALL gt_ut_log("FAILED")
 		RETURN FALSE
 	END IF
 
- 	CALL ut_log("Testing MD5 with \"12345678901234567890123456789012345678901234567890123456789012345678901234567890\"...")
+ 	CALL gt_ut_log("Testing MD5 with \"12345678901234567890123456789012345678901234567890123456789012345678901234567890\"...")
 
- 	IF md5string("12345678901234567890123456789012345678901234567890123456789012345678901234567890") == "57EDF4A22BE3C955AC49DA2E2107B67A" THEN
- 		CALL ut_log("Passed")
+ 	IF gt_md5string("12345678901234567890123456789012345678901234567890123456789012345678901234567890") == "57EDF4A22BE3C955AC49DA2E2107B67A" THEN
+ 		CALL gt_ut_log("Passed")
  	ELSE
- 		CALL ut_log("FAILED")
+ 		CALL gt_ut_log("FAILED")
  		RETURN FALSE
  	END IF
 
-   CALL ut_log("Load testing encryption of MD5 type... (20 iterations)")
-   CALL ut_log("Please wait...")
+   CALL gt_ut_log("Load testing encryption of MD5 type... (20 iterations)")
+   CALL gt_ut_log("Please wait...")
 
    LET l_count = 0
    LET l_start_time = CURRENT
@@ -123,8 +123,8 @@ DEFINE
       LET l_encrypted_string = "F96B697D7CB7938D525A2F31AAF161D0"
       LET l_unencrypted_string = "message digest"
 
-      IF md5string(l_unencrypted_string) != l_encrypted_string THEN
-         CALL ut_log(l_count || " - FALSE")
+      IF gt_md5string(l_unencrypted_string) != l_encrypted_string THEN
+         CALL gt_ut_log(l_count || " - FALSE")
          RETURN FALSE
       END IF
 
@@ -136,9 +136,9 @@ DEFINE
    LET l_end_time = CURRENT
    LET l_interval = l_end_time - l_start_time
 
-   CALL ut_log("Passed")
-   CALL ut_log("Iterations took " || l_interval || " seconds")
-   CALL ut_log("Time per iteration:" || l_interval / 20 || " seconds")
+   CALL gt_ut_log("Passed")
+   CALL gt_ut_log("Iterations took " || l_interval || " seconds")
+   CALL gt_ut_log("Time per iteration:" || l_interval / 20 || " seconds")
 
    RETURN TRUE
 
