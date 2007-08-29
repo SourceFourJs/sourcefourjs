@@ -38,7 +38,7 @@ FUNCTION lib_smtp_client_test_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -64,92 +64,92 @@ DEFINE
    l_email          STRING,
    l_serverhdl      base.channel
 
-   CALL ut_log("Testing smtp_client_init...")
-   CALL smtp_client_init()
+   CALL gt_ut_log("Testing gt_smtp_client_init...")
+   CALL gt_smtp_client_init()
 
-   CALL ut_log("Testing connect_to_smtp_server...")
+   CALL gt_ut_log("Testing gt_connect_to_smtp_server...")
 
-   CALL connect_to_smtp_server(l_smtp_server, l_smtp_port)
+   CALL gt_connect_to_smtp_server(l_smtp_server, l_smtp_port)
       RETURNING l_ok, l_serverhdl
 
    IF l_ok THEN
-      CALL ut_log("Passed")
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing smtp_helo...")
+   CALL gt_ut_log("Testing gt_smtp_helo...")
 
-   CALL smtp_helo(l_serverhdl, l_smtp_server)
+   CALL gt_smtp_helo(l_serverhdl, l_smtp_server)
       RETURNING l_ok
 
    IF l_ok THEN
-      CALL ut_log("Passed")
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing smtp_mail_from...")
+   CALL gt_ut_log("Testing gt_smtp_mail_from...")
 
-   CALL smtp_mail_from(l_serverhdl, l_from)
+   CALL gt_smtp_mail_from(l_serverhdl, l_from)
       RETURNING l_ok
 
    IF l_ok THEN
-      CALL ut_log("Passed")
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing smtp_rcpt_to...")
+   CALL gt_ut_log("Testing gt_smtp_rcpt_to...")
 
-   CALL smtp_rcpt_to(l_serverhdl, l_to)
+   CALL gt_smtp_rcpt_to(l_serverhdl, l_to)
       RETURNING l_ok
 
    IF l_ok THEN
-      CALL ut_log("Passed")
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing smtp_data...")
+   CALL gt_ut_log("Testing gt_smtp_data...")
 
    LET l_email = "Subject: Test from lib_smtp_client_test\n\nThis is a test message."
 
-   CALL smtp_data(l_serverhdl, l_email)
+   CALL gt_smtp_data(l_serverhdl, l_email)
       RETURNING l_ok
 
    IF l_ok THEN
-      CALL ut_log("Passed")
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing smtp_quit...")
+   CALL gt_ut_log("Testing gt_smtp_quit...")
 
-   CALL smtp_quit(l_serverhdl)
+   CALL gt_smtp_quit(l_serverhdl)
       RETURNING l_ok
 
    IF l_ok THEN
-      CALL ut_log("Passed")
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_smtp_client_statistics...")
+   CALL gt_ut_log("Testing gt_get_smtp_client_statistics...")
 
-   CALL get_smtp_client_statistics()
+   CALL gt_get_smtp_client_statistics()
       RETURNING l_connections, l_bytesread, l_byteswritten
 
-   CALL ut_log("SMTP Client Statistics:")
-   CALL ut_log("No of Connections   : " || l_connections)
-   CALL ut_log("Total Bytes Read    : " || l_bytesread)
-   CALL ut_log("Total Bytes Written : " || l_byteswritten)
+   CALL gt_ut_log("SMTP Client Statistics:")
+   CALL gt_ut_log("No of Connections   : " || l_connections)
+   CALL gt_ut_log("Total Bytes Read    : " || l_bytesread)
+   CALL gt_ut_log("Total Bytes Written : " || l_byteswritten)
 
    RETURN TRUE
 

@@ -29,7 +29,7 @@ FUNCTION lib_binary_test_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -41,80 +41,302 @@ END FUNCTION
 
 FUNCTION test_binary_lib()
 
+DEFINE
+   l_byte   INTEGER,
+   l_word   INTEGER,
+   l_long   FLOAT
 
-   CALL ut_log("Testing rotateleftlong...")
-   CALL ut_log(rotateleftlong("10001000000100011000100000010001", 3))
-   RETURN FALSE
+   LET l_byte = 256 / 2
+   LET l_word = 65536 / 2
+   LET l_long = 4294967296.0 / 2
 
-   CALL ut_log("Testing rotaterightlong...")
-   CALL ut_log(rotaterightlong("10001000000100011000100000010001", 3))
+   CALL gt_ut_log("Testing gt_rotateleftlong...")
 
-   CALL ut_log("Testing shiftleftlong...")
-   CALL ut_log(shiftleftlong("10001000000100011000100000010001", 3))
+   IF gt_rotateleftlong(l_long, 3) == 4.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing shiftrightlong...")
-   CALL ut_log(shiftrightlong("10001000000100011000100000010001", 3))
+   CALL gt_ut_log("Testing gt_rotaterightlong...")
 
-   CALL ut_log("Testing rotateleft...")
-   CALL ut_log(rotateleft("1000100000010001", 3))
+   IF gt_rotaterightlong(l_long, 3) == 268435456.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing rotateright...")
-   CALL ut_log(rotateright("1000100000010001", 3))
+   CALL gt_ut_log("Testing gt_shiftleftlong...")
 
-   CALL ut_log("Testing shiftleft...")
-   CALL ut_log(shiftleft("1000100000010001", 3))
+   IF gt_shiftleftlong(l_long, 3) == 0.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing shiftright...")
-   CALL ut_log(shiftright("1000100000010001", 3))
-   RETURN FALSE
+   CALL gt_ut_log("Testing gt_shiftrightlong...")
 
-   CALL ut_log("Testing byte2binary...")
+   IF gt_shiftrightlong(l_long, 3) == 268435456.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing word2binary...")
+   CALL gt_ut_log("Testing gt_rotateleft...")
 
-   CALL ut_log("Testing long2binary...")
+   IF gt_rotateleft(l_word, 3) == 4 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing binary2byte...")
+   CALL gt_ut_log("Testing gt_rotateright...")
 
-   CALL ut_log("Testing binary2word...")
+   IF gt_rotateright(l_word, 3) == 4096 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing binary2long...")
+   CALL gt_ut_log("Testing gt_shiftleft...")
 
-   CALL ut_log("Testing bitclearbyte...")
+   IF gt_shiftleft(l_word, 3) == 0 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitclearword...")
+   CALL gt_ut_log("Testing gt_shiftright...")
 
-   CALL ut_log("Testing bitclearlong...")
+   IF gt_shiftright(l_word, 3) == 4096 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitsetbyte...")
+   CALL gt_ut_log("Testing gt_byte2binary...")
 
-   CALL ut_log("Testing bitsetword...")
+   IF gt_byte2binary(l_byte) == "10000000" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitsetlong...")
+   CALL gt_ut_log("Testing gt_word2binary...")
 
-   CALL ut_log("Testing bitorbyte...")
+   IF gt_word2binary(l_word) == "1000000000000000" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitorword...")
+   CALL gt_ut_log("Testing gt_long2binary...")
 
-   CALL ut_log("Testing bitorlong...")
+   IF gt_long2binary(l_long) == "10000000000000000000000000000000" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitandbyte...")
+   CALL gt_ut_log("Testing gt_binary2byte...")
 
-   CALL ut_log("Testing bitandword...")
+   IF gt_binary2byte("10000000") == l_byte THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitandlong...")
+   CALL gt_ut_log("Testing gt_binary2word...")
 
-   CALL ut_log("Testing bitxorbyte...")
+   IF gt_binary2word("1000000000000000") == l_word THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitxorword...")
+   CALL gt_ut_log("Testing gt_binary2long...")
 
-   CALL ut_log("Testing bitxorlong...")
+   IF gt_binary2long("10000000000000000000000000000000") == l_long THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitnotbyte...")
+   CALL gt_ut_log("Testing gt_bitclearbyte...")
 
-   CALL ut_log("Testing bitnotword...")
+   IF gt_bitclearbyte(l_byte, 3) == 128 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   CALL ut_log("Testing bitnotlong...")
+   CALL gt_ut_log("Testing gt_bitclearword...")
+
+   IF gt_bitclearword(l_word, 3) == 32768 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitclearlong...")
+
+   IF gt_bitclearlong(l_long, 3) == 2147483648.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitsetbyte...")
+
+   IF gt_bitsetbyte(l_byte, 3) == 132 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitsetword...")
+
+   IF gt_bitsetword(l_word, 3) == 32772 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitsetlong...")
+
+   IF gt_bitsetlong(l_long, 3) == 2147483652.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitorbyte...")
+
+   IF gt_bitorbyte(128, 64) == 192 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitorword...")
+
+   IF gt_bitorword(32768, 16384) == 49152 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitorlong...")
+
+   IF gt_bitorlong(2147483648.00, 1073741824.00) == 3221225472.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitandbyte...")
+
+   IF gt_bitandbyte(128, 64) == 0 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitandword...")
+
+   IF gt_bitandword(32768, 16384) == 0 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitandlong...")
+
+   IF gt_bitandlong(2147483648.00, 1073741824.00) == 0.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitxorbyte...")
+
+   IF gt_bitxorbyte(128, 64) == 192 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitxorword...")
+
+   IF gt_bitxorword(32768, 16384) == 49152 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitxorlong...")
+
+   IF gt_bitxorlong(2147483648.00, 1073741824.00) == 3221225472.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitnotbyte...")
+
+   IF gt_bitnotbyte(l_byte) == 127 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitnotword...")
+
+   IF gt_bitnotword(l_word) == 32767 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_bitnotlong...")
+
+   IF gt_bitnotlong(l_long) == 2147483647.00 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
    RETURN TRUE
 

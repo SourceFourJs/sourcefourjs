@@ -71,7 +71,7 @@ FUNCTION lib_binary_utils_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -82,7 +82,7 @@ END FUNCTION
 # @return l_source The ASCII value of the character.
 #
 
-FUNCTION asc(l_string)
+FUNCTION gt_asc(l_string)
 
 DEFINE
    l_string   CHAR(1)
@@ -117,7 +117,7 @@ END FUNCTION
 # @return l_source The ASCII character of that number.
 #
 
-FUNCTION chr(l_char)
+FUNCTION gt_chr(l_char)
 
 DEFINE
    l_char   SMALLINT
@@ -159,7 +159,7 @@ END FUNCTION
 # @return l_result The encrypted string.
 #
 
-FUNCTION xorstring(l_text, l_crypt)
+FUNCTION gt_xorstring(l_text, l_crypt)
 
 DEFINE
    l_text    STRING,
@@ -189,7 +189,7 @@ DEFINE
    LET l_length = l_text.getLength()
 
    FOR i = 1 TO l_length
-      LET l_result = l_result, chr(bitxorbyte(asc(l_text.getCharAt(i)), asc(l_crypt.getCharAt(i))))
+      LET l_result = l_result, gt_chr(gt_bitxorbyte(gt_asc(l_text.getCharAt(i)), gt_asc(l_crypt.getCharAt(i))))
    END FOR
 
    RETURN l_result.subString(1, l_length)
@@ -202,7 +202,7 @@ END FUNCTION
 # @return l_result The decimal output.
 #
 
-FUNCTION hex2dec(l_hex)
+FUNCTION gt_hex2dec(l_hex)
 
 DEFINE
    l_hex   STRING
@@ -276,7 +276,7 @@ END FUNCTION
 # @return l_result The hexadecimal output.
 #
 
-FUNCTION dec2hex(l_decimal)
+FUNCTION gt_dec2hex(l_decimal)
 
 DEFINE
    l_decimal   FLOAT
@@ -308,7 +308,7 @@ DEFINE
       LET l_hex = l_hex clipped,"0"
    END IF
 
-   RETURN string_reverse(l_hex clipped)
+   RETURN gt_string_reverse(l_hex clipped)
 
 END FUNCTION
 
@@ -318,7 +318,7 @@ END FUNCTION
 # @return l_BCD The EBCDIC output.
 #
 
-FUNCTION Num2BCD(l_number)
+FUNCTION gt_num2BCD(l_number)
 
 DEFINE
    l_number   INTEGER
@@ -340,7 +340,7 @@ DEFINE
    LET l_length = l_string.getLength()
 
    FOR i = 0 TO (l_length / 2) - 1
-      LET l_BCD = l_BCD, chr(l_string.subString((i * 2) + 1, 2))
+      LET l_BCD = l_BCD, gt_chr(l_string.subString((i * 2) + 1, 2))
    END FOR
 
    RETURN l_BCD
@@ -353,7 +353,7 @@ END FUNCTION
 # @return l_number The decimal output.
 #
 
-FUNCTION BCD2Num(l_BCD)
+FUNCTION gt_BCD2num(l_BCD)
 
 DEFINE
    l_BCD   STRING
@@ -370,7 +370,7 @@ DEFINE
    LET l_length = l_copy.getLength()
 
    FOR i = 1 TO l_length
-      LET l_string = l_string, asc(l_copy.subString(i, 1))
+      LET l_string = l_string, gt_asc(l_copy.subString(i, 1))
    END FOR
 
    LET l_number=l_string
@@ -385,7 +385,7 @@ END FUNCTION
 # @return l_copy The reversed output.
 #
 
-FUNCTION string_reverse(l_text)
+FUNCTION gt_string_reverse(l_text)
 
 DEFINE
    l_text   STRING

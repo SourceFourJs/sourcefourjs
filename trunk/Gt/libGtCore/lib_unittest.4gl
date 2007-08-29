@@ -47,7 +47,7 @@ FUNCTION lib_unittest_id()
 DEFINE
 	l_id   STRING
 
-	WHENEVER ANY ERROR CALL system_error
+	WHENEVER ANY ERROR CALL gt_system_error
 	LET l_id = "$Id$"
 
 END FUNCTION
@@ -56,7 +56,7 @@ END FUNCTION
 # Function to initialise the unit testing system.
 #
 
-FUNCTION ut_init()
+FUNCTION gt_ut_init()
 
    LET m_log_count = 0
    LET m_results_count = 0
@@ -66,7 +66,7 @@ FUNCTION ut_init()
 
    CLOSE WINDOW SCREEN
 
-   OPEN WINDOW lib_unittest WITH FORM "lib_unittest"
+   OPEN WINDOW unittest_win WITH FORM "lib_unittest"
 
    CALL ui.Dialog.setDefaultUnbuffered(TRUE)
    CALL ui.interface.loadactiondefaults("lib_unittest.4ad")
@@ -93,7 +93,7 @@ FUNCTION ut_init()
 
    END DIALOG
 
-   CLOSE WINDOW lib_unittest
+   CLOSE WINDOW unittest_win
 
 END FUNCTION
 
@@ -103,7 +103,7 @@ END FUNCTION
 # @param l_result TRUE if the test was successful, FALSE otherwise.
 #
 
-FUNCTION ut_result(l_module, l_result)
+FUNCTION gt_ut_result(l_module, l_result)
 
 DEFINE
    l_module   STRING,
@@ -128,7 +128,7 @@ END FUNCTION
 # @param l_log The entry to log.
 #
 
-FUNCTION ut_log(l_log)
+FUNCTION gt_ut_log(l_log)
 
 DEFINE
    l_log   STRING

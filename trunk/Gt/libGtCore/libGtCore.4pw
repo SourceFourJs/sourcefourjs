@@ -2,7 +2,7 @@
 <PROJECT_CONFIGURATION PMVERSION="1" >
  <APPLICATION NAME="PM_admin" >
   <CUSTOM>
-   <OPTION NAME="APPLICATIONID" VALUE="27" />
+   <OPTION NAME="APPLICATIONID" VALUE="28" />
   </CUSTOM>
  </APPLICATION>
  <PROJECT_VIEW>
@@ -23,6 +23,7 @@
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_unittest.4tb" ORDER="0" TYPE="Fgl toolbar file (*.4tb)" ID="25" PARENT="3" NAME="lib_unittest.4tb" LABEL="lib_unittest.4tb" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/Gt/libGtCore/lib_unittest.4tm" ORDER="0" TYPE="All Files (*)" ID="26" PARENT="3" NAME="lib_unittest.4tm" LABEL="lib_unittest.4tm" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/gt.4st" ORDER="0" TYPE="Window Style File(.4st)" PARENT="3" ID="27" NAME="gt.4st" LABEL="gt.4st" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/lib_4gl_parser.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="28" PARENT="3" NAME="lib_4gl_parser.4gl" LABEL="lib_4gl_parser.4gl" />
      </FILES>
     </APPLICATION>
     <APPLICATION USE_IMPLICIT_REF="1" ROOTPATH="unittest" STATUS="m" FGLLDPATH_OVERRODE="" DESCRIPTION="" CATEGORY="a" OVERRIDE_FGLLDPATH="0" DATABASE="" NAMESPACE="" ORDER="0" ID="4" PARENT="2" BUILD="1" NAME="libgtcore_test" FGLLDPATH_EXTENDED="" REPOSITORY="//" LABEL="Unit tests for libgtcore" >

@@ -33,10 +33,10 @@ MAIN
 DEFINE
 	l_id   STRING
 
-	WHENEVER ANY ERROR CALL system_error
+	WHENEVER ANY ERROR CALL gt_system_error
 	LET l_id = "$Id$"
 
-   CALL ut_init()
+   CALL gt_ut_init()
 
 END MAIN
 
@@ -56,7 +56,7 @@ DEFINE
 
    LET l_all = FALSE
 
-   IF find_argument("all") THEN
+   IF gt_find_argument("all") THEN
       LET l_all = TRUE
    END IF
 
@@ -65,112 +65,117 @@ DEFINE
       LET l_all = TRUE
    END IF
 
-   IF l_all OR find_argument("binary") THEN
-      CALL ut_log("******* Binary Library *******")
+   IF l_all OR gt_find_argument("4gl-parser") THEN
+      CALL gt_ut_log("******* 4GL Parser Library *******")
+      CALL gt_ut_result("4GL Parser Library", TRUE)
+   END IF
+
+   IF l_all OR gt_find_argument("binary") THEN
+      CALL gt_ut_log("******* Binary Library *******")
 
       IF test_binary_lib() THEN
-         CALL ut_result("Binary Library", TRUE)
+         CALL gt_ut_result("Binary Library", TRUE)
       ELSE
-         CALL ut_result("Binary Library", FALSE)
+         CALL gt_ut_result("Binary Library", FALSE)
          RETURN
       END IF
    END IF
 
-   IF l_all OR find_argument("binary_utils_test") THEN
-      CALL ut_log("******* Binary Utilities Library *******")
+   IF l_all OR gt_find_argument("binary_utils_test") THEN
+      CALL gt_ut_log("******* Binary Utilities Library *******")
 
       IF test_binary_utils_lib() THEN
-         CALL ut_result("Binary Utilities Library", TRUE)
+         CALL gt_ut_result("Binary Utilities Library", TRUE)
       ELSE
-         CALL ut_result("Binary Utilities Library", FALSE)
+         CALL gt_ut_result("Binary Utilities Library", FALSE)
          RETURN
       END IF
    END IF
 
-   IF l_all OR find_argument("encryption") THEN
-      CALL ut_log("******* Encryption Library *******")
+   IF l_all OR gt_find_argument("encryption") THEN
+      CALL gt_ut_log("******* Encryption Library *******")
 
       IF test_encryption_lib() THEN
-         CALL ut_result("Encryption Library", TRUE)
+         CALL gt_ut_result("Encryption Library", TRUE)
       ELSE
-         CALL ut_result("Encryption_Library", FALSE)
+         CALL gt_ut_result("Encryption_Library", FALSE)
          RETURN
       END IF
    END IF
 
-   IF l_all OR find_argument("exception") THEN
-      CALL ut_log("******* Exception Library *******")
+   IF l_all OR gt_find_argument("exception") THEN
+      CALL gt_ut_log("******* Exception Library *******")
 
       IF test_exception_lib() THEN
-         CALL ut_result("Exception Library", TRUE)
+         CALL gt_ut_result("Exception Library", TRUE)
       ELSE
-         CALL ut_result("Exception Library", FALSE)
+         CALL gt_ut_result("Exception Library", FALSE)
          RETURN
       END IF
    END IF
 
-   IF l_all OR find_argument("getopt") THEN
-      CALL ut_log("******* Getopt Library *******")
+   IF l_all OR gt_find_argument("getopt") THEN
+      CALL gt_ut_log("******* Getopt Library *******")
 
-      IF NOT find_argument("no-of-arguments") THEN
-         CALL ut_log("--no-of-arguments is required to test getopt")
+      IF NOT gt_find_argument("no-of-arguments") THEN
+         CALL gt_ut_log("--no-of-arguments is required to test getopt")
          RETURN
       END IF
 
       IF test_getopt_lib() THEN
-         CALL ut_result("Getopt Library", TRUE)
+         CALL gt_ut_result("Getopt Library", TRUE)
       ELSE
-         CALL ut_result("Getopt Library", FALSE)
+         CALL gt_ut_result("Getopt Library", FALSE)
          RETURN
       END IF
    END IF
 
-   IF l_all OR find_argument("md5") THEN
-      CALL ut_log("******* MD5 Library *******")
+   IF l_all OR gt_find_argument("md5") THEN
+      CALL gt_ut_log("******* MD5 Library *******")
 
       IF test_md5_lib() THEN
-         CALL ut_result("MD5 Library", TRUE)
+         CALL gt_ut_result("MD5 Library", TRUE)
       ELSE
-         CALL ut_result("MD5 Library", FALSE)
+         CALL gt_ut_result("MD5 Library", FALSE)
          RETURN
       END IF
    END IF
 
-   IF l_all OR find_argument("smtp-client") THEN
-      CALL ut_log("******* SMTP Client Library *******")
+   IF l_all OR gt_find_argument("smtp-client") THEN
+      CALL gt_ut_log("******* SMTP Client Library *******")
 
-      IF find_argument("smtp-server") THEN
-         LET l_smtp_server = get_argument("smtp-server")
+      IF gt_find_argument("smtp-server") THEN
+         LET l_smtp_server = gt_get_argument("smtp-server")
       ELSE
-         CALL ut_log("--smtp-server is required to test smtp-client")
+         CALL gt_ut_log("--smtp-server is required to test smtp-client")
          RETURN
       END IF
 
-      IF find_argument("smtp-port") THEN
-         LET l_smtp_port = get_argument("smtp-port")
+      IF gt_find_argument("smtp-port") THEN
+         LET l_smtp_port = gt_get_argument("smtp-port")
       ELSE
-         CALL ut_log("--smtp-port is required to test smtp-client")
+         CALL gt_ut_log("--smtp-port is required to test smtp-client")
          RETURN
       END IF
 
-      IF find_argument("smtp-from") THEN
-         LET l_from = get_argument("smtp-from")
+      IF gt_find_argument("smtp-from") THEN
+         LET l_from = gt_get_argument("smtp-from")
       ELSE
-         CALL ut_log("--smtp-from is required to test smtp-client")
+         CALL gt_ut_log("--smtp-from is required to test smtp-client")
          RETURN
       END IF
 
-      IF find_argument("smtp-to") THEN
-         LET l_to = get_argument("smtp-to")
+      IF gt_find_argument("smtp-to") THEN
+         LET l_to = gt_get_argument("smtp-to")
       ELSE
-         CALL ut_log("--smtp-to is required to test smtp-client")
+         CALL gt_ut_log("--smtp-to is required to test smtp-client")
          RETURN
       END IF
 
       IF test_smtp_client_lib(l_smtp_server, l_smtp_port, l_from, l_to) THEN
-         CALL ut_result("SMTP Client Library", TRUE)
+         CALL gt_ut_result("SMTP Client Library", TRUE)
       ELSE
-         CALL ut_result("SMTP Client Library", FALSE)
+         CALL gt_ut_result("SMTP Client Library", FALSE)
          RETURN
       END IF
    END IF

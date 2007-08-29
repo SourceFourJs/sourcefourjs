@@ -34,7 +34,7 @@ FUNCTION lib_encryption_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -66,7 +66,7 @@ END FUNCTION
 # @return l_encrypted_string The encrypted string.
 #
 
-FUNCTION encrypt(l_input, l_type)
+FUNCTION gt_encrypt(l_input, l_type)
 
 DEFINE
    l_input   STRING,
@@ -86,7 +86,7 @@ DEFINE
          LET l_encrypted_string = l_input
 
       OTHERWISE
-         CALL set_error("ERROR", SFMT(%"Invalid encryption type %1 specified", l_type))
+         CALL gt_set_error("ERROR", SFMT(%"Invalid encryption type %1 specified", l_type))
    END CASE
 
    RETURN l_encrypted_string
@@ -101,7 +101,7 @@ END FUNCTION
 # @return l_decrypted_string The decrypted string.
 #
 
-FUNCTION decrypt(l_input, l_type)
+FUNCTION gt_decrypt(l_input, l_type)
 
 DEFINE
    l_input   STRING,

@@ -29,7 +29,7 @@ FUNCTION lib_exception_test_id()
 DEFINE
    l_id   STRING
 
-   WHENEVER ANY ERROR CALL system_error
+   WHENEVER ANY ERROR CALL gt_system_error
    LET l_id = "$Id$"
 
 END FUNCTION
@@ -46,89 +46,89 @@ DEFINE
 
    LET l_ok = FALSE
 
-   CALL ut_log("Populating exception list...")
+   CALL gt_ut_log("Populating exception list...")
 
-   CALL set_message("INFORMATIONAL", "First Message")
-   CALL set_warning("WARNING", "First Warning")
-   CALL set_error("ERROR", "First Error")
+   CALL gt_set_message("INFORMATIONAL", "First Message")
+   CALL gt_set_warning("WARNING", "First Warning")
+   CALL gt_set_error("ERROR", "First Error")
 
-   CALL set_message("INFORMATIONAL", "Second Message")
-   CALL set_warning("WARNING", "Second Warning")
-   CALL set_error("ERROR", "Second Error")
+   CALL gt_set_message("INFORMATIONAL", "Second Message")
+   CALL gt_set_warning("WARNING", "Second Warning")
+   CALL gt_set_error("ERROR", "Second Error")
 
-   CALL set_message("INFORMATIONAL", "Third Message")
-   CALL set_warning("WARNING", "Third Warning")
-   CALL set_error("ERROR", "Third Error")
+   CALL gt_set_message("INFORMATIONAL", "Third Message")
+   CALL gt_set_warning("WARNING", "Third Warning")
+   CALL gt_set_error("ERROR", "Third Error")
 
-   CALL ut_log("Testing get_exception_count...")
+   CALL gt_ut_log("Testing gt_get_exception_count...")
 
-   IF get_exception_count() == 9 THEN
-      CALL ut_log("Passed")
+   IF gt_get_exception_count() == 9 THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_error_count...")
+   CALL gt_ut_log("Testing gt_get_error_count...")
 
-   IF get_error_count() == 3 THEN
-      CALL ut_log("Passed")
+   IF gt_get_error_count() == 3 THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_warning_count...")
+   CALL gt_ut_log("Testing gt_get_warning_count...")
 
-   IF get_warning_count() == 3 THEN
-      CALL ut_log("Passed")
+   IF gt_get_warning_count() == 3 THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_message_count...")
+   CALL gt_ut_log("Testing gt_get_message_count...")
 
-   IF get_message_count() == 3 THEN
-      CALL ut_log("Passed")
+   IF gt_get_message_count() == 3 THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_last_message...")
+   CALL gt_ut_log("Testing gt_get_last_message...")
 
-   IF get_last_message() == "Third Message" THEN
-      CALL ut_log("Passed")
+   IF gt_get_last_message() == "Third Message" THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_last_warning...")
+   CALL gt_ut_log("Testing gt_get_last_warning...")
 
-   IF get_last_warning() == "Third Warning" THEN
-      CALL ut_log("Passed")
+   IF gt_get_last_warning() == "Third Warning" THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_last_error...")
+   CALL gt_ut_log("Testing gt_get_last_error...")
 
-   IF get_last_error() == "Third Error" THEN
-      CALL ut_log("Passed")
+   IF gt_get_last_error() == "Third Error" THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL ut_log("Testing get_exception...")
+   CALL gt_ut_log("Testing gt_get_exception...")
 
-   IF get_exception(5) == "Second Warning" THEN
-      CALL ut_log("Passed")
+   IF gt_get_exception(5) == "Second Warning" THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      CALL ut_log("FAILED")
+      CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
