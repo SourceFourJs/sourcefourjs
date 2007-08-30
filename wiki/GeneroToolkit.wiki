@@ -20,6 +20,12 @@ Please use the Issue tracker for any other wishlist items you may have.
     * No, not necessarily. I would rather see Four J's provide functionality that cannot be developed in the Genero language. This, IMHO, would include things like a more consistent "class-based" API, an improved canvas, improved socket functionality, HTML support, printing interfaces, etc. The Genero roadmap shows that some of this is currently being developed. 
   # How can I help?
     * Coding, bug fixing, logging wishlists, documentation - whatever takes your fancy. The only thing I would ask is that in order to keep the toolkit consistent you use the same coding standards I'm using. If that's too much like hard work, send me the code and I'll do it for you.
+  # What did you do the development in?
+    * Genero Studio running on openSUSE (latest version). I'm normally a vim man but thought I would give Genero Studio a try so that I could provide feedback to Four J's about it.
+  # Are you getting paid to do this development?
+    * No. 
+  # Are you sure there are no copyright issues with this code?
+    * There shouldn't be. Some of the modules I developed for Quanta Systems Limited (now part of the Integral Technology Group) and I do have permission from Integral Technology Group to release those modules under the MIT license. The rest I have developed from scratch (though sometimes using ideas from the work I do during the day).
 
 = Released Versions =
 None at present. Source code is available from the subversion repository though.
