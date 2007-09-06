@@ -4,6 +4,9 @@ The Genero Toolkit is designed to provide some basic infrastructure on which to 
 
 Coding Standards used:
 
+Functions:
+Functions start with gt_ to avoid naming clashes with people's existing functions. 
+
 Naming:
 p_ - Private functions. 
 

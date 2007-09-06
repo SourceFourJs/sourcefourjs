@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -138,7 +140,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION gt_get_last_exception()
+FUNCTION gt_last_exception()
 
    IF m_count == 0 THEN
       RETURN NULL, NULL, NULL, NULL, NULL
@@ -162,7 +164,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION gt_get_last_error()
+FUNCTION gt_last_error()
 
 DEFINE
    i   INTEGER
@@ -187,7 +189,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION gt_get_last_warning()
+FUNCTION gt_last_warning()
 
 DEFINE
    i   INTEGER
@@ -212,7 +214,7 @@ END FUNCTION
 #                                     This is only valid for errors.
 #
 
-FUNCTION gt_get_last_message()
+FUNCTION gt_last_message()
 
 DEFINE
    i   INTEGER
@@ -232,7 +234,7 @@ END FUNCTION
 # @return The number of exceptions in the exception list.
 
 
-FUNCTION gt_get_exception_count()
+FUNCTION gt_exception_count()
 
    RETURN m_count
 
@@ -243,7 +245,7 @@ END FUNCTION
 # @return l_errors The number of errors.
 #
 
-FUNCTION gt_get_error_count()
+FUNCTION gt_error_count()
 
 DEFINE
    i          INTEGER,
@@ -266,7 +268,7 @@ END FUNCTION
 # @return l_warnings The number of warnings.
 #
 
-FUNCTION gt_get_warning_count()
+FUNCTION gt_warning_count()
 
 DEFINE
    i            INTEGER,
@@ -288,7 +290,7 @@ END FUNCTION
 # @return l_messages The number of messages.
 #
 
-FUNCTION gt_get_message_count()
+FUNCTION gt_message_count()
 
 DEFINE
    i            INTEGER,
@@ -317,7 +319,7 @@ END FUNCTION
 #
 
 
-FUNCTION gt_get_exception(l_count)
+FUNCTION gt_exception(l_count)
 
 DEFINE
    l_count   INTEGER

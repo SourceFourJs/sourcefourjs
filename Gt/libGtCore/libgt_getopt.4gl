@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -97,7 +99,7 @@ END FUNCTION
 # @return l_value Returns the value of the argument if found, NULL otherwise.
 #
 
-FUNCTION gt_get_argument(l_argument)
+FUNCTION gt_argument(l_argument)
 
 DEFINE
    l_argument   STRING

@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -19,6 +21,14 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS #
 # IN THE SOFTWARE.                                                             #
 #------------------------------------------------------------------------------#
+
+##
+# MD5 Library (RFC 1321)
+# @category System Library
+# @author Scott Newton
+# @date August 2007
+# @version $Id$
+#
 
 CONSTANT S11 = 7
 CONSTANT S12 = 12

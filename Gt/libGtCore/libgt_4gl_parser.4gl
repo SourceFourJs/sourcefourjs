@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -88,7 +90,7 @@ DEFINE
 
    IF l_ok THEN
       WHILE file_read(l_filehdl)
-         LET l_tmp = get_io_buffer(l_filehdl)
+         LET l_tmp = io_buffer(l_filehdl)
          CALL l_line.append(l_tmp)
          CALL l_line.append("\n")
          LET m_line_length = m_line_length + l_tmp.getLength() + 1
@@ -103,7 +105,7 @@ DEFINE
          DISPLAY "File too long"
          EXIT PROGRAM
       END IF
-      CALL p_gt_get_tokens(l_include_comments)
+      CALL p_gt_tokens(l_include_comments)
    END IF
 
 
@@ -114,7 +116,7 @@ END FUNCTION
 # @return m_token_count The number of parsed tokens.
 #
 
-FUNCTION gt_get_token_count()
+FUNCTION gt_token_count()
 
    RETURN m_token_count
 
@@ -126,7 +128,7 @@ END FUNCTION
 # @return m_tokens[l_pos] The token at the given position.
 #
 
-FUNCTION gt_get_next_token(l_pos)
+FUNCTION gt_next_token(l_pos)
 
 DEFINE
    l_pos   INTEGER
@@ -147,7 +149,7 @@ END FUNCTION
 # @return l_token The next alphanumeric token.
 #
 
-FUNCTION gt_get_next_alphanumeric_token(l_pos)
+FUNCTION gt_next_alphanumeric_token(l_pos)
 
 DEFINE
    l_pos     INTEGER,
@@ -201,7 +203,7 @@ END FUNCTION
 #                           token array, FALSE otherwise.
 #
 
-FUNCTION p_gt_get_tokens(l_include_comments)
+FUNCTION p_gt_tokens(l_include_comments)
 
 DEFINE
    l_include_comments   SMALLINT

@@ -1,6 +1,8 @@
-# $Id$
+# $Id: lib_email_test.4gl 22 2007-08-29 08:47:13Z quantumchaos451 $
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
+#                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
 #                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
@@ -24,40 +26,34 @@
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_getopt_test_id()
+FUNCTION lib_email_test_id()
 
 DEFINE
    l_id   STRING
 
    WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+   LET l_id = "$Id: lib_email_test.4gl 22 2007-08-29 08:47:13Z quantumchaos451 $"
 
 END FUNCTION
 
 ##
-# Function to test the get options library.
+# Function to test the email library.
 # @param l_ok Returns TRUE if successful, FALSE otherwise.
 #
 
-FUNCTION test_getopt_lib()
+FUNCTION test_email_lib()
 
-   CALL gt_ut_log("Testing gt_find_argument...")
+DEFINE
+   l_fs   STRING
 
-   IF gt_find_argument("no-of-arguments") THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN
-   END IF
+   CALL gt_ut_log("No current tests...")
 
-   CALL gt_ut_log("Testing gt_get_argument...")
-
-   IF gt_get_argument("no-of-arguments") == base.application.getargumentcount() THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN
-   END IF
+   #IF gt_email_is_empty(l_fs) == TRUE THEN
+   #   CALL gt_ut_log("Passed")
+   #ELSE
+   #   CALL gt_ut_log("FAILED")
+   #   RETURN FALSE
+   #END IF
 
    RETURN TRUE
 

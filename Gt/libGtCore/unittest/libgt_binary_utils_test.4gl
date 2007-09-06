@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -20,122 +22,84 @@
 # IN THE SOFTWARE.                                                             #
 #------------------------------------------------------------------------------#
 
-##
-# Unit Test Library
-# @category System Library
-# @author Scott Newton
-# @date August 2007
-# @version $Id$
-#
-
-DEFINE
-   m_log_count       INTEGER,
-   m_results_count   INTEGER,
-
-   m_log       DYNAMIC ARRAY OF STRING,
-   m_results   DYNAMIC ARRAY OF RECORD
-      module   STRING,
-      result   STRING
-   END RECORD
-
 #------------------------------------------------------------------------------#
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_unittest_id()
+FUNCTION lib_binary_utils_test_id()
 
 DEFINE
-	l_id   STRING
+   l_id   STRING
 
-	WHENEVER ANY ERROR CALL gt_system_error
-	LET l_id = "$Id$"
+   WHENEVER ANY ERROR CALL gt_system_error
+   LET l_id = "$Id$"
 
 END FUNCTION
 
 ##
-# Function to initialise the unit testing system.
+# Function to test the binary utils library.
+# @param l_ok Returns TRUE if successful, FALSE otherwise.
 #
 
-FUNCTION gt_ut_init()
+FUNCTION test_binary_utils_lib()
 
-   LET m_log_count = 0
-   LET m_results_count = 0
-   CALL m_log.clear()
-   CALL m_results.clear()
-   CALL ui.interface.loadstyles("gt.4st")
+   CALL gt_ut_log("Testing gt_asc...")
 
-   CLOSE WINDOW SCREEN
-
-   OPEN WINDOW unittest_win WITH FORM "lib_unittest"
-
-   CALL ui.Dialog.setDefaultUnbuffered(TRUE)
-   CALL ui.interface.loadactiondefaults("lib_unittest.4ad")
-   CALL ui.interface.loadtopmenu("lib_unittest.4tm")
-   CALL ui.interface.loadtoolbar("lib_unittest.4tb")
-
-   DIALOG
-
-   DISPLAY ARRAY m_results TO results_scr.*
-   DISPLAY ARRAY m_log TO log_scr.*
-
-      ON ACTION run
-         CALL run_tests()
-
-      ON ACTION cancel
-         EXIT DIALOG
-
-      ON ACTION close
-         EXIT DIALOG
-
-      ON ACTION help
-
-      ON ACTION about
-
-   END DIALOG
-
-   CLOSE WINDOW unittest_win
-
-END FUNCTION
-
-##
-# Function to display the unit test results
-# @param l_module The module being tested.
-# @param l_result TRUE if the test was successful, FALSE otherwise.
-#
-
-FUNCTION gt_ut_result(l_module, l_result)
-
-DEFINE
-   l_module   STRING,
-   l_result   SMALLINT
-
-   LET m_results_count = m_results_count + 1
-   LET m_results[m_results_count].module = l_module
-
-   IF l_result THEN
-      LET m_results[m_results_count].result = "Passed"
-      #CALL DIALOG.setArrayAttributes("", att)
+   IF gt_asc("G") == 71 THEN
+      CALL gt_ut_log("Passed")
    ELSE
-      LET m_results[m_results_count].result = "FAILED"
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
    END IF
 
-   CALL ui.interface.refresh()
+   CALL gt_ut_log("Testing gt_chr...")
 
-END FUNCTION
+   IF gt_chr(71) == "G" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-##
-# Function to display the unit test details.
-# @param l_log The entry to log.
-#
+   CALL gt_ut_log("Testing of gt_xorstring function is done with the encryption testing...")
 
-FUNCTION gt_ut_log(l_log)
+   CALL gt_ut_log("Testing gt_hex2dec...")
 
-DEFINE
-   l_log   STRING
+   IF gt_hex2dec("FF") == 255 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
 
-   LET m_log_count = m_log_count + 1
-   LET m_log[m_log_count] = l_log
-   CALL ui.interface.refresh()
+   CALL gt_ut_log("Testing gt_dec2hex...")
+
+   IF gt_dec2hex(255) == "FF" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_num2BCD...")
+
+   IF gt_num2BCD(42) == "*" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_BCD2num...")
+
+   IF gt_BCD2num("*") == 42 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   RETURN TRUE
 
 END FUNCTION
 

@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -24,7 +26,7 @@
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_encryption_test_id()
+FUNCTION lib_exception_test_id()
 
 DEFINE
    l_id   STRING
@@ -35,31 +37,97 @@ DEFINE
 END FUNCTION
 
 ##
-# Function to test the encryption library.
+# Function to test the exception library.
 # @param l_ok Returns TRUE if successful, FALSE otherwise.
 #
 
-FUNCTION test_encryption_lib()
+FUNCTION test_exception_lib()
 
 DEFINE
-   l_string   STRING
+   l_ok   SMALLINT
 
-   LET l_string = ASCII(42), ASCII(70), ASCII(84), ASCII(84),
-                  ASCII(51), ASCII(93), ASCII(90), ASCII(79),
-                  ASCII(75), ASCII(66)
+   LET l_ok = FALSE
 
-   CALL gt_ut_log("Testing gt_XORString encryption...")
+   CALL gt_ut_log("Populating exception list...")
 
-   IF gt_xorstring("TestString", "") == l_string THEN
+   CALL gt_set_message("INFORMATIONAL", "First Message")
+   CALL gt_set_warning("WARNING", "First Warning")
+   CALL gt_set_error("ERROR", "First Error")
+
+   CALL gt_set_message("INFORMATIONAL", "Second Message")
+   CALL gt_set_warning("WARNING", "Second Warning")
+   CALL gt_set_error("ERROR", "Second Error")
+
+   CALL gt_set_message("INFORMATIONAL", "Third Message")
+   CALL gt_set_warning("WARNING", "Third Warning")
+   CALL gt_set_error("ERROR", "Third Error")
+
+   CALL gt_ut_log("Testing gt_exception_count...")
+
+   IF gt_exception_count() == 9 THEN
       CALL gt_ut_log("Passed")
    ELSE
       CALL gt_ut_log("FAILED")
       RETURN FALSE
    END IF
 
-   CALL gt_ut_log("Testing gt_XORString decryption...")
+   CALL gt_ut_log("Testing gt_error_count...")
 
-   IF gt_xorstring(l_string, "") == "TestString" THEN
+   IF gt_error_count() == 3 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_warning_count...")
+
+   IF gt_warning_count() == 3 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_message_count...")
+
+   IF gt_message_count() == 3 THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_last_message...")
+
+   IF gt_last_message() == "Third Message" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_last_warning...")
+
+   IF gt_last_warning() == "Third Warning" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_last_error...")
+
+   IF gt_last_error() == "Third Error" THEN
+      CALL gt_ut_log("Passed")
+   ELSE
+      CALL gt_ut_log("FAILED")
+      RETURN FALSE
+   END IF
+
+   CALL gt_ut_log("Testing gt_exception...")
+
+   IF gt_exception(5) == "Second Warning" THEN
       CALL gt_ut_log("Passed")
    ELSE
       CALL gt_ut_log("FAILED")

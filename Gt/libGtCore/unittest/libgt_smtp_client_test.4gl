@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -141,9 +143,9 @@ DEFINE
       RETURN FALSE
    END IF
 
-   CALL gt_ut_log("Testing gt_get_smtp_client_statistics...")
+   CALL gt_ut_log("Testing gt_smtp_client_statistics...")
 
-   CALL gt_get_smtp_client_statistics()
+   CALL gt_smtp_client_statistics()
       RETURNING l_connections, l_bytesread, l_byteswritten
 
    CALL gt_ut_log("SMTP Client Statistics:")
