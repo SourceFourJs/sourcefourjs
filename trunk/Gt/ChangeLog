@@ -1,3 +1,11 @@
+2007-09-07 scottn
+  * Added RSET and NOOP to lib_smtp_client 
+  * Added lib_email.4gl and lib_email_test.4gl
+  * Added lib_fs.4gl and lib_fs_test.4gl
+  * Added lib_string.4gl and lib_string_test.4gl
+  * Changed library names from lib_ to libgt_ to avoid naming conflicts
+  * Removed get_ from functions that get information.
+
 2007-08-29 scottn
   * Added lib_4gl_parser.4gl
   * Added lib_binary unit tests

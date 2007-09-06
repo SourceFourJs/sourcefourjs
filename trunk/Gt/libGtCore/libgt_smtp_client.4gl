@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -21,7 +23,13 @@
 #------------------------------------------------------------------------------#
 
 ##
-# SMTP Client Library
+# SMTP Client Library (RFC 2821)
+#
+# This library does the physical connecting to the SMTP server and sending
+# of the email message it has been given. Normally you would never call any of
+# these functions from within your code but would use the functions provided by
+# the emailing library instead.
+#
 # @category System Library
 # @author Scott Newton
 # @date June 2007
@@ -68,7 +76,7 @@ END FUNCTION
 # @return m_byteswritten The total number of bytes written.
 #
 
-FUNCTION gt_get_smtp_client_statistics()
+FUNCTION gt_smtp_client_statistics()
 
    RETURN m_connections USING "<<<,<<<,<<<,<<<,<<<,<<<",
           m_bytesread USING "<<<,<<<,<<<,<<<,<<<,<<<",
@@ -123,7 +131,8 @@ DEFINE
             LET l_ok = TRUE
 
          OTHERWISE
-            RETURN FALSE, NULL
+            LET l_ok = FALSE
+            LET l_sockethdl = NULL
       END CASE
    ELSE
    END IF
@@ -148,8 +157,6 @@ DEFINE
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_bytesread       STRING,
-   l_byteswritten    STRING,
    l_response_code   STRING
 
    LET l_ok = FALSE
@@ -167,8 +174,9 @@ DEFINE
    CASE
       WHEN l_response_code == "250"
          LET l_ok = TRUE
+
       OTHERWISE
-         RETURN FALSE
+         LET l_ok = FALSE
    END CASE
 
    RETURN l_ok
@@ -192,8 +200,6 @@ DEFINE
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_bytesread       STRING,
-   l_byteswritten    STRING,
    l_response_code   STRING
 
    LET l_ok = FALSe
@@ -213,7 +219,7 @@ DEFINE
          LET l_ok = TRUE
 
       OTHERWISE
-         RETURN FALSE
+         LET l_ok = FALSE
    END CASE
 
    RETURN l_ok
@@ -237,8 +243,6 @@ DEFINE
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_bytesread       STRING,
-   l_byteswritten    STRING,
    l_response_code   STRING
 
    LET l_ok = FALSE
@@ -258,7 +262,7 @@ DEFINE
          LET l_ok = TRUE
 
       OTHERWISE
-         RETURN FALSE
+         LET l_ok = FALSE
    END CASE
 
    RETURN l_ok
@@ -281,8 +285,6 @@ DEFINE
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_bytesread       STRING,
-   l_byteswritten    STRING,
    l_response_code   STRING
 
    LET l_ok = FALSE
@@ -326,7 +328,7 @@ DEFINE
          LET l_ok = TRUE
 
       OTHERWISE
-         RETURN FALSE
+         LET l_ok = FALSE
    END CASE
 
    RETURN l_ok
@@ -348,8 +350,6 @@ DEFINE
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_bytesread       STRING,
-   l_byteswritten    STRING,
    l_response_code   STRING
 
    LET l_ok = FALSE
@@ -369,10 +369,91 @@ DEFINE
          LET l_ok = TRUE
 
       OTHERWISE
-         RETURN FALSE
+         LET l_ok = FALSE
    END CASE
 
    CALL l_sockethdl.close()
+
+   RETURN l_ok
+
+END FUNCTION
+
+##
+# Function to send the RSET command to the SMTP server.
+# @param l_sockethdl The handle to the open socket.
+# @return l_ok Returns TRUE is the socket was successfully reset, FALSE
+#              otherwise.
+#
+
+FUNCTION gt_smtp_reset(l_sockethdl)
+
+DEFINE
+   l_sockethdl   base.channel
+
+DEFINE
+   l_ok              SMALLINT,
+   l_data            STRING,
+   l_response_code   STRING
+
+   LET l_ok = FALSE
+   LET l_data = "RSET"
+
+   CALL l_sockethdl.write(l_data)
+   LET m_byteswritten = m_byteswritten + l_data.getLength()
+
+   CALL l_sockethdl.read(l_data)
+      RETURNING l_ok
+
+   LET l_response_code = l_data.subString(1, 3)
+   LET m_bytesread = m_bytesread + l_data.getLength()
+
+   CASE
+      WHEN l_response_code == "250"
+         LET l_ok = TRUE
+
+      OTHERWISE
+         LET l_ok = FALSE
+   END CASE
+
+   RETURN l_ok
+
+END FUNCTION
+
+##
+# Function to send the NOOP command to the SMTP server.
+# @param l_sockethdl The handle to the open socket.
+# @return l_ok Returns TRUE is the NOOP was successful, FALSE otherwise.
+#
+
+FUNCTION gt_smtp_noop(l_sockethdl)
+
+DEFINE
+   l_sockethdl   base.channel
+
+DEFINE
+   l_ok              SMALLINT,
+   l_data            STRING,
+   l_response_code   STRING
+
+   LET l_ok = FALSE
+   LET l_data = "NOOP"
+
+   CALL l_sockethdl.write(l_data)
+   LET m_byteswritten = m_byteswritten + l_data.getLength()
+
+   CALL l_sockethdl.read(l_data)
+      RETURNING l_ok
+
+   LET l_response_code = l_data.subString(1, 3)
+   LET m_bytesread = m_bytesread + l_data.getLength()
+
+   CASE
+      WHEN l_response_code == "250"
+         LET l_ok = TRUE
+
+      OTHERWISE
+         LET l_ok = FALSE
+   END CASE
 
    RETURN l_ok
 

@@ -3,6 +3,8 @@
 <!-- ************************************************************************* #
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -22,24 +24,68 @@
 # ************************************************************************** -->
 
 <!-- ##
- # Unit Test Tool Bar
+ # Unit Test Action Defaults
  # @category System Library
  # @author Scott Newton
  # @date August 2007
  # @version $Id$
  # -->
 
-<ToolBar buttonTextHidden = "1">
-   <ToolBarItem name = "run" />
-   <ToolBarItem name = "cancel" />
-   <ToolBarSeparator />
-   <ToolBarItem name = "editcopy" />
-   <ToolBarItem name = "editcut" />
-   <ToolBarItem name = "editpaste" />
-   <ToolBarSeparator />
-   <ToolBarItem name="help" />
-   <ToolBarItem name="about" />
-</ToolBar>
+<ActionDefaultList>
+   <ActionDefault name = "close"
+                  acceleratorName = "Alt-F4">
+      <LStr acceleratorName = "Alt-F4" />
+   </ActionDefault>
+   <ActionDefault name = "run"
+                  image = "q_accept"
+                  text = "Run"
+                  acceleratorName = "Ctrl-R">
+      <LStr text = "Run"
+            acceleratorName = "Ctrl-R" />
+   </ActionDefault>
+   <ActionDefault name = "cancel"
+                  image = "q_cancel"
+                  text = "Cancel"
+                  acceleratorName = "">
+      <LStr text = "Cancel"
+            acceleratorName = "" />
+   </ActionDefault>
+   <ActionDefault name = "editcut"
+                  image = "q_editcut"
+                  text = "Cut"
+                  comment = "Cut">
+      <LStr text = "Cut"
+            comment = "Cut" />
+   </ActionDefault>
+   <ActionDefault name = "editcopy"
+                  image = "q_editcopy"
+                  text = "Copy"
+                  comment = "Copy">
+      <LStr text = "Copy"
+            comment = "Copy" />
+   </ActionDefault>
+   <ActionDefault name = "editpaste"
+                  image = "q_editpaste"
+                  text = "Paste"
+                  comment = "Paste">
+      <LStr text = "Paste"
+            comment = "Paste" />
+   </ActionDefault>
+   <ActionDefault name = "help"
+                  image = "q_help"
+                  text = "Help"
+                  comment = "Help">
+      <LStr text = "Help"
+            comment = "Help" />
+   </ActionDefault>
+   <ActionDefault name = "about"
+                  image = "q_about"
+                  text = "About"
+                  comment = "About">
+      <LStr text = "About"
+            comment = "About" />
+   </ActionDefault>
+</ActionDefaultList>
 
 <!-- *********************************************************************** -->
 <!-- END OF XML                                                              -->

@@ -31,6 +31,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -376,33 +378,6 @@ DEFINE
    LET l_number=l_string
 
    RETURN l_number
-
-END FUNCTION
-
-##
-# This function reverses the given string.
-# @param l_text The string reverse.
-# @return l_copy The reversed output.
-#
-
-FUNCTION gt_string_reverse(l_text)
-
-DEFINE
-   l_text   STRING
-
-DEFINE
-   i          SMALLINT,
-   l_length   INTEGER,
-   l_copy     STRING
-
-   LET l_copy = ""
-   LET l_length = l_text.getLength()
-
-   FOR i = 1 TO l_length
-      LET l_copy = l_copy, l_text.getCharAt(l_length - i + 1)
-   END FOR
-
-   RETURN l_copy
 
 END FUNCTION
 

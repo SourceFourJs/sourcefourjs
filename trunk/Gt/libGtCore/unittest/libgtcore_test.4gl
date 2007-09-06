@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -81,7 +83,7 @@ DEFINE
       END IF
    END IF
 
-   IF l_all OR gt_find_argument("binary_utils_test") THEN
+   IF l_all OR gt_find_argument("binary_utils") THEN
       CALL gt_ut_log("******* Binary Utilities Library *******")
 
       IF test_binary_utils_lib() THEN
@@ -145,28 +147,28 @@ DEFINE
       CALL gt_ut_log("******* SMTP Client Library *******")
 
       IF gt_find_argument("smtp-server") THEN
-         LET l_smtp_server = gt_get_argument("smtp-server")
+         LET l_smtp_server = gt_argument("smtp-server")
       ELSE
          CALL gt_ut_log("--smtp-server is required to test smtp-client")
          RETURN
       END IF
 
       IF gt_find_argument("smtp-port") THEN
-         LET l_smtp_port = gt_get_argument("smtp-port")
+         LET l_smtp_port = gt_argument("smtp-port")
       ELSE
          CALL gt_ut_log("--smtp-port is required to test smtp-client")
          RETURN
       END IF
 
       IF gt_find_argument("smtp-from") THEN
-         LET l_from = gt_get_argument("smtp-from")
+         LET l_from = gt_argument("smtp-from")
       ELSE
          CALL gt_ut_log("--smtp-from is required to test smtp-client")
          RETURN
       END IF
 
       IF gt_find_argument("smtp-to") THEN
-         LET l_to = gt_get_argument("smtp-to")
+         LET l_to = gt_argument("smtp-to")
       ELSE
          CALL gt_ut_log("--smtp-to is required to test smtp-client")
          RETURN
@@ -176,6 +178,15 @@ DEFINE
          CALL gt_ut_result("SMTP Client Library", TRUE)
       ELSE
          CALL gt_ut_result("SMTP Client Library", FALSE)
+         RETURN
+      END IF
+   END IF
+
+   IF l_all OR gt_find_argument("string") THEN
+      IF test_string_lib() THEN
+         CALL gt_ut_result("String Library", TRUE)
+      ELSE
+         CALL gt_ut_result("String Library", FALSE)
          RETURN
       END IF
    END IF

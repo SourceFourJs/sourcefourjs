@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+#                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
 # deal in the Software without restriction, including without limitation the   #
@@ -24,7 +26,7 @@
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_exception_test_id()
+FUNCTION lib_getopt_test_id()
 
 DEFINE
    l_id   STRING
@@ -35,101 +37,28 @@ DEFINE
 END FUNCTION
 
 ##
-# Function to test the exception library.
+# Function to test the get options library.
 # @param l_ok Returns TRUE if successful, FALSE otherwise.
 #
 
-FUNCTION test_exception_lib()
+FUNCTION test_getopt_lib()
 
-DEFINE
-   l_ok   SMALLINT
+   CALL gt_ut_log("Testing gt_find_argument...")
 
-   LET l_ok = FALSE
-
-   CALL gt_ut_log("Populating exception list...")
-
-   CALL gt_set_message("INFORMATIONAL", "First Message")
-   CALL gt_set_warning("WARNING", "First Warning")
-   CALL gt_set_error("ERROR", "First Error")
-
-   CALL gt_set_message("INFORMATIONAL", "Second Message")
-   CALL gt_set_warning("WARNING", "Second Warning")
-   CALL gt_set_error("ERROR", "Second Error")
-
-   CALL gt_set_message("INFORMATIONAL", "Third Message")
-   CALL gt_set_warning("WARNING", "Third Warning")
-   CALL gt_set_error("ERROR", "Third Error")
-
-   CALL gt_ut_log("Testing gt_get_exception_count...")
-
-   IF gt_get_exception_count() == 9 THEN
+   IF gt_find_argument("no-of-arguments") THEN
       CALL gt_ut_log("Passed")
    ELSE
       CALL gt_ut_log("FAILED")
-      RETURN FALSE
+      RETURN
    END IF
 
-   CALL gt_ut_log("Testing gt_get_error_count...")
+   CALL gt_ut_log("Testing gt_argument...")
 
-   IF gt_get_error_count() == 3 THEN
+   IF gt_argument("no-of-arguments") == base.application.getargumentcount() THEN
       CALL gt_ut_log("Passed")
    ELSE
       CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
-
-   CALL gt_ut_log("Testing gt_get_warning_count...")
-
-   IF gt_get_warning_count() == 3 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
-
-   CALL gt_ut_log("Testing gt_get_message_count...")
-
-   IF gt_get_message_count() == 3 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
-
-   CALL gt_ut_log("Testing gt_get_last_message...")
-
-   IF gt_get_last_message() == "Third Message" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
-
-   CALL gt_ut_log("Testing gt_get_last_warning...")
-
-   IF gt_get_last_warning() == "Third Warning" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
-
-   CALL gt_ut_log("Testing gt_get_last_error...")
-
-   IF gt_get_last_error() == "Third Error" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
-
-   CALL gt_ut_log("Testing gt_get_exception...")
-
-   IF gt_get_exception(5) == "Second Warning" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
+      RETURN
    END IF
 
    RETURN TRUE

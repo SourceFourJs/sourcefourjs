@@ -1,6 +1,9 @@
-# $Id$
-#------------------------------------------------------------------------------#
+<?xml version="1.0" ?>
+<!-- $Id$ -->
+<!-- ************************************************************************* #
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
+#                                                                              #
+# MIT License (http://www.opensource.org/licenses/mit-license.php)             #
 #                                                                              #
 # Permission is hereby granted, free of charge, to any person obtaining a copy #
 # of this software and associated documentation files (the "Software"), to     #
@@ -18,54 +21,28 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      #
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS #
 # IN THE SOFTWARE.                                                             #
-#------------------------------------------------------------------------------#
+# ************************************************************************** -->
 
-##
-# Form for Unit Testing.
-# @category Library Form
-# @author Scott Newton
-# @date August 2007
-# @version $Id$
-#
+<!-- ##
+ # Unit Test Tool Bar
+ # @category System Library
+ # @author Scott Newton
+ # @date August 2007
+ # @version $Id$
+ # -->
 
-DATABASE formonly
+<ToolBar buttonTextHidden = "1">
+   <ToolBarItem name = "run" />
+   <ToolBarItem name = "cancel" />
+   <ToolBarSeparator />
+   <ToolBarItem name = "editcopy" />
+   <ToolBarItem name = "editcut" />
+   <ToolBarItem name = "editpaste" />
+   <ToolBarSeparator />
+   <ToolBarItem name="help" />
+   <ToolBarItem name="about" />
+</ToolBar>
 
-LAYOUT (VERSION = "$Id$")
-HBOX (SPLITTER)
-GROUP g1 (TEXT = %"Results")
-TABLE (HEIGHT = 10 LINES)
-{
-   Module     Result
-  [emodule  ][eresult  ]
-
-}
-END #TABLE
-END #GROUP
-
-GROUP g2 (TEXT = %"Log")
-TABLE (HEIGHT = 10 LINES)
-{
-   Output
-  [elog  ]
-
-}
-END #TABLE
-END #GROUP
-END #HBOX
-END #LAYOUT
-
-ATTRIBUTES
-EDIT emodule = formonly.emodule;
-EDIT eresult = formonly.eresult, COLOR = GREEN WHERE eresult = "Passed", COLOR = RED WHERE eresult = "FAILED";
-EDIT elog = formonly.elog, COLOR = GREEN WHERE elog = "Passed", COLOR = RED WHERE elog = "FAILED";
-END #ATTRIBUTES
-
-INSTRUCTIONS
-   DELIMITERS " "
-   SCREEN RECORD results_scr(emodule, eresult);
-   SCREEN RECORD log_scr(elog);
-END #INSTRUCTIONS
-
-#------------------------------------------------------------------------------#
-# END OF FORM                                                                  #
-#------------------------------------------------------------------------------#
+<!-- *********************************************************************** -->
+<!-- END OF XML                                                              -->
+<!-- *********************************************************************** -->
