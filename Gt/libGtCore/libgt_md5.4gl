@@ -61,7 +61,7 @@ DEFINE
 # Function to set the WHENEVER ANY ERROR function for this module              #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_md5_id()
+FUNCTION libgt_md5_id()
 
 DEFINE
    l_id   STRING

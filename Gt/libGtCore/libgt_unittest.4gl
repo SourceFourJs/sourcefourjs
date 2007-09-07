@@ -44,7 +44,7 @@ DEFINE
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_unittest_id()
+FUNCTION libgt_unittest_id()
 
 DEFINE
 	l_id   STRING
@@ -64,16 +64,16 @@ FUNCTION gt_ut_init()
    LET m_results_count = 0
    CALL m_log.clear()
    CALL m_results.clear()
-   CALL ui.interface.loadstyles("gt.4st")
+   CALL ui.interface.loadstyles("libgt.4st")
 
    CLOSE WINDOW SCREEN
 
-   OPEN WINDOW unittest_win WITH FORM "lib_unittest"
+   OPEN WINDOW unittest_win WITH FORM "libgt_unittest"
 
    CALL ui.Dialog.setDefaultUnbuffered(TRUE)
-   CALL ui.interface.loadactiondefaults("lib_unittest.4ad")
-   CALL ui.interface.loadtopmenu("lib_unittest.4tm")
-   CALL ui.interface.loadtoolbar("lib_unittest.4tb")
+   CALL ui.interface.loadactiondefaults("libgt_unittest.4ad")
+   CALL ui.interface.loadtopmenu("libgt_unittest.4tm")
+   CALL ui.interface.loadtoolbar("libgt_unittest.4tb")
 
    DIALOG
 

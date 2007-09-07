@@ -26,7 +26,7 @@
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_getopt_test_id()
+FUNCTION libgt_getopt_test_id()
 
 DEFINE
    l_id   STRING

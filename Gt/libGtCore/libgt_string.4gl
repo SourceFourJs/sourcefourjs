@@ -36,7 +36,7 @@
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_string_id()
+FUNCTION libgt_string_id()
 
 DEFINE
 	l_id   STRING
@@ -304,7 +304,7 @@ DEFINE
       IF l_pos > 0 THEN
          CALL l_buffer.append(l_string.subString(l_start, l_pos - 1))
          CALL l_buffer.append(l_new)
-         LET l_start = l_pos + l_new.getlength()
+         LET l_start = l_pos + l_old.getlength()
          LET i = l_start
       END IF
 

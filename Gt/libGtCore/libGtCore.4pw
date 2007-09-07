@@ -2,7 +2,7 @@
 <PROJECT_CONFIGURATION PMVERSION="1" >
  <APPLICATION NAME="PM_admin" >
   <CUSTOM>
-   <OPTION NAME="APPLICATIONID" VALUE="34" />
+   <OPTION NAME="APPLICATIONID" VALUE="37" />
   </CUSTOM>
  </APPLICATION>
  <PROJECT_VIEW>
@@ -27,6 +27,7 @@
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/libgt_email.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="29" PARENT="3" NAME="libgt_email.4gl" LABEL="libgt_email.4gl" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/libgt_fs.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="30" PARENT="3" NAME="libgt_fs.4gl" LABEL="libgt_fs.4gl" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/libgt_string.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="31" PARENT="3" NAME="libgt_string.4gl" LABEL="libgt_string.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/libgt_system.4gl" ORDER="0" TYPE="4gl File (.4gl)" PARENT="3" ID="37" NAME="libgt_system.4gl" LABEL="libgt_system.4gl" />
      </FILES>
     </APPLICATION>
     <APPLICATION USE_IMPLICIT_REF="1" ROOTPATH="unittest" STATUS="m" FGLLDPATH_OVERRODE="" DESCRIPTION="" CATEGORY="a" OVERRIDE_FGLLDPATH="0" DATABASE="" NAMESPACE="" ORDER="0" ID="4" PARENT="2" BUILD="1" NAME="libgtcore_test" FGLLDPATH_EXTENDED="" REPOSITORY="//" LABEL="Unit tests for libgtcore" >
@@ -42,6 +43,8 @@
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/unittest/libgt_string_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" PARENT="4" ID="32" NAME="libgt_string_test.4gl" LABEL="libgt_string_test.4gl" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/unittest/libgt_fs_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" PARENT="4" ID="33" NAME="libgt_fs_test.4gl" LABEL="libgt_fs_test.4gl" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/unittest/libgt_email_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" PARENT="4" ID="34" NAME="libgt_email_test.4gl" LABEL="libgt_email_test.4gl" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/unittest/libgt_email_test_template.txt" ORDER="0" TYPE="txt File (.txt)" PARENT="4" ID="35" NAME="libgt_email_test_template.txt" LABEL="libgt_email_test_template.txt" />
+      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtCore/unittest/libgt_email_test_csv.txt" ORDER="0" TYPE="txt File (.txt)" PARENT="4" ID="36" NAME="libgt_email_test_csv.txt" LABEL="libgt_email_test_csv.txt" />
      </FILES>
     </APPLICATION>
    </APPLICATIONS>

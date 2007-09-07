@@ -1,0 +1,13 @@
+scott@quantumchaos451.co.nz
+Mail Merge Test
+<Address1>
+<Address2>
+<City>
+
+Dear <Name>
+
+Thank you for your contribution to the Genero Toolkit fund of <Amount>.
+
+It is much appreciated.
+
+Regards

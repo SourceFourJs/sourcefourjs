@@ -40,7 +40,7 @@ DEFINE
 # Function to set the WHENEVER ANY ERROR function for this module              #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_4gl_parser_id()
+FUNCTION libgt_4gl_parser_id()
 
 DEFINE
    l_id   STRING

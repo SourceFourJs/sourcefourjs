@@ -1,4 +1,4 @@
-# $Id: lib_fs_test.4gl 22 2007-08-29 08:47:13Z quantumchaos451 $
+# $Id$
 #------------------------------------------------------------------------------#
 # Copyright (c) 2007 Scott Newton <scottn@ihug.co.nz>                          #
 #                                                                              #
@@ -26,13 +26,13 @@
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_fs_test_id()
+FUNCTION libgt_fs_test_id()
 
 DEFINE
    l_id   STRING
 
    WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id: lib_fs_test.4gl 22 2007-08-29 08:47:13Z quantumchaos451 $"
+   LET l_id = "$Id$"
 
 END FUNCTION
 
