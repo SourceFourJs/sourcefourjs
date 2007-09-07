@@ -31,7 +31,7 @@ DEFINE
 # Function to set the WHENEVER ANY ERROR function for this module              #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_encryption_id()
+FUNCTION libgt_encryption_id()
 
 DEFINE
    l_id   STRING

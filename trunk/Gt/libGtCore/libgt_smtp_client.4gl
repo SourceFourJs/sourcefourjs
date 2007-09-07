@@ -37,15 +37,22 @@
 #
 
 DEFINE
+   m_serial         INTEGER,
+   m_socket_count   INTEGER,
    m_connections    FLOAT,
    m_bytesread      FLOAT,
-   m_byteswritten   FLOAT
+   m_byteswritten   FLOAT,
+
+   m_socket_list DYNAMIC ARRAY OF RECORD
+      handle   STRING,
+      socket   base.channel
+   END RECORD
 
 #------------------------------------------------------------------------------#
 # Function to set the WHENEVER ANY ERROR function for this module.             #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_smtp_client_id()
+FUNCTION libgt_smtp_client_id()
 
 DEFINE
    l_id   STRING
@@ -103,16 +110,28 @@ DEFINE
    i                 INTEGER,
    l_status          INTEGER,
    l_data            STRING,
+   l_sockethdl       STRING,
    l_response_code   STRING,
-   l_sockethdl       base.Channel
+   l_socket          base.Channel
 
    LET l_ok = FALSE
    LET l_status = 0
+   LET l_sockethdl = NULL
    LET l_mailserver = l_mailserver.trim()
 
-   LET l_sockethdl = base.Channel.create()
-   CALL l_sockethdl.setDelimiter("")
-   CALL l_sockethdl.openClientSocket(l_mailserver, "25", "ub", 10)
+   LET l_socket = base.Channel.create()
+
+   IF l_socket IS NOT NULL THEN
+      LET m_socket_count = m_socket_count + 1
+      LET l_sockethdl = gt_next_serial("SOCKET")
+      LET m_socket_list[m_socket_count].handle = l_sockethdl
+      LET m_socket_list[m_socket_count].socket = l_socket
+   ELSE
+      RETURN l_ok, l_sockethdl
+   END IF
+
+   CALL l_socket.setDelimiter("")
+   CALL l_socket.openClientSocket(l_mailserver, l_port, "ub", 10)
 
    IF STATUS == 0 THEN
       #------------------------------------------------------------------------#
@@ -120,7 +139,7 @@ DEFINE
       #------------------------------------------------------------------------#
       LET m_connections = m_connections + 1
 
-      CALL l_sockethdl.read(l_data)
+      CALL l_socket.read(l_data)
          RETURNING l_ok
 
       LET l_response_code = l_data.subString(1, 3)
@@ -132,7 +151,7 @@ DEFINE
 
          OTHERWISE
             LET l_ok = FALSE
-            LET l_sockethdl = NULL
+            LET l_socket = NULL
       END CASE
    ELSE
    END IF
@@ -151,21 +170,29 @@ END FUNCTION
 FUNCTION gt_smtp_helo(l_sockethdl, l_domainname)
 
 DEFINE
-   l_sockethdl    base.channel,
+   l_sockethdl    STRING,
    l_domainname   STRING
 
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_response_code   STRING
+   l_response_code   STRING,
+   l_socket          base.channel
 
    LET l_ok = FALSE
    LET l_data = "HELO ", l_domainname
 
-   CALL l_sockethdl.write(l_data)
+   LET l_socket = p_gt_find_socket(l_sockethdl)
+
+   IF l_socket IS NULL THEN
+      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+      RETURN FALSE
+   END IF
+
+   CALL l_socket.write(l_data)
    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_sockethdl.read(l_data)
+   CALL l_socket.read(l_data)
       RETURNING l_ok
 
    LET l_response_code = l_data.subString(1, 3)
@@ -194,21 +221,29 @@ END FUNCTION
 FUNCTION gt_smtp_mail_from(l_sockethdl, l_from)
 
 DEFINE
-   l_sockethdl   base.channel,
+   l_sockethdl   STRING,
    l_from        STRING
 
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_response_code   STRING
+   l_response_code   STRING,
+   l_socket          base.channel
 
    LET l_ok = FALSe
    LET l_data = "MAIL FROM: <", l_from, ">"
 
-   CALL l_sockethdl.write(l_data)
+   LET l_socket = p_gt_find_socket(l_sockethdl)
+
+   IF l_socket IS NULL THEN
+      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+      RETURN FALSE
+   END IF
+
+   CALL l_socket.write(l_data)
    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_sockethdl.read(l_data)
+   CALL l_socket.read(l_data)
       RETURNING l_ok
 
    LET l_response_code = l_data.subString(1, 3)
@@ -237,33 +272,46 @@ END FUNCTION
 FUNCTION gt_smtp_rcpt_to(l_sockethdl, l_to)
 
 DEFINE
-   l_sockethdl   base.channel,
+   l_sockethdl   STRING,
    l_to          STRING
 
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_response_code   STRING
+   l_response_code   STRING,
+   l_socket          base.channel,
+   l_tokenizer       base.stringtokenizer
 
    LET l_ok = FALSE
-   LET l_data = "RCPT TO: <", l_to, ">"
+   LET l_tokenizer = base.stringtokenizer.create(l_to, ",")
 
-   CALL l_sockethdl.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+   WHILE l_tokenizer.hasmoretokens()
+      LET l_data = "RCPT TO: <", l_tokenizer.nexttoken(), ">"
 
-   CALL l_sockethdl.read(l_data)
-      RETURNING l_ok
+      LET l_socket = p_gt_find_socket(l_sockethdl)
 
-   LET l_response_code = l_data.subString(1, 3)
-   LET m_bytesread = m_bytesread + l_data.getLength()
+      IF l_socket IS NULL THEN
+         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+         EXIT WHILE
+      END IF
 
-   CASE
-      WHEN l_response_code == "250"
-         LET l_ok = TRUE
+      CALL l_socket.write(l_data)
+      LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+      CALL l_socket.read(l_data)
+         RETURNING l_ok
+
+      LET l_response_code = l_data.subString(1, 3)
+      LET m_bytesread = m_bytesread + l_data.getLength()
+
+      CASE
+         WHEN l_response_code == "250"
+            LET l_ok = TRUE
+
+         OTHERWISE
+            LET l_ok = FALSE
+      END CASE
+   END WHILE
 
    RETURN l_ok
 
@@ -279,22 +327,30 @@ END FUNCTION
 FUNCTION gt_smtp_data(l_sockethdl, l_email)
 
 DEFINE
-   l_sockethdl   base.channel,
+   l_sockethdl   STRING,
    l_email       STRING
 
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_response_code   STRING
+   l_response_code   STRING,
+   l_socket          base.channel
 
    LET l_ok = FALSE
    LET l_data = "DATA"
    LET l_email = l_email
 
-   CALL l_sockethdl.write(l_data)
+   LET l_socket = p_gt_find_socket(l_sockethdl)
+
+   IF l_socket IS NULL THEN
+      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+      RETURN FALSE
+   END IF
+
+   CALL l_socket.write(l_data)
    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_sockethdl.read(l_data)
+   CALL l_socket.read(l_data)
       RETURNING l_ok
 
    LET l_response_code = l_data.subString(1, 3)
@@ -312,12 +368,12 @@ DEFINE
    # Send the email                                                            #
    #---------------------------------------------------------------------------#
 
-   CALL l_sockethdl.write(l_email)
-   CALL l_sockethdl.write("\r\n")
-   CALL l_sockethdl.write(".")
+   CALL l_socket.write(l_email)
+   CALL l_socket.write("\r\n")
+   CALL l_socket.write(".")
    LET m_byteswritten = m_byteswritten + l_email.getLength() + 3
 
-   CALL l_sockethdl.read(l_data)
+   CALL l_socket.read(l_data)
       RETURNING l_ok
 
    LET l_response_code = l_data.subString(1, 3)
@@ -345,20 +401,29 @@ END FUNCTION
 FUNCTION gt_smtp_quit(l_sockethdl)
 
 DEFINE
-   l_sockethdl   base.channel
+   l_sockethdl   STRING
 
 DEFINE
    l_ok              SMALLINT,
+   i                 INTEGER,
    l_data            STRING,
-   l_response_code   STRING
+   l_response_code   STRING,
+   l_socket          base.channel
 
    LET l_ok = FALSE
    LET l_data = "QUIT"
 
-   CALL l_sockethdl.write(l_data)
+   LET l_socket = p_gt_find_socket(l_sockethdl)
+
+   IF l_socket IS NULL THEN
+      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+      RETURN FALSE
+   END IF
+
+   CALL l_socket.write(l_data)
    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_sockethdl.read(l_data)
+   CALL l_socket.read(l_data)
       RETURNING l_ok
 
    LET l_response_code = l_data.subString(1, 3)
@@ -372,7 +437,15 @@ DEFINE
          LET l_ok = FALSE
    END CASE
 
-   CALL l_sockethdl.close()
+   CALL l_socket.close()
+
+   FOR i = 1 TO m_socket_list.getlength()
+      IF m_socket_list[i].handle = l_sockethdl THEN
+         CALL m_socket_list.deleteelement(i)
+         LET m_socket_count = m_socket_count - 1
+         EXIT FOR
+      END IF
+   END FOR
 
    RETURN l_ok
 
@@ -388,20 +461,28 @@ END FUNCTION
 FUNCTION gt_smtp_reset(l_sockethdl)
 
 DEFINE
-   l_sockethdl   base.channel
+   l_sockethdl   STRING
 
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_response_code   STRING
+   l_response_code   STRING,
+   l_socket          base.channel
 
    LET l_ok = FALSE
    LET l_data = "RSET"
 
-   CALL l_sockethdl.write(l_data)
+   LET l_socket = p_gt_find_socket(l_sockethdl)
+
+   IF l_socket IS NULL THEN
+      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+      RETURN FALSE
+   END IF
+
+   CALL l_socket.write(l_data)
    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_sockethdl.read(l_data)
+   CALL l_socket.read(l_data)
       RETURNING l_ok
 
    LET l_response_code = l_data.subString(1, 3)
@@ -428,20 +509,28 @@ END FUNCTION
 FUNCTION gt_smtp_noop(l_sockethdl)
 
 DEFINE
-   l_sockethdl   base.channel
+   l_sockethdl   STRING
 
 DEFINE
    l_ok              SMALLINT,
    l_data            STRING,
-   l_response_code   STRING
+   l_response_code   STRING,
+   l_socket          base.channel
 
    LET l_ok = FALSE
    LET l_data = "NOOP"
 
-   CALL l_sockethdl.write(l_data)
+   LET l_socket = p_gt_find_socket(l_sockethdl)
+
+   IF l_socket IS NULL THEN
+      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+      RETURN FALSE
+   END IF
+
+   CALL l_socket.write(l_data)
    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_sockethdl.read(l_data)
+   CALL l_socket.read(l_data)
       RETURNING l_ok
 
    LET l_response_code = l_data.subString(1, 3)
@@ -456,6 +545,38 @@ DEFINE
    END CASE
 
    RETURN l_ok
+
+END FUNCTION
+
+#------------------------------------------------------------------------------#
+# RRIVATE FUNCTIONS                                                            #
+#------------------------------------------------------------------------------#
+
+##
+# Function to find the socket associated with the given handle.
+# @param l_sockethdl The given sockethdl.
+# @return l_socket The actual socket to use.
+#
+
+FUNCTION p_gt_find_socket(l_sockethdl)
+
+DEFINE
+   l_sockethdl   STRING
+
+DEFINE
+   i          INTEGER,
+   l_socket   base.channel
+
+   LET l_socket = NULL
+
+   FOR i = 1 TO m_socket_list.getlength()
+      IF m_socket_list[i].handle = l_sockethdl THEN
+         LET l_socket = m_socket_list[i].socket
+         EXIT FOR
+      END IF
+   END FOR
+
+   RETURN l_socket
 
 END FUNCTION
 

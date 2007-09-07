@@ -43,7 +43,7 @@ DEFINE
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_getopt_id()
+FUNCTION libgt_getopt_id()
 
 DEFINE
 	l_id   STRING

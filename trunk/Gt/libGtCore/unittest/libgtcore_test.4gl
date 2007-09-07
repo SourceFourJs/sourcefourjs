@@ -94,6 +94,31 @@ DEFINE
       END IF
    END IF
 
+   IF l_all OR gt_find_argument("email") THEN
+      CALL gt_ut_log("******* Email Library *******")
+
+      IF gt_find_argument("smtp-server") THEN
+         LET l_smtp_server = gt_argument("smtp-server")
+      ELSE
+         CALL gt_ut_log("--smtp-server is required to test smtp-client")
+         RETURN
+      END IF
+
+      IF gt_find_argument("smtp-port") THEN
+         LET l_smtp_port = gt_argument("smtp-port")
+      ELSE
+         CALL gt_ut_log("--smtp-port is required to test smtp-client")
+         RETURN
+      END IF
+
+      IF test_email_lib(l_smtp_server, l_smtp_port) THEN
+         CALL gt_ut_result("Email Library", TRUE)
+      ELSE
+         CALL gt_ut_result("Email", FALSE)
+         RETURN
+      END IF
+   END IF
+
    IF l_all OR gt_find_argument("encryption") THEN
       CALL gt_ut_log("******* Encryption Library *******")
 

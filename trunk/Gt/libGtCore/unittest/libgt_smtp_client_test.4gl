@@ -35,7 +35,7 @@ DEFINE
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_smtp_client_test_id()
+FUNCTION libgt_smtp_client_test_id()
 
 DEFINE
    l_id   STRING

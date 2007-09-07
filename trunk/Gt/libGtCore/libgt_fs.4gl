@@ -58,11 +58,23 @@ CONSTANT Gt_FS_READ_WRITE = 4
 CONSTANT Gt_FS_STDIO = 8
 CONSTANT Gt_FS_BINARY = 16
 
+CONSTANT Gt_IO_ASCII = 0
+CONSTANT Gt_IO_BINARY = 1
+
+DEFINE
+   m_io_count   INTEGER,
+
+   m_io_list   DYNAMIC ARRAY OF RECORD
+      iohdl    STRING,
+      handle   base.channel,
+      buffer   STRING
+   END RECORD
+
 #------------------------------------------------------------------------------#
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_fs_id()
+FUNCTION libgt_fs_id()
 
 DEFINE
 	l_id   STRING
@@ -479,7 +491,7 @@ DEFINE
                      (l_mode.getcharat(2) * 8) +
                      (l_mode.getcharat(3)))
    ELSE
-      CALL set_error(SFMT(%"The mode value %1 given to gt_chmod is invalid", l_mode))
+      CALL gt_set_error("ERROR", SFMT(%"The mode value %1 given to gt_chmod is invalid", l_mode))
       RETURN FALSE
    END IF
 
@@ -648,7 +660,7 @@ DEFINE
       LET l_ok = os.path.copy(l_source.trim(), l_destination.trim())
    ELSE
       IF gt_file_exists(l_destination.trim()) THEN
-         CALL set_warning(SFMT(%"Warning: Copying of %1 to %2 denied because %3 already exists", l_source, l_destination, l_destination))
+         CALL gt_set_warning("WARNING", SFMT(%"Warning: Copying of %1 to %2 denied because %3 already exists", l_source, l_destination, l_destination))
          LET l_ok = FALSE
       ELSE
          LET l_ok = os.path.copy(l_source.trim(), l_destination.trim())
@@ -683,7 +695,7 @@ DEFINE
       LET l_ok = os.path.rename(l_old_name.trim(), l_new_name.trim())
   ELSE
       IF gt_exists(l_new_name) THEN
-         CALL set_warning(SFMT(%"Warning: Path rename of %1 to %2 failed because %3 already exists", l_old_name, l_new_name, l_new_name))
+         CALL gt_set_warning("WARNING", SFMT(%"Warning: Path rename of %1 to %2 failed because %3 already exists", l_old_name, l_new_name, l_new_name))
          LET l_ok = FALSE
       ELSE
          LET l_ok = os.path.rename(l_old_name.trim(), l_new_name.trim())
@@ -727,6 +739,38 @@ DEFINE
 END FUNCTION
 
 ##
+# Function to retrieve the contents of the file buffer.
+# @param l_filehdl The filehdl for the open file.
+# @return l_buffer The buffer for the given filehdl.
+#
+
+FUNCTION gt_io_buffer(l_iohdl)
+
+DEFINE
+   l_iohdl   STRING
+
+DEFINE
+   i          INTEGER,
+   l_pos      INTEGER,
+   l_buffer   STRING,
+   l_io       base.channel
+
+   LET l_buffer = NULL
+
+   CALL p_gt_find_io(l_iohdl)
+      RETURNING l_pos, l_io
+
+   IF l_io IS NOT NULL THEN
+      LET l_buffer = m_io_list[l_pos].buffer
+   ELSE
+      CALL gt_set_error("ERROR", SFMT(%"The given iohdl %1 is invalid", l_iohdl))
+   END IF
+
+   RETURN l_buffer
+
+END FUNCTION
+
+##
 # Function to open or create a file for reading or writing.
 # @param l_filename The name of the file.
 # @param l_mode The mode to open the file in.
@@ -746,14 +790,23 @@ DEFINE
 DEFINE
    l_ok        SMALLINT,
    l_status    INTEGER,
-   l_filehdl   base.channel
+   l_filehdl   STRING,
+   l_file      base.channel
 
    LET l_ok = FALSE
-   LET l_filehdl = base.channel.create()
+   LET l_file = base.channel.create()
 
-   IF l_filehdl IS NOT NULL THEN
-      CALL l_filehdl.setdelimiter(l_delimiter)
-      CALL l_filehdl.openFile(l_filename, l_mode)
+   IF l_file IS NOT NULL THEN
+      LET m_io_count = m_io_count + 1
+      LET l_filehdl = gt_next_serial("FILE")
+      LET m_io_list[m_io_count].iohdl = l_filehdl
+      LET m_io_list[m_io_count].handle = l_file
+      LET m_io_list[m_io_count].buffer = NULL
+
+      CALL l_file.setdelimiter(l_delimiter)
+
+      CALL l_file.openFile(l_filename, l_mode)
+
       LET l_status = STATUS
 
       CASE
@@ -762,7 +815,7 @@ DEFINE
 
          OTHERWISE
             LET l_ok = FALSE
-            CALL set_error(SFMT(%"The attempt to open the file %1 resulted in an unknown status being returned", l_filename, l_status))
+            CALL gt_set_error("ERROR", SFMT(%"The attempt to open the file %1 resulted in an unknown status being returned", l_filename, l_status))
       END CASE
    END IF
 
@@ -779,12 +832,36 @@ END FUNCTION
 FUNCTION gt_file_read(l_filehdl)
 
 DEFINE
-   l_filehdl   base.channel
+   l_filehdl   STRING
 
 DEFINE
-   l_ok   SMALLINT
+   l_ok       SMALLINT,
+   l_pos      INTEGER,
+   l_status   INTEGER,
+   l_buffer   STRING,
+   l_file     base.channel
 
    LET l_ok = FALSE
+   CALL p_gt_find_io(l_filehdl)
+      RETURNING l_pos, l_file
+
+   IF l_file IS NOT NULL THEN
+      LET l_ok = l_file.read(l_buffer)
+      LET l_status = STATUS
+
+      IF l_ok THEN
+         LET m_io_list[l_pos].buffer = l_buffer
+      ELSE
+         CASE
+            WHEN l_status == 0
+
+            OTHERWISE
+         END CASE
+      END IF
+   ELSE
+      CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_filehdl))
+      LET l_ok = FALSE
+   END IF
 
    RETURN l_ok
 
@@ -799,10 +876,45 @@ END FUNCTION
 FUNCTION gt_file_write(l_filehdl, l_buffer)
 
 DEFINE
-   l_filehdl   base.channel,
+   l_filehdl   STRING,
    l_buffer    STRING
 
-   CALL l_filehdl.write(l_buffer)
+DEFINE
+   l_ok       SMALLINT,
+   l_pos      INTEGER,
+   l_mode     INTEGER,
+   l_status   INTEGER,
+   l_file     base.channel
+
+   LET l_ok = FALSE
+
+   CALL p_gt_find_io(l_filehdl)
+      RETURNING l_pos, l_file
+
+   IF l_file IS NOT NULL THEN
+      #LET l_mode = m_io_list[l_pos].mode
+
+      CASE
+         WHEN l_mode == Gt_IO_ASCII
+            CALL l_file.writeline(l_buffer)
+
+         WHEN l_mode == Gt_IO_BINARY
+            CALL l_file.write(l_buffer)
+
+         OTHERWISE
+            CALL l_file.write(l_buffer)
+      END CASE
+
+      LET l_status = STATUS
+
+      CASE
+         WHEN l_status == 0
+         OTHERWISE
+      END CASE
+   ELSE
+   END IF
+
+   RETURN l_ok
 
 END FUNCTION
 
@@ -814,9 +926,21 @@ END FUNCTION
 FUNCTION gt_file_close(l_filehdl)
 
 DEFINE
-   l_filehdl   base.channel
+   l_filehdl   STRING
 
-   CALL l_filehdl.close()
+DEFINE
+   l_pos    INTEGER,
+   l_file   base.channel
+
+   CALL p_gt_find_io(l_filehdl)
+      RETURNING l_pos, l_file
+
+   IF l_file IS NOT NULL THEN
+      CALL l_file.close()
+      CALL m_io_list.deleteelement(l_pos)
+   ELSE
+      CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_filehdl))
+   END IF
 
 END FUNCTION
 
@@ -839,14 +963,23 @@ DEFINE
 DEFINE
    l_ok        SMALLINT,
    l_status    INTEGER,
-   l_pipehdl   base.channel
+   l_pipehdl   STRING,
+   l_pipe      base.channel
 
    LET l_ok = FALSE
-   LET l_pipehdl = base.channel.create()
+   LET l_pipe = base.channel.create()
 
-   IF l_pipehdl IS NOT NULL THEN
-      CALL l_pipehdl.setdelimiter(l_delimiter)
-      CALL l_pipehdl.openpipe(l_command, l_mode)
+   IF l_pipe IS NOT NULL THEN
+      LET m_io_count = m_io_count + 1
+      LET l_pipehdl = gt_next_serial("PIPE")
+      LET m_io_list[m_io_count].iohdl = l_pipehdl
+      LET m_io_list[m_io_count].handle = l_pipe
+      LET m_io_list[m_io_count].buffer = NULL
+
+      CALL l_pipe.setdelimiter(l_delimiter)
+
+      CALL l_pipe.openpipe(l_command, l_mode)
+
       LET l_status = STATUS
 
       CASE
@@ -855,7 +988,7 @@ DEFINE
 
          OTHERWISE
             LET l_ok = FALSE
-            CALL set_error(SFMT(%"The attempt to open the pipe for command \"%1\" resulted in an unknown status being returned", l_command, l_status))
+            CALL gt_set_error("ERROR", SFMT(%"The attempt to open the pipe with command %1 resulted in an unknown status %2 being returned", l_command, l_status))
       END CASE
    END IF
 
@@ -872,12 +1005,26 @@ END FUNCTION
 FUNCTION gt_pipe_read(l_pipehdl)
 
 DEFINE
-   l_pipehdl   base.channel
+   l_pipehdl   STRING
 
 DEFINE
-   l_ok   SMALLINT
+   l_ok       SMALLINT,
+   l_pos      INTEGER,
+   l_buffer   STRING,
+   l_pipe     base.channel
 
    LET l_ok = FALSE
+   CALL p_gt_find_io(l_pipehdl)
+      RETURNING l_pos, l_pipe
+
+   IF l_pipe IS NOT NULL THEN
+      IF l_pipe.read(l_buffer) THEN
+         LET m_io_list[l_pos].buffer = l_buffer
+      END IF
+   ELSE
+      CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_pipehdl))
+      LET l_ok = FALSE
+   END IF
 
    RETURN l_ok
 
@@ -892,10 +1039,45 @@ END FUNCTION
 FUNCTION gt_pipe_write(l_pipehdl, l_buffer)
 
 DEFINE
-   l_pipehdl   base.channel,
+   l_pipehdl   STRING,
    l_buffer    STRING
 
-   CALL l_pipehdl.write(l_buffer)
+DEFINE
+   l_ok       SMALLINT,
+   l_pos      INTEGER,
+   l_mode     INTEGER,
+   l_status   INTEGER,
+   l_pipe     base.channel
+
+   LET l_ok = FALSE
+
+   CALL p_gt_find_io(l_pipehdl)
+      RETURNING l_pos, l_pipe
+
+   IF l_pipe IS NOT NULL THEN
+      #LET l_mode = m_io_list[l_pos].mode
+
+      CASE
+         WHEN l_mode == Gt_IO_ASCII
+            CALL l_pipe.writeline(l_buffer)
+
+         WHEN l_mode == Gt_IO_BINARY
+            CALL l_pipe.write(l_buffer)
+
+         OTHERWISE
+            CALL l_pipe.write(l_buffer)
+      END CASE
+
+      LET l_status = STATUS
+
+      CASE
+         WHEN l_status == 0
+         OTHERWISE
+      END CASE
+   ELSE
+   END IF
+
+   RETURN l_ok
 
 END FUNCTION
 
@@ -907,9 +1089,21 @@ END FUNCTION
 FUNCTION gt_pipe_close(l_pipehdl)
 
 DEFINE
-   l_pipehdl   base.channel
+   l_pipehdl   STRING
 
-   CALL l_pipehdl.close()
+DEFINE
+   l_pos    INTEGER,
+   l_pipe   base.channel
+
+   CALL p_gt_find_io(l_pipehdl)
+      RETURNING l_pos, l_pipe
+
+   IF l_pipe IS NOT NULL THEN
+      CALL l_pipe.close()
+      CALL m_io_list.deleteelement(l_pos)
+   ELSE
+      CALL gt_set_error("ERROR", SFMT(%"The given pipehdl %1 is invalid", l_pipehdl))
+   END IF
 
 END FUNCTION
 
@@ -1055,6 +1249,39 @@ END FUNCTION
 #------------------------------------------------------------------------------#
 # PRIVATE FUNCTIONS                                                            #
 #------------------------------------------------------------------------------#
+
+##
+# This functions finds the relavent entry in the m_io_list array.
+# @private
+# @param l_iohdl The handle to the io channel.
+# @return l_pos The position in the array on the io channel, 0 if not found.
+# @return l_io The underlying handle to the io channel, NULL if not found.
+#
+
+FUNCTION p_gt_find_io(l_iohdl)
+
+DEFINE
+   l_iohdl   STRING
+
+DEFINE
+   i       INTEGER,
+   l_pos   INTEGER,
+   l_io    base.channel
+
+   LET l_pos = 0
+   LET l_io = NULL
+
+   FOR i = 1 TO m_io_list.getlength()
+      IF m_io_list[i].iohdl = l_iohdl THEN
+         LET l_pos = i
+         LET l_io = m_io_list[i].handle
+         EXIT FOR
+      END IF
+   END FOR
+
+   RETURN l_pos, l_io
+
+END FUNCTION
 
 #------------------------------------------------------------------------------#
 # END OF MODULE                                                                #

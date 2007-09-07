@@ -64,7 +64,7 @@
 # Function to set the WHENEVER ANY ERROR function for this module              #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_binary_id()
+FUNCTION libgt_binary_id()
 
 DEFINE
    l_id   STRING

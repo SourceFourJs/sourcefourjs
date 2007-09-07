@@ -1,0 +1,3 @@
+Email,Name,Address1,Address2,City,Amount
+"scottn@ihug.co.nz","George", "13 UpTheCreek", "Paddleless", "Georgetown", "1000"
+"quantumchaos451@gmail.com","Mary", "13 LambSide", "", "Georgetown", "1000"

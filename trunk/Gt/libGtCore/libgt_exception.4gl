@@ -45,7 +45,7 @@ DEFINE
 # Function to set ID and WHENEVER ANY ERROR                                    #
 #------------------------------------------------------------------------------#
 
-FUNCTION lib_exception_id()
+FUNCTION libgt_exception_id()
 
 DEFINE
    l_id   STRING
