@@ -1135,12 +1135,48 @@ DEFINE
    l_recursive   SMALLINT
 
 DEFINE
-   l_ok   SMALLINT
+   l_ok          SMALLINT,
+   l_path        STRING,
+   l_tokenizer   base.stringtokenizer
+
+   LET l_ok = FALSE
+   LET l_directory = l_directory.trim()
 
    IF l_recursive THEN
-      # TODO
+      LET l_path = NULL
+      LET l_tokenizer = base.stringtokenizer.create(l_directory, gt_filesystem_separator())
+
+      WHILE l_tokenizer.hasmoretokens()
+         IF l_path IS NULL THEN
+            LET l_path = l_tokenizer.nexttoken()
+         ELSE
+            LET l_path = l_path, gt_filesystem_separator(), l_tokenizer.nexttoken()
+         END IF
+
+         IF gt_is_directory(l_path) THEN
+            LET l_ok = TRUE
+         ELSE
+            IF gt_mkdir(l_path, FALSE) == TRUE THEN
+               LET l_ok = TRUE
+            ELSE
+               LET l_ok = FALSE
+               CALL gt_set_error("ERROR", SFMT(%"Unable to create directory %1", l_path))
+               EXIT WHILE
+            END IF
+         END IF
+      END WHILE
    ELSE
-      LET l_ok = os.path.mkdir(l_directory.trim())
+      LET l_path = gt_dirname(l_directory)
+
+      IF gt_is_directory(l_path) THEN
+         IF gt_is_directory(l_directory) THEN
+            LET l_ok = TRUE
+         ELSE
+            LET l_ok = os.path.mkdir(l_directory)
+         END IF
+      ELSE
+         LET l_ok = FALSE
+      END IF
    END IF
 
    RETURN l_ok
@@ -1160,13 +1196,62 @@ DEFINE
    l_recursive   SMALLINT
 
 DEFINE
-   l_ok   SMALLINT
+   l_ok          SMALLINT,
+   l_path        STRING,
+   l_dirhdl      STRING,
+   l_tokenizer   base.stringtokenizer
 
    LET l_ok = FALSE
+   LET l_dirhdl = NULL
+   LET l_directory = l_directory.trim()
 
    IF l_recursive THEN
+      CALL gt_set_directory_filter(13)
+
+      LET l_dirhdl = gt_directory_open(l_directory)
+
+      IF l_dirhdl IS NOT NULL THEN
+         CALL gt_set_directory_sorting("name", 1)
+         LET l_path = gt_directory_next(l_dirhdl)
+
+         WHILE l_path IS NOT NULL
+            LET l_path = l_directory, gt_filesystem_separator(), l_path
+
+            IF NOT gt_rmdir(l_path, TRUE) THEN
+               RETURN FALSE
+            END IF
+
+            LET l_path = gt_directory_next(l_dirhdl)
+         END WHILE
+
+         CALL gt_directory_close(l_dirhdl)
+      ELSE
+         RETURN FALSE
+      END IF
+
+      CALL gt_set_directory_filter(2)
+
+      LET l_dirhdl = gt_directory_open(l_directory)
+
+      IF l_dirhdl IS NOT NULL THEN
+         LET l_path = gt_directory_next(l_dirhdl)
+
+         WHILE l_path IS NOT NULL
+            IF NOT gt_delete(l_path) THEN
+               RETURN FALSE
+            END IF
+
+            LET l_path = gt_directory_next(l_dirhdl)
+         END WHILE
+
+         LET l_ok = gt_rmdir(l_directory, FALSE)
+      ELSE
+         RETURN FALSE
+      END IF
    ELSE
-      LET l_ok = os.path.delete(l_directory.trim())
+      IF gt_is_directory(l_directory) THEN
+         LET l_ok = os.path.delete(l_directory)
+      END IF
    END IF
 
    RETURN l_ok

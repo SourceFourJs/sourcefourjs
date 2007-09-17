@@ -1,3 +1,10 @@
+2007-09-17 scottn
+  * Added recursion for gt_mkdir and gt_rmdir
+  * Added further tests for libgt_fs
+  * Added libgt_system
+  * Added .svnignore
+  * Added libGtFormat library framework
+
 2007-09-07 scottn
   * Added tests for libgt_email_test
   * Added libgt_email_test_template.txt and libgt_email_test_csv.txt for mail

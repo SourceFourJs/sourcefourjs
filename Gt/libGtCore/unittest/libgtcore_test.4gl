@@ -141,6 +141,17 @@ DEFINE
       END IF
    END IF
 
+   IF l_all OR gt_find_argument("fs") THEN
+      CALL gt_ut_log("******* FileSystem Library *******")
+
+      IF test_fs_lib() THEN
+         CALL gt_ut_result("FileSystem Library", TRUE)
+      ELSE
+         CALL gt_ut_result("FileSystem Library", FALSE)
+         RETURN
+      END IF
+   END IF
+
    IF l_all OR gt_find_argument("getopt") THEN
       CALL gt_ut_log("******* Getopt Library *******")
 
