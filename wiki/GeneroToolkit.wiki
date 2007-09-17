@@ -8,6 +8,7 @@ The Genero Toolkit is an attempt to create a general purpose toolkit for Genero 
 Currently the wishlist is to provide the following:
   * libGtCore - A core library providing basic functionality like encryption, emailing, standard dialogs, a simple regex engine, etc.
   * libGtNetwork - A networking library to provide functionality like ftp, pop, etc.
+  * libGtFormat - Library to allow output to various document formats. XHTML will be the first for the documentation generator.
   * GtDocgen - A documentation generator. The idea is to have the format of the documentation the same as is used by Javadoc and Doxygen so that at a later stage if someone wants to write a plugin for 4gl for either of those programs no changes to the code documentation would be required.
   * GtMisql - A graphical record/list view replacement for the misql program available from IIUG.
 
@@ -44,3 +45,4 @@ Version 0.3
 
 = License =
 The code is released under the MIT license.
+ 
