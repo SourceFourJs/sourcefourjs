@@ -69,7 +69,7 @@ END FUNCTION
 #                           array, FALSE otherwise.
 #
 
-FUNCTION gt_parse_file(l_filename, l_include_comments)
+FUNCTION gt_parse_4gl_file(l_filename, l_include_comments)
 
 DEFINE
    l_filename           STRING,
@@ -116,7 +116,7 @@ END FUNCTION
 # @return m_token_count The number of parsed tokens.
 #
 
-FUNCTION gt_token_count()
+FUNCTION gt_4gl_token_count()
 
    RETURN m_token_count
 
@@ -128,7 +128,7 @@ END FUNCTION
 # @return m_tokens[l_pos] The token at the given position.
 #
 
-FUNCTION gt_next_token(l_pos)
+FUNCTION gt_4gl_next_token(l_pos)
 
 DEFINE
    l_pos   INTEGER
@@ -149,7 +149,7 @@ END FUNCTION
 # @return l_token The next alphanumeric token.
 #
 
-FUNCTION gt_next_alphanumeric_token(l_pos)
+FUNCTION gt_4gl_next_alphanumeric_token(l_pos)
 
 DEFINE
    l_pos     INTEGER,
@@ -158,7 +158,8 @@ DEFINE
    LET l_token = NULL
 
    WHILE l_pos <= m_token_count
-      IF is_string_alphanumeric(m_tokens[l_pos]) THEN
+      IF is_string_alphanumeric(m_tokens[l_pos])
+      OR m_tokens[l_pos] == "_" THEN
          LET l_token = m_tokens[l_pos]
          EXIT WHILE
       ELSE
