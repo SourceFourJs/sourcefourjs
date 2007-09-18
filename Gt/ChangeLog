@@ -1,3 +1,6 @@
+2007-09-18 scottn
+  * Tidy for release of Gt 0.1.
+
 2007-09-17 scottn
   * Added recursion for gt_mkdir and gt_rmdir
   * Added further tests for libgt_fs

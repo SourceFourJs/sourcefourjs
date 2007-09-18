@@ -23,7 +23,7 @@
 #------------------------------------------------------------------------------#
 
 ##
-# Description_of_Module
+# XHTML Format Library
 # @category System Program
 # @author Scott Newton
 # @date September 2007
@@ -38,7 +38,6 @@ DEFINE
       filename     STRING,
       stylesheet   STRING,
       class        STRING,
-      nodeptr      om.domnode,
       xhtml        om.saxdocumenthandler
    END RECORD
 
@@ -122,11 +121,12 @@ DEFINE
    IF m_document_list[m_document_count].xhtml IS NOT NULL THEN
       CALL m_document_list[m_document_count].xhtml.startdocument()
       CALL m_document_list[m_document_count].xhtml.setindent(TRUE)
+      # Is this correct?
       CALL m_document_list[m_document_count].xhtml.processinginstruction("DOCTYPE", "html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\"")
       LET l_ok = TRUE
    END IF
 
-   RETURN l_ok
+   RETURN l_ok, m_document_list[m_document_count].xhtmlhdl
 
 END FUNCTION
 
