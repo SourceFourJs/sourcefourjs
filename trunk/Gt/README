@@ -2,21 +2,24 @@ The Genero Toolkit
 
 The Genero Toolkit is designed to provide some basic infrastructure on which to build applications. Although it will not satisfy the needs of everyone hopefully it will be a good starting point, if only for ideas rather than code.
 
+The latest development version can be found in the subversion repository (http://code.google.com/p/sourcefourjs/).
+
 Coding Standards used:
 
 Functions:
-Functions start with gt_ to avoid naming clashes with people's existing functions. 
-
-Naming:
-p_ - Private functions. 
+Functions start with gt_ to try and avoid naming clashes with people's existing functions. Private functions (ones that should only be called from within that module) are prefixed with p_gt_.
 
 Variables:
+Variables are prefixed according to their scope.
+
 g_ - Global variables.
+m_ - Module variables.
 l_ - Local variables.
 c_ - Cursors.
 
 Forms:
-Each form widget is prefixed with an identifier indicating what sort of widget it is:
+Each form widget is prefixed with an identifier indicating what sort of widget it is.
+
 FIELD - f
 EDIT - e
 BUTTON - bt
