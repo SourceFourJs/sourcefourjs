@@ -29,12 +29,12 @@ Please use the Issue tracker for any other wishlist items you may have.
     * There shouldn't be. Some of the modules I developed for Quanta Systems Limited (now part of the Integral Technology Group) and I do have permission from Integral Technology Group to release those modules under the MIT license. The rest I have developed from scratch (though sometimes using ideas from the work I do during the day).
 
 = Released Versions =
-  * 0.1 - Initial release which contains a very basic GtCore library and a basic unittest framework. Released 12 September 2007.
+  * 0.1 - Initial release which contains a very basic GtCore library and a basic unittest framework. Released 18 September 2007.
 
 The latest development source code is always available from the subversion repository.
 
 = Roadmap =
-Version 0.1 (Released: 12 September 2007)
+Version 0.1 (Released: 18 September 2007)
   * Very basic GtCore library
   * Basic unit test framework in place
 
@@ -47,6 +47,7 @@ Version 0.3
 
 = License =
 The code is released under the MIT license.
+ 
  
  
  
