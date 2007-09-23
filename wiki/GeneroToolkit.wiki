@@ -16,7 +16,7 @@ Please use the Issue tracker for any other wishlist items you may have.
 
 = FAQ =
   # Why are you doing this?
-    * To hopefully build an open source community around Genero development.
+    * To hopefully help build an open source community around Genero development.
   # Shouldn't Four J's provide this functionality?
     * No, not necessarily. I would rather see Four J's provide functionality that cannot be developed in the Genero language. This, IMHO, would include things like a more consistent "class-based" API, an improved canvas, improved socket functionality, HTML support, printing interfaces, etc. The Genero roadmap shows that some of this is currently being developed. 
   # How can I help?
@@ -29,10 +29,12 @@ Please use the Issue tracker for any other wishlist items you may have.
     * There shouldn't be. Some of the modules I developed for Quanta Systems Limited (now part of the Integral Technology Group) and I do have permission from Integral Technology Group to release those modules under the MIT license. The rest I have developed from scratch (though sometimes using ideas from the work I do during the day).
 
 = Released Versions =
-None at present. Source code is available from the subversion repository though.
+  * 0.1 - Initial release which contains a very basic GtCore library and a basic unittest framework. Released 12 September 2007.
+
+The latest development source code is always available from the subversion repository.
 
 = Roadmap =
-Version 0.1
+Version 0.1 (Released: 12 September 2007)
   * Very basic GtCore library
   * Basic unit test framework in place
 
@@ -45,4 +47,8 @@ Version 0.3
 
 = License =
 The code is released under the MIT license.
+ 
+ 
+ 
+ 
  
