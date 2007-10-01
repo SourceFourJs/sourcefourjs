@@ -50,7 +50,7 @@ FUNCTION libgt_xhtml_id()
 DEFINE
 	l_id   STRING
 
-	WHENEVER ANY ERROR CALL gt_system_error
+	WHENEVER ANY ERROR STOP
 	LET l_id = "$Id$"
 
 END FUNCTION
@@ -86,6 +86,7 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       CALL m_document_list[l_pos].xhtml.endelement("body")
+      CALL m_document_list[l_pos].xhtml.endelement("html")
       CALL m_document_list[l_pos].xhtml.enddocument()
    END IF
 
@@ -112,7 +113,7 @@ DEFINE
    LET l_ok = FALSE
 
    LET m_document_count = m_document_count + 1
-   LET m_document_list[m_document_count].xhtmlhdl = gt_next_serial("XHTML")
+   LET m_document_list[m_document_count].xhtmlhdl = "XHTML", m_document_count USING "&&&&&&&&&&", fgl_getpid() USING "&&&&&"
    LET m_document_list[m_document_count].filename = l_filename.trim()
    LET m_document_list[m_document_count].stylesheet = l_stylesheet.trim()
    LET m_document_list[m_document_count].class = l_class.trim()
@@ -155,12 +156,21 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("html", l_attributes)
-
       CALL l_attributes.addattribute("xmlns", "http://www.w3.org/1999/xhtml")
+      CALL m_document_list[l_pos].xhtml.startelement("html", l_attributes)
       CALL l_attributes.clear()
 
       CALL m_document_list[l_pos].xhtml.startelement("head", l_attributes)
+
+      #<LINK href="special.css" rel="stylesheet" type="text/css">
+      LET l_attributes = om.saxattributes.create()
+      CALL l_attributes.addattribute("href", m_document_list[m_document_count].stylesheet)
+      CALL l_attributes.addattribute("rel", "stylesheet")
+      CALL l_attributes.addattribute("type", "text/css")
+      CALL m_document_list[l_pos].xhtml.startelement("link", l_attributes)
+      CALL m_document_list[l_pos].xhtml.endelement("link")
+      CALL l_attributes.clear()
+
       CALL m_document_list[l_pos].xhtml.startelement("title", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_title.trim())
       CALL m_document_list[l_pos].xhtml.endelement("title")
@@ -198,9 +208,32 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("body", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("body", l_attributes)
       CALL l_attributes.clear()
+   END IF
+
+END FUNCTION
+
+##
+# Function to add text into the XHTML document.
+# @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_text The text to insert.
+#
+
+FUNCTION gt_xhtml_text(l_xhtmlhdl, l_text)
+
+DEFINE
+   l_xhtmlhdl   STRING,
+   l_text       STRING
+
+DEFINE
+   l_pos          INTEGER
+
+   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+
+   IF l_pos IS NOT NULL THEN
+      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
    END IF
 
 END FUNCTION
@@ -228,8 +261,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("address", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("address", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("address")
       CALL l_attributes.clear()
@@ -256,8 +289,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("blockquote", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("blockquote", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("blockquote")
       CALL l_attributes.clear()
@@ -284,8 +317,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("dd", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("dd", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("dd")
       CALL l_attributes.clear()
@@ -311,8 +344,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("div", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("div", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -357,8 +390,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("dl", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("dl", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -403,8 +436,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("dt", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("dt", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -451,6 +484,7 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
+      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
 
       CASE
          WHEN l_level = 1
@@ -473,8 +507,6 @@ DEFINE
 
          OTHERWISE
       END CASE
-
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
 
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
 
@@ -523,8 +555,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("hr", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("hr", l_attributes)
       CALL m_document_list[l_pos].xhtml.endelement("hr")
       CALL l_attributes.clear()
    END IF
@@ -549,8 +581,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("li", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("li", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -595,8 +627,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("ol", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("ol", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -641,8 +673,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("p", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("p", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -687,8 +719,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("ul", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("ul", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -737,8 +769,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("b", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("b", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -783,8 +815,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("big", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("big", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -830,8 +862,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("cite", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("cite", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("cite")
       CALL l_attributes.clear()
@@ -858,8 +890,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("code", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("code", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("code")
       CALL l_attributes.clear()
@@ -885,8 +917,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("em", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("em", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -931,8 +963,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("i", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("i", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -978,8 +1010,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("kbd", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("kbd", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("kbd")
       CALL l_attributes.clear()
@@ -1006,8 +1038,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("pre", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("pre", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("pre")
       CALL l_attributes.clear()
@@ -1034,8 +1066,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("samp", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("samp", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("samp")
       CALL l_attributes.clear()
@@ -1061,8 +1093,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("small", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("small", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1107,8 +1139,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("span", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("span", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1153,8 +1185,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("strong", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("strong", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1200,8 +1232,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("sub", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("sub", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("sub")
       CALL l_attributes.clear()
@@ -1228,8 +1260,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("sup", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("sup", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("sup")
       CALL l_attributes.clear()
@@ -1256,8 +1288,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("tt", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("tt", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("tt")
       CALL l_attributes.clear()
@@ -1284,8 +1316,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("var", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("var", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("var")
       CALL l_attributes.clear()
@@ -1316,8 +1348,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("abbr", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("abbr", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("abbr")
       CALL l_attributes.clear()
@@ -1344,8 +1376,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("acronym", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("acronym", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("acronym")
       CALL l_attributes.clear()
@@ -1373,7 +1405,6 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("del", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
 
       IF l_cite.getlength() > 0 THEN
@@ -1384,6 +1415,7 @@ DEFINE
          CALL l_attributes.addattribute("datetime", l_datetime.trim())
       END IF
 
+      CALL m_document_list[l_pos].xhtml.startelement("del", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1430,7 +1462,6 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("ins", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
 
       IF l_cite.getlength() > 0 THEN
@@ -1441,6 +1472,7 @@ DEFINE
          CALL l_attributes.addattribute("datetime", l_datetime.trim())
       END IF
 
+      CALL m_document_list[l_pos].xhtml.startelement("ins", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1487,13 +1519,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("q", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
 
       IF l_cite.getLength() > 0 THEN
          CALL l_attributes.addattribute("cite", l_cite.trim())
       END IF
 
+      CALL m_document_list[l_pos].xhtml.startelement("q", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("q")
       CALL l_attributes.clear()
@@ -1532,13 +1564,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("br", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
 
       IF l_clear.getLength() > 0 THEN
          CALL l_attributes.addattribute("clear", l_clear.trim())
       END IF
 
+      CALL m_document_list[l_pos].xhtml.startelement("br", l_attributes)
       CALL m_document_list[l_pos].xhtml.endelement("br")
       CALL l_attributes.clear()
    END IF
@@ -1554,13 +1586,13 @@ END FUNCTION
 # @param l_xhtmlhdl The handle to the XHTML document.
 #
 
-FUNCTION gt_xhtml_a(l_xhtmlhdl, l_text, l_href, l_title)
+FUNCTION gt_xhtml_a(l_xhtmlhdl, l_text, l_href, l_name)
 
 DEFINE
    l_xhtmlhdl   STRING,
    l_text       STRING,
    l_href       STRING,
-   l_title      STRING
+   l_name       STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1570,14 +1602,14 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("a", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
       CALL l_attributes.addattribute("href", l_href.trim())
 
-      IF l_title.getlength() > 0 THEN
-         CALL l_attributes.addattribute("title", l_title.trim())
+      IF l_name.getlength() > 0 THEN
+         CALL l_attributes.addattribute("name", l_name.trim())
       END IF
 
+      CALL m_document_list[l_pos].xhtml.startelement("a", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("a")
       CALL l_attributes.clear()
@@ -1603,8 +1635,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("caption", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("caption", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("caption")
       CALL l_attributes.clear()
@@ -1630,8 +1662,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("table", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("table", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1676,8 +1708,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("colgroup", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("colgroup", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1722,8 +1754,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("col", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("col", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1768,8 +1800,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("tr", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("tr", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1814,8 +1846,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("th", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("th", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1860,8 +1892,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("td", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("td", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1906,8 +1938,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("thead", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("thead", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1952,8 +1984,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("tbody", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("tbody", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -1998,8 +2030,8 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("tfoot", l_attributes)
       CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      CALL m_document_list[l_pos].xhtml.startelement("tfoot", l_attributes)
       CALL l_attributes.clear()
    END IF
 
@@ -2054,13 +2086,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL m_document_list[l_pos].xhtml.startelement("script", l_attributes)
       CALL l_attributes.addattribute("type", l_language.trim())
 
       IF l_script.getlength() > 0 THEN
          CALL m_document_list[l_pos].xhtml.characters(l_script.trim())
       END IF
 
+      CALL m_document_list[l_pos].xhtml.startelement("script", l_attributes)
       CALL m_document_list[l_pos].xhtml.endelement("script")
       CALL l_attributes.clear()
    END IF

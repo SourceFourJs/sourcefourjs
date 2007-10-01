@@ -1,0 +1,43 @@
+/* GtDocgen Example CSS */
+
+body {
+	background-color: white;
+	background-image: url("genero_green_transparent.png");
+}
+
+h1 {
+	color: #9fa617;
+	font-weight: bold;
+	text-align: center;
+}
+
+h2 {
+	font-weight: bold;
+}
+
+div {
+	text-align: center;
+}
+
+table {
+	table-layout: automatic;
+}
+
+th {
+	padding: 2px;
+	padding-right: 20px;
+	font-weight: bold;
+	font-style: italic;
+	text-align: left;
+	background-color: #9fa617;
+}
+
+td {
+	padding: 2px;
+	padding-left: 20px;
+	padding-right: 20px;
+	font-weight: normal;
+	font-style: normal;
+	text-align: left;
+	background-color: #e8eef2; 
+}

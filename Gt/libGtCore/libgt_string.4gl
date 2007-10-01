@@ -186,6 +186,134 @@ DEFINE
 END FUNCTION
 
 ##
+#
+
+FUNCTION gt_string_captilize(l_text)
+
+DEFINE
+   l_text   STRING
+
+DEFINE
+   l_tmp   STRING
+
+   LET l_text = l_text.trim()
+   LET l_tmp = l_text.getcharat(1)
+   LET l_tmp = l_tmp.touppercase()
+   LET l_tmp = l_tmp.append(l_text.substring(2, l_text.getLength()))
+
+   RETURN l_tmp
+
+END FUNCTION
+
+##
+# This function coverts a string into a proper sentence.
+# @param l_text The string to transform.
+# @return l_buffer The transformed string.
+#
+
+FUNCTION gt_string_to_sentence(l_text)
+
+DEFINE
+   l_text   STRING
+
+DEFINE
+   l_period      SMALLINT,
+   i             INTEGER,
+   l_char        STRING,
+   l_prev_char   STRING,
+   l_buffer      base.StringBuffer
+
+   LET l_char = ""
+   LET l_prev_char = ""
+   LET l_period = TRUE
+   LET l_text = l_text.trim()
+   LET l_buffer = base.StringBuffer.create()
+
+   FOR i = 1 TO l_text.getLength()
+      LET l_char = l_text.getCharAt(i)
+
+      #------------------------------------------------------------------------#
+      # Need only one blank space between words and sentences                  #
+      #------------------------------------------------------------------------#
+
+      IF l_char.equals(" ")
+      AND l_prev_char.equals(" ") THEN
+         CONTINUE FOR
+      END IF
+
+      IF l_char.equals(".") THEN
+         LET l_period = TRUE
+      END IF
+
+      IF (l_prev_char.equals("")
+      OR l_prev_char.equals(" "))
+      AND l_period = TRUE THEN
+         LET l_period = FALSE
+         CALL l_buffer.append(l_char.toUpperCase())
+      ELSE
+         CALL l_buffer.append(l_char)
+      END IF
+
+      #------------------------------------------------------------------------#
+      # Need a full stop at the end of a sentence                              #
+      #------------------------------------------------------------------------#
+
+      IF i == l_text.getLength()
+      AND l_char != "." THEN
+         CALL l_buffer.append(".")
+      END IF
+
+      LET l_prev_char = l_char
+   END FOR
+
+   RETURN l_buffer.toString()
+
+END FUNCTION
+
+##
+# This function sets the given text to be in camel case.
+# @param l_text The text to transform.
+# @result l_buffer The transformed text.
+#
+
+FUNCTION gt_string_to_camelcase(l_text)
+
+DEFINE
+   l_text   STRING
+
+DEFINE
+   i             INTEGER,
+   l_char        STRING,
+   l_prev_char   STRING,
+   l_buffer      base.StringBuffer
+
+   LET l_char = ""
+   LET l_prev_char = ""
+   LET l_buffer = base.StringBuffer.create()
+
+   FOR i = 1 TO l_text.getLength()
+      LET l_char = l_text.getCharAt(i)
+
+      IF l_char.equals(" ")
+      AND l_prev_char.equals(" ") THEN
+         CONTINUE FOR
+      END IF
+
+      IF l_prev_char.equals("")
+      OR l_prev_char.equals(" ") THEN
+         CALL l_buffer.append(l_char.toUpperCase())
+      ELSE
+         CALL l_buffer.append(l_char.toLowerCase())
+      END IF
+
+      LET l_prev_char = l_char
+   END FOR
+
+   RETURN l_buffer.toString()
+
+END FUNCTION
+
+##
 # This function reverses the given string.
 # @param l_text The string reverse.
 # @return l_copy The reversed output.

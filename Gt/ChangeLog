@@ -1,3 +1,9 @@
+2007-10-01
+  * Added libgt_pdf.4gl to libGtFormat
+  * Initial commit of GtDocGen
+  * Added libgt_4gl_grammar
+  * Further functionality in lib_string
+
 2007-09-18 scottn
   * Tidy for release of Gt 0.1.
 
