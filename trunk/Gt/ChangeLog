@@ -1,3 +1,13 @@
+2007-10-30
+  * Fixed libGtCore unittests to work again
+  * Included bug fix from Mark Rees in GtDocgen
+  * Started on parsing of types for parameters and return values in GtDocgen
+
+2007-10-02
+  * Improvement to XHTML generator
+  * Added class to XHTML functions to allow for multiple classes
+  * Removed gt_string_capitalize 
+
 2007-10-01
   * Added libgt_pdf.4gl to libGtFormat
   * Initial commit of GtDocGen

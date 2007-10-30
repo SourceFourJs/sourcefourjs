@@ -14,7 +14,7 @@
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtFormat/libgt_pdf.4gl" ORDER="0" TYPE="4gl File (.4gl)" PARENT="3" ID="8" NAME="libgt_pdf.4gl" LABEL="libgt_pdf.4gl" />
      </FILES>
     </APPLICATION>
-    <APPLICATION USE_IMPLICIT_REF="1" ROOTPATH="unittest" STATUS="m" FGLLDPATH_OVERRODE="" DESCRIPTION="" CATEGORY="a" OVERRIDE_FGLLDPATH="0" DATABASE="" NAMESPACE="" ORDER="0" ID="5" PARENT="2" BUILD="0" NAME="libgtformat_test" FGLLDPATH_EXTENDED="" REPOSITORY="//" LABEL="libgtformat_test" >
+    <APPLICATION USE_IMPLICIT_REF="1" ROOTPATH="unittest" STATUS="m" FGLLDPATH_OVERRODE="" DESCRIPTION="" CATEGORY="a" OVERRIDE_FGLLDPATH="0" DATABASE="" NAMESPACE="" ORDER="0" ID="5" PARENT="2" BUILD="1" NAME="libgtformat_test" FGLLDPATH_EXTENDED="" REPOSITORY="//" LABEL="libgtformat_test" >
      <FILES>
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtFormat/unittest/libgtformat_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="6" PARENT="5" NAME="libgtformat_test.4gl" LABEL="libgtformat_test.4gl" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/libGtFormat/unittest/libgt_xhtml_test.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="7" PARENT="5" NAME="libgt_xhtml_test.4gl" LABEL="libgt_xhtml_test.4gl" />

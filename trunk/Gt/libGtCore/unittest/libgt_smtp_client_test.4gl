@@ -64,7 +64,7 @@ DEFINE
    l_bytesread      STRING,
    l_byteswritten   STRING,
    l_email          STRING,
-   l_serverhdl      base.channel
+   l_serverhdl      STRING
 
    CALL gt_ut_log("Testing gt_smtp_client_init...")
    CALL gt_smtp_client_init()

@@ -7,16 +7,21 @@ body {
 
 h1 {
 	color: #9fa617;
+	font-size: xxx-large;
 	font-weight: bold;
 	text-align: center;
 }
 
 h2 {
+	color: #9fa617;
+	font-size: xx-large;
 	font-weight: bold;
+	text-align: center;
 }
 
-div {
-	text-align: center;
+h3 {
+	font-size: x-large;
+	font-weight: bold;
 }
 
 table {
@@ -25,7 +30,8 @@ table {
 
 th {
 	padding: 2px;
-	padding-right: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
 	font-weight: bold;
 	font-style: italic;
 	text-align: left;
@@ -34,10 +40,57 @@ th {
 
 td {
 	padding: 2px;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
 	font-weight: normal;
 	font-style: normal;
 	text-align: left;
 	background-color: #e8eef2; 
+}
+
+div.title {
+	text-align: center;
+}
+
+table.index {
+	width: 100%;
+}
+
+th.index {
+	text-align: center;
+}
+
+table.parameter {
+	width: 95%;
+	margin: auto;
+}
+
+table.returnvalue {
+	width: 95%;
+	margin: auto;
+}
+
+th.parameter {
+	text-align: center;
+}
+
+th.returnvalue {
+	text-align: center;
+}
+
+code.function {
+	color: green;
+}
+
+code.parameter {
+	color: purple;
+}
+
+code.returnvalue {
+	color: purple;
+}
+
+div.footer {
+	color: red;
+	text-align: center;
 }

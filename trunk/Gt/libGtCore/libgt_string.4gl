@@ -64,7 +64,7 @@ DEFINE
    LET l_ok = FALSE
 
    IF l_string IS NULL
-   OR l_string == "" THEN
+   OR l_string.trim() == "" THEN
       LET l_ok = TRUE
    ELSE
       LET l_ok = FALSE
@@ -114,6 +114,15 @@ DEFINE
    END FOR
 
    RETURN l_ok
+
+END FUNCTION
+
+FUNCTION gt_string_is_decimal(l_string)
+
+DEFINE
+   l_string   STRING
+
+   RETURN TRUE
 
 END FUNCTION
 
@@ -182,26 +191,6 @@ DEFINE
    END FOR
 
    RETURN l_ok
-
-END FUNCTION
-
-##
-#
-
-FUNCTION gt_string_captilize(l_text)
-
-DEFINE
-   l_text   STRING
-
-DEFINE
-   l_tmp   STRING
-
-   LET l_text = l_text.trim()
-   LET l_tmp = l_text.getcharat(1)
-   LET l_tmp = l_tmp.touppercase()
-   LET l_tmp = l_tmp.append(l_text.substring(2, l_text.getLength()))
-
-   RETURN l_tmp
 
 END FUNCTION
 
