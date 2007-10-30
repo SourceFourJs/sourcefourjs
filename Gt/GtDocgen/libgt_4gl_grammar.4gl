@@ -33,11 +33,20 @@
 #
 
 DEFINE
-   m_function   DYNAMIC ARRAY OF STRING,
+   m_current_function   STRING,
 
-   m_define     DYNAMIC ARRAY OF RECORD
+   m_function   DYNAMIC ARRAY OF RECORD
       name   STRING,
-      type   STRING
+
+      define DYNAMIC ARRAY OF RECORD
+         name   STRING,
+         type   STRING
+      END RECORD,
+
+      return DYNAMIC ARRAY OF RECORD
+         name   STRING,
+         type   STRING
+      END RECORD
    END RECORD
 
 #------------------------------------------------------------------------------#
@@ -171,7 +180,7 @@ END FUNCTION
 ##
 # This function returns whether the given token is a 4gl keyword or not.
 # @param l_token The token to check.
-# @return l_ok TRUE if the token is a 4gl keyword, FALSE otherwise
+# @return l_ok TRUE if the token is a 4gl keyword, FALSE otherwise.
 #
 
 FUNCTION gt_4gl_is_keyword(l_token)
@@ -375,7 +384,7 @@ END FUNCTION
 ##
 # This function returns the value of the m_function array for the given position.
 # @param l_count The position to get the value for.
-# @return l_value The value of the m_function array at the given position.
+# @return l_value The value of the function name at the given position.
 #
 
 FUNCTION gt_4gl_function_value(l_count)
@@ -383,7 +392,7 @@ FUNCTION gt_4gl_function_value(l_count)
 DEFINE
    l_count   INTEGER
 
-   RETURN m_function[l_count]
+   RETURN m_function[l_count].name
 
 END FUNCTION
 
@@ -410,7 +419,7 @@ DEFINE
    ELSE
       LET l_pos = l_pos + 1
       LET l_count = l_count + 1
-      LET m_function[l_count] = gt_4gl_next_token(l_pos)
+      LET m_function[l_count].name = gt_4gl_next_token(l_pos)
 
       WHILE l_token != ")"
          LET l_pos = l_pos + 1
@@ -425,7 +434,7 @@ DEFINE
             CONTINUE WHILE
          ELSE
             LET l_count = l_count + 1
-            LET m_function[l_count] = l_token
+            LET m_function[l_count].name = l_token
          END IF
 
          LET l_pos = l_pos + 1
@@ -442,9 +451,12 @@ END FUNCTION
 # @return l_count The number of entries in the m_define array.
 #
 
-FUNCTION gt_4gl_define_count()
+FUNCTION gt_4gl_define_count(l_function_index)
 
-   RETURN m_define.getlength()
+DEFINE
+   l_function_index   INTEGER
+
+   RETURN m_function[l_function_index].define.getlength()
 
 END FUNCTION
 
@@ -454,12 +466,14 @@ END FUNCTION
 # @return l_value The value of the m_define array at the given position.
 #
 
-FUNCTION gt_4gl_define_value(l_count)
+FUNCTION gt_4gl_define_value(l_function_index, l_define_index)
 
 DEFINE
-   l_count   INTEGER
+   l_function_index   INTEGER,
+   l_define_index     INTEGER
 
-   RETURN m_define[l_count].name, m_define[l_count].type
+   RETURN m_function[l_function_index].define[l_define_index].name,
+          m_function[l_function_index].define[l_define_index].type
 
 END FUNCTION
 
@@ -469,10 +483,11 @@ END FUNCTION
 # @return l_pos The position in the token array once parsing is complete.
 #
 
-FUNCTION gt_4gl_parse_define(l_pos)
+FUNCTION gt_4gl_parse_define(l_function_index, l_pos)
 
 DEFINE
-   l_pos   INTEGER
+   l_function_index   INTEGER,
+   l_pos              INTEGER
 
 DEFINE
    i         INTEGER,
@@ -482,13 +497,15 @@ DEFINE
 
    LET l_save = 0
    LET l_count = 0
+   #LET m_current_function = l_function
+
    LET l_pos = l_pos + 1
    LET l_token = gt_4gl_next_token(l_pos)
 
    WHILE NOT gt_4gl_is_keyword(l_token)
 
       LET l_count = l_count + 1
-      LET m_define[l_count].name = l_token
+      LET m_function[l_function_index].define[l_count].name = l_token
 
       LET l_pos = l_pos + 1
       LET l_token = gt_4gl_next_token(l_pos)
@@ -506,26 +523,34 @@ DEFINE
       IF gt_4gl_is_datatype(l_token) THEN
          IF l_save > 0 THEN
             FOR i = l_save TO l_count
-               LET m_define[i].type = l_token
+               #LET m_function[l_function_index].name = m_current_function
+               LET m_function[l_function_index].define[i].type = l_token
             END FOR
 
             LET l_save = 0
          ELSE
-            LET m_define[l_count].type = l_token
+            #LET m_function[l_function_index].name = m_current_function
+            LET m_function[l_function_index].define[l_count].type = l_token
          END IF
       END IF
 
       IF l_token.touppercase() == "ARRAY"
       OR l_token.touppercase() == "DYNAMIC" THEN
-         LET l_pos = gt_4gl_parse_array(l_pos)
+         LET l_pos = gt_4gl_parse_array(l_function_index, l_pos, l_count)
       END IF
 
       IF l_token.touppercase() == "RECORD" THEN
-         LET l_pos = gt_4gl_parse_record(l_pos)
+         LET l_pos = gt_4gl_parse_record(l_function_index, l_pos, l_count)
       END IF
 
       LET l_pos = l_pos + 1
       LET l_token = gt_4gl_next_token(l_pos)
+
+      IF l_token == "," THEN
+         LET l_pos = l_pos + 1
+         LET l_token = gt_4gl_next_token(l_pos)
+      END IF
+
    END WHILE
 
    RETURN l_pos
@@ -537,10 +562,12 @@ END FUNCTION
 # @param l_pos The position in the token array to start from.
 # @return l_pos The position in the token array once parsing is complete.
 #
-FUNCTION gt_4gl_parse_array(l_pos)
+FUNCTION gt_4gl_parse_array(l_function_index, l_pos, l_count)
 
 DEFINE
-   l_pos   INTEGER
+   l_function_index   INTEGER,
+   l_pos              INTEGER,
+   l_count            INTEGER
 
 DEFINE
    l_type        STRING,
@@ -602,9 +629,9 @@ DEFINE
    END IF
 
    IF l_token.touppercase() == "RECORD" THEN
-      LET l_pos = gt_4gl_parse_record(l_pos)
+      LET l_pos = gt_4gl_parse_record(l_function_index, l_pos, l_count)
    ELSE
-      LET l_pos = gt_4gl_parse_define(l_pos)
+      LET m_function[l_function_index].define[l_count].type = l_token
    END IF
 
    RETURN l_pos
@@ -617,23 +644,55 @@ END FUNCTION
 # @return l_pos The position in the token array once parsing is complete.
 #
 
-FUNCTION gt_4gl_parse_record(l_pos)
+FUNCTION gt_4gl_parse_record(l_function_index, l_pos, l_count)
 
 DEFINE
-   l_pos   INTEGER
+   l_function_index   INTEGER,
+   l_pos              INTEGER,
+   l_count            INTEGER
 
 DEFINE
-   l_token   STRING
+   l_token      STRING
 
    LET l_pos = l_pos + 1
    LET l_token = gt_4gl_next_token(l_pos)
 
    IF l_token.touppercase() == "LIKE" THEN
    ELSE
-      LET l_pos = gt_4gl_parse_define(l_pos)
+      LET l_pos = gt_4gl_parse_define(l_function_index, l_pos)
    END IF
 
    RETURN l_pos
+
+END FUNCTION
+
+##
+# This function returns the number of entries in the m_define array.
+# @return l_count The number of entries in the m_define array.
+#
+
+FUNCTION gt_4gl_return_count(l_function_index)
+
+DEFINE
+   l_function_index   INTEGER
+
+   RETURN m_function[l_function_index].return.getlength()
+
+END FUNCTION
+
+##
+# This function returns the value of the m_define array for the given position.
+# @param l_count The position to get the value for.
+# @return l_value The value of the m_define array at the given position.
+#
+
+FUNCTION gt_4gl_return_value(l_function_index, l_return_index)
+
+DEFINE
+   l_function_index   INTEGER,
+   l_return_index     INTEGER
+
+   RETURN m_function[l_function_index].return[l_return_index].type
 
 END FUNCTION
 
@@ -643,37 +702,75 @@ END FUNCTION
 # @return l_pos The position in the token array once parsing is complete.
 #
 
-FUNCTION gt_4gl_parse_return(l_pos)
+FUNCTION gt_4gl_parse_return(l_function_index, l_pos)
 
 DEFINE
-   l_pos   INTEGER
-
-   RETURN l_pos + 1
-
-END FUNCTION
-
-##
-# This function parses the RETURNING statement.
-# @param l_pos The position in the token array to start from.
-# @return l_pos The position in the token array once parsing is complete.
-#
-
-FUNCTION gt_4gl_parse_returning(l_pos)
+   l_function_index   INTEGER,
+   l_pos              INTEGER
 
 DEFINE
-   l_pos   INTEGER
+   i         INTEGER,
+   j         INTEGER,
+   l_token   STRING
 
-   RETURN l_pos + 1
+   LET i = 0
+   LET l_pos = l_pos + 1
+   LET l_token = gt_4gl_next_token(l_pos)
 
-END FUNCTION
+   WHILE l_token != "FUNCTION"
+      LET i = i + 1
+      DISPLAY "l_token = ", l_token
 
-##
-# This function parses the SELECT statement.
-# @param l_pos The position in the token array to start from.
-# @return l_pos The position in the token array once parsing is complete.
-#
+      IF gt_4gl_is_keyword(l_token) THEN
+         EXIT WHILE
+      END IF
 
-FUNCTION gt_4gl_parse_select()
+      IF l_token == "" OR l_token == "NULL" THEN
+         LET m_function[l_function_index].return[i].name = "STRING"
+      END IF
+
+      IF gt_string_is_integer(l_token) THEN
+         LET m_function[l_function_index].return[i].name = "INTEGER"
+      END IF
+
+      IF gt_string_is_decimal(l_token) THEN
+         LET m_function[l_function_index].return[i].name = "REAL"
+      END IF
+
+      LET m_function[l_function_index].return[i].name = l_token
+
+      FOR j = 1 TO m_function[l_function_index].define.getLength()
+         IF m_function[l_function_index].define[j].name == l_token THEN
+            LET m_function[l_function_index].return[i].type = m_function[l_function_index].define[j].type
+            EXIT FOR
+         END IF
+      END FOR
+
+      IF gt_string_is_empty(m_function[l_function_index].return[i].type) THEN
+         FOR j = 1 TO m_function[1].define.getLength()
+            IF m_function[1].define[j].name == l_token THEN
+               LET m_function[l_function_index].return[i].type = m_function[1].define[j].type
+               EXIT FOR
+            END IF
+         END FOR
+      END IF
+
+      LET l_pos = l_pos + 1
+      LET l_token = gt_4gl_next_token(l_pos)
+
+      IF l_token == "[" OR l_token == "LIKE" THEN
+         CONTINUE WHILE
+      ELSE
+         IF l_token != "," THEN
+            EXIT WHILE
+         END IF
+      END IF
+   END WHILE
+
+   DISPLAY "RETURN values found = ", m_function[l_function_index].return.getLength()
+
+   RETURN l_pos
+
 END FUNCTION
 
 ##
@@ -682,7 +779,13 @@ END FUNCTION
 # @return l_pos The position in the token array once parsing is complete.
 #
 
-FUNCTION gt_4gl_parse_insert()
+FUNCTION gt_4gl_parse_insert(l_pos)
+
+DEFINE
+   l_pos   INTEGER
+
+   RETURN l_pos
+
 END FUNCTION
 
 ##
@@ -691,7 +794,12 @@ END FUNCTION
 # @return l_pos The position in the token array once parsing is complete.
 #
 
-FUNCTION gt_4gl_parse_update()
+FUNCTION gt_4gl_parse_update(l_pos)
+
+DEFINE
+   l_pos   INTEGER
+
+   RETURN l_pos
 END FUNCTION
 
 ##
@@ -700,7 +808,13 @@ END FUNCTION
 # @return l_pos The position in the token array once parsing is complete.
 #
 
-FUNCTION gt_4gl_parse_delete()
+FUNCTION gt_4gl_parse_delete(l_pos)
+
+DEFINE
+   l_pos   INTEGER
+
+   RETURN l_pos
+
 END FUNCTION
 
 #------------------------------------------------------------------------------#

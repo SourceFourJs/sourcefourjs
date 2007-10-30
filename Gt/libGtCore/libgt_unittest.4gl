@@ -77,8 +77,13 @@ FUNCTION gt_ut_init()
 
    DIALOG
 
-   DISPLAY ARRAY m_results TO results_scr.*
-   DISPLAY ARRAY m_log TO log_scr.*
+      DISPLAY ARRAY m_results TO results_scr.*
+
+      END DISPLAY
+
+      DISPLAY ARRAY m_log TO log_scr.*
+
+      END DISPLAY
 
       ON ACTION run
          CALL run_tests()

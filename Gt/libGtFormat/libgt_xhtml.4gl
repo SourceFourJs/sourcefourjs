@@ -193,12 +193,14 @@ END FUNCTION
 ##
 # Function to write the body tag to the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_body(l_xhtmlhdl)
+FUNCTION gt_xhtml_body(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -208,7 +210,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("body", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -233,7 +241,7 @@ DEFINE
    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
    IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+      CALL m_document_list[l_pos].xhtml.characters(l_text)
    END IF
 
 END FUNCTION
@@ -245,12 +253,15 @@ END FUNCTION
 ##
 # Function to create an address tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the address.
 #
 
-FUNCTION gt_xhtml_address(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_address(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -261,7 +272,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("address", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("address")
@@ -273,12 +290,15 @@ END FUNCTION
 ##
 # Function to create a blockquote tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the blockquote.
 #
 
-FUNCTION gt_xhtml_blockquote(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_blockquote(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -289,7 +309,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("blockquote", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("blockquote")
@@ -301,12 +327,15 @@ END FUNCTION
 ##
 # Function to create a definition item tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the definition item.
 #
 
-FUNCTION gt_xhtml_dd(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_dd(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -317,7 +346,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("dd", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("dd")
@@ -329,12 +364,14 @@ END FUNCTION
 ##
 # Function to start the division tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_div(l_xhtmlhdl)
+FUNCTION gt_xhtml_div(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -344,7 +381,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("div", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -375,12 +418,14 @@ END FUNCTION
 ##
 # Function to start the definition list tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_dl(l_xhtmlhdl)
+FUNCTION gt_xhtml_dl(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -390,7 +435,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("dl", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -421,12 +472,14 @@ END FUNCTION
 ##
 # Function to start the definition term tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_dt(l_xhtmlhdl)
+FUNCTION gt_xhtml_dt(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -436,7 +489,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("dt", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -467,12 +526,16 @@ END FUNCTION
 ##
 # Function to create a heading tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_level The level for the heading (1-6).
+# @param l_text The text for the heading.
 #
 
-FUNCTION gt_xhtml_heading(l_xhtmlhdl, l_level, l_text)
+FUNCTION gt_xhtml_heading(l_xhtmlhdl, l_class, l_level, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_level      INTEGER,
    l_text       STRING
 
@@ -484,7 +547,12 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
 
       CASE
          WHEN l_level = 1
@@ -540,12 +608,14 @@ END FUNCTION
 ##
 # Function to create a horizontical rule tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_hr(l_xhtmlhdl)
+FUNCTION gt_xhtml_hr(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -555,7 +625,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("hr", l_attributes)
       CALL m_document_list[l_pos].xhtml.endelement("hr")
       CALL l_attributes.clear()
@@ -566,12 +642,14 @@ END FUNCTION
 ##
 # Function to start the item list tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_li(l_xhtmlhdl)
+FUNCTION gt_xhtml_li(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -581,7 +659,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("li", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -612,12 +696,14 @@ END FUNCTION
 ##
 # Function to start the ordered list tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_ol(l_xhtmlhdl)
+FUNCTION gt_xhtml_ol(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -627,7 +713,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("ol", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -658,12 +750,14 @@ END FUNCTION
 ##
 # Function to start the paragraph tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_p(l_xhtmlhdl)
+FUNCTION gt_xhtml_p(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -673,7 +767,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("p", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -704,12 +804,14 @@ END FUNCTION
 ##
 # Function to start the unordered list tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_ul(l_xhtmlhdl)
+FUNCTION gt_xhtml_ul(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -719,7 +821,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("ul", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -754,12 +862,14 @@ END FUNCTION
 ##
 # Function to start the bold tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_b(l_xhtmlhdl)
+FUNCTION gt_xhtml_b(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -769,7 +879,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("b", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -800,12 +916,14 @@ END FUNCTION
 ##
 # Function to start the big tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_big(l_xhtmlhdl)
+FUNCTION gt_xhtml_big(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -815,7 +933,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("big", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -846,12 +970,15 @@ END FUNCTION
 ##
 # Function to create a citation tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the citation.
 #
 
-FUNCTION gt_xhtml_cite(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_cite(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -862,7 +989,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("cite", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("cite")
@@ -874,12 +1007,15 @@ END FUNCTION
 ##
 # Function to create a code tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the code.
 #
 
-FUNCTION gt_xhtml_code(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_code(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -890,7 +1026,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("code", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("code")
@@ -902,12 +1044,14 @@ END FUNCTION
 ##
 # Function to start the emphasis tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_em(l_xhtmlhdl)
+FUNCTION gt_xhtml_em(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -917,7 +1061,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("em", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -948,12 +1098,14 @@ END FUNCTION
 ##
 # Function to start the italics tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_i(l_xhtmlhdl)
+FUNCTION gt_xhtml_i(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -963,7 +1115,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("i", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -994,12 +1152,15 @@ END FUNCTION
 ##
 # Function to create a keyboard tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the keyboard element.
 #
 
-FUNCTION gt_xhtml_kdb(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_kdb(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1010,7 +1171,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("kbd", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("kbd")
@@ -1022,12 +1189,15 @@ END FUNCTION
 ##
 # Function to enter the preformatted tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text the text for the preformatted element.
 #
 
-FUNCTION gt_xhtml_pre(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_pre(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1038,7 +1208,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("pre", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("pre")
@@ -1050,12 +1226,15 @@ END FUNCTION
 ##
 # Function to create a sample tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the sample element.
 #
 
-FUNCTION gt_xhtml_samp(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_samp(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1066,7 +1245,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("samp", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("samp")
@@ -1078,12 +1263,14 @@ END FUNCTION
 ##
 # Function to start the small tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_small(l_xhtmlhdl)
+FUNCTION gt_xhtml_small(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1093,7 +1280,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("small", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1124,12 +1317,14 @@ END FUNCTION
 ##
 # Function to start the spanning tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_span(l_xhtmlhdl)
+FUNCTION gt_xhtml_span(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1139,7 +1334,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("span", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1170,12 +1371,14 @@ END FUNCTION
 ##
 # Function to start the strong tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_strong(l_xhtmlhdl)
+FUNCTION gt_xhtml_strong(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1185,7 +1388,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("strong", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1216,12 +1425,15 @@ END FUNCTION
 ##
 # Function to enter the subscript tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the subscript element.
 #
 
-FUNCTION gt_xhtml_sub(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_sub(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1232,7 +1444,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("sub", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("sub")
@@ -1244,12 +1462,15 @@ END FUNCTION
 ##
 # Function to enter the superscript tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the superscript element.
 #
 
-FUNCTION gt_xhtml_sup(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_sup(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1260,7 +1481,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("sup", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("sup")
@@ -1272,12 +1499,15 @@ END FUNCTION
 ##
 # Function to enter the teletype tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the teletype element.
 #
 
-FUNCTION gt_xhtml_tt(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_tt(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1288,7 +1518,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("tt", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("tt")
@@ -1300,12 +1536,15 @@ END FUNCTION
 ##
 # Function to enter the variable tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the variable tag.
 #
 
-FUNCTION gt_xhtml_var(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_var(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1316,7 +1555,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("var", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("var")
@@ -1332,12 +1577,15 @@ END FUNCTION
 ##
 # Function to enter the abbreviation tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the abbreviation element.
 #
 
-FUNCTION gt_xhtml_abbr(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_abbr(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1348,7 +1596,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("abbr", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("abbr")
@@ -1360,12 +1614,15 @@ END FUNCTION
 ##
 # Function to enter the acronym tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the acronym element.
 #
 
-FUNCTION gt_xhtml_acronym(l_xhtmlhdl, l_text)
+FUNCTION gt_xhtml_acronym(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1376,7 +1633,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("acronym", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("acronym")
@@ -1388,12 +1651,16 @@ END FUNCTION
 ##
 # Function to start the deleted tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_cite The citation for the deleted element.
+# @param l_datetime The datetime of the deletion.
 #
 
-FUNCTION gt_xhtml_del(l_xhtmlhdl, l_cite, l_datetime)
+FUNCTION gt_xhtml_del(l_xhtmlhdl, l_class, l_cite, l_datetime)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_cite       STRING,
    l_datetime   STRING
 
@@ -1405,7 +1672,12 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
 
       IF l_cite.getlength() > 0 THEN
          CALL l_attributes.addattribute("cite", l_cite.trim())
@@ -1445,12 +1717,16 @@ END FUNCTION
 ##
 # Function to start the inserted tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_cite The citation for the inserted item.
+# @param l_datetime The datetime of the insertion.
 #
 
-FUNCTION gt_xhtml_ins(l_xhtmlhdl, l_cite, l_datetime)
+FUNCTION gt_xhtml_ins(l_xhtmlhdl, l_class, l_cite, l_datetime)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_cite       STRING,
    l_datetime   STRING
 
@@ -1462,7 +1738,12 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
 
       IF l_cite.getlength() > 0 THEN
          CALL l_attributes.addattribute("cite", l_cite.trim())
@@ -1502,12 +1783,16 @@ END FUNCTION
 ##
 # Function to enter the quote tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the quote element.
+# @param l_cite The citation for the quote.
 #
 
-FUNCTION gt_xhtml_q(l_xhtmlhdl, l_text, l_cite)
+FUNCTION gt_xhtml_q(l_xhtmlhdl, l_class, l_text, l_cite)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING,
    l_cite       STRING
 
@@ -1519,7 +1804,12 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
 
       IF l_cite.getLength() > 0 THEN
          CALL l_attributes.addattribute("cite", l_cite.trim())
@@ -1548,13 +1838,14 @@ END FUNCTION
 ##
 # Function to enter the break tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_br(l_xhtmlhdl, l_clear)
+FUNCTION gt_xhtml_br(l_xhtmlhdl, l_class)
 
 DEFINE
    l_xhtmlhdl   STRING,
-   l_clear      STRING
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1564,10 +1855,11 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
 
-      IF l_clear.getLength() > 0 THEN
-         CALL l_attributes.addattribute("clear", l_clear.trim())
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
       END IF
 
       CALL m_document_list[l_pos].xhtml.startelement("br", l_attributes)
@@ -1584,12 +1876,17 @@ END FUNCTION
 ##
 # Function to add an anchor tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the anchor.
+# @param l_href The href for the anchor.
+# @param l_name The name of the anchor.
 #
 
-FUNCTION gt_xhtml_a(l_xhtmlhdl, l_text, l_href, l_name)
+FUNCTION gt_xhtml_a(l_xhtmlhdl, l_class, l_text, l_href, l_name)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING,
    l_href       STRING,
    l_name       STRING
@@ -1602,7 +1899,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL l_attributes.addattribute("href", l_href.trim())
 
       IF l_name.getlength() > 0 THEN
@@ -1621,10 +1924,18 @@ END FUNCTION
 # Table Tags                                                                   #
 #------------------------------------------------------------------------------#
 
-FUNCTION gt_xhtml_caption(l_xhtmlhdl, l_text)
+##
+# Function to add a caption tag to the XHTML document.
+# @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
+# @param l_text The text for the caption.
+#
+
+FUNCTION gt_xhtml_caption(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
    l_xhtmlhdl   STRING,
+   l_class      STRING,
    l_text       STRING
 
 DEFINE
@@ -1635,7 +1946,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("caption", l_attributes)
       CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
       CALL m_document_list[l_pos].xhtml.endelement("caption")
@@ -1647,12 +1964,14 @@ END FUNCTION
 ##
 # Function to start the table tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_table(l_xhtmlhdl)
+FUNCTION gt_xhtml_table(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1662,7 +1981,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("table", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1693,12 +2018,14 @@ END FUNCTION
 ##
 # Function to start the table column group tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_colgroup(l_xhtmlhdl)
+FUNCTION gt_xhtml_colgroup(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1708,7 +2035,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("colgroup", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1739,12 +2072,14 @@ END FUNCTION
 ##
 # Function to start the table column tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_col(l_xhtmlhdl)
+FUNCTION gt_xhtml_col(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1754,7 +2089,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("col", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1785,12 +2126,14 @@ END FUNCTION
 ##
 # Function to start the table row tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_tr(l_xhtmlhdl)
+FUNCTION gt_xhtml_tr(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1800,7 +2143,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("tr", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1831,12 +2180,14 @@ END FUNCTION
 ##
 # Function to start the table header tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_th(l_xhtmlhdl)
+FUNCTION gt_xhtml_th(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1846,7 +2197,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("th", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1877,12 +2234,14 @@ END FUNCTION
 ##
 # Function to start the table data tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_td(l_xhtmlhdl)
+FUNCTION gt_xhtml_td(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1892,7 +2251,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("td", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1923,12 +2288,14 @@ END FUNCTION
 ##
 # Function to start the table header tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_thead(l_xhtmlhdl)
+FUNCTION gt_xhtml_thead(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1938,7 +2305,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("thead", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -1969,12 +2342,14 @@ END FUNCTION
 ##
 # Function to start the table body tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_tbody(l_xhtmlhdl)
+FUNCTION gt_xhtml_tbody(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -1984,7 +2359,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("tbody", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -2015,12 +2396,14 @@ END FUNCTION
 ##
 # Function to start the table footer tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_class The class for the element (defaults to global class).
 #
 
-FUNCTION gt_xhtml_tfoot(l_xhtmlhdl)
+FUNCTION gt_xhtml_tfoot(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING
+   l_xhtmlhdl   STRING,
+   l_class      STRING
 
 DEFINE
    l_pos          INTEGER,
@@ -2030,7 +2413,13 @@ DEFINE
 
    IF l_pos IS NOT NULL THEN
       LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+
+      IF gt_string_is_empty(l_class) THEN
+         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+      ELSE
+         CALL l_attributes.addattribute("class", l_class)
+      END IF
+
       CALL m_document_list[l_pos].xhtml.startelement("tfoot", l_attributes)
       CALL l_attributes.clear()
    END IF
@@ -2069,6 +2458,8 @@ END FUNCTION
 ##
 # Function to add a script tag in the XHTML document.
 # @param l_xhtmlhdl The handle to the XHTML document.
+# @param l_language The language of the script (e.g. Javascript).
+# @param l_script The text of the script.
 #
 
 FUNCTION gt_xhtml_script(l_xhtmlhdl, l_language, l_script)

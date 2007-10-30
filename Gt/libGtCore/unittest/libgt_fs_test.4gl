@@ -145,7 +145,7 @@ DEFINE
 
    CALL gt_ut_log("Testing gt_change_directory...")
 
-   IF gt_change_directory("gt_ut_dir_test") == TRUE THEN
+   IF gt_change_directory("gt_ut_dir_test1") == TRUE THEN
       CALL gt_ut_log("Passed")
    ELSE
       CALL gt_ut_log("FAILED")

@@ -45,6 +45,8 @@ DEFINE
    m_return_value_count    INTEGER,
 	m_documentation_count   INTEGER,
 
+   m_current_function      STRING,
+
 	m_documentation   DYNAMIC ARRAY OF RECORD
       name   STRING,
       path   STRING,
@@ -78,9 +80,9 @@ DEFINE
       END RECORD
 	END RECORD
 
-#------------------------------------------------------------------------------#
-# Function to set WHENEVER ANY ERROR for this module                           #
-#------------------------------------------------------------------------------#
+##
+# Function to set WHENEVER ANY ERROR and the Id string
+#
 
 FUNCTION gtdocgen_parser_id()
 
@@ -92,11 +94,24 @@ DEFINE
 
 END FUNCTION
 
+##
+# Function to return the documentation count.
+# @return m_documentation.getLength The documentation count.
+#
+
 FUNCTION gt_documentation_count()
 
    RETURN m_documentation.getLength()
 
 END FUNCTION
+
+##
+# Function to return the module documentation details.
+# @param l_documentation_index The index to use.
+# @return l_name The name of the file the documentation is from.
+# @return l_path The path to the file relative to the given root directory.
+# @return l_text The description of the module.
+#
 
 FUNCTION gt_documentation_values(l_documentation_index)
 
@@ -218,9 +233,9 @@ DEFINE
 END FUNCTION
 
 ##
-# Function_description
-# @param param Parameter_description.
-# @return returning Return_description.
+# This function parses all the 4gl files in the given directory.
+# @param l_directory The directory to parse.
+# @return l_ok TRUE if the parsing was successful, FALSE otherwise.
 #
 
 FUNCTION gt_parse_source(l_directory)
@@ -257,9 +272,10 @@ DEFINE
             IF l_file.substring(l_file.getlength() - 3, l_file.getLength()) == ".4gl" THEN
                LET m_documentation_count = m_documentation_count + 1
                LET m_documentation[m_documentation_count].name = l_file
-               LET m_documentation[m_documentation_count].path = ""
+               LET m_documentation[m_documentation_count].path = l_directory
                CALL gt_4gl_parser_init()
-               CALL gt_parse_4gl_file(l_file, TRUE)
+DISPLAY "FILE: ", os.path.join(l_directory, l_file)
+               CALL gt_parse_4gl_file(os.path.join(l_directory, l_file), TRUE)
                CALL p_gt_extract_documentation()
                LET l_ok = TRUE
             END IF
@@ -291,11 +307,11 @@ DEFINE
          END FOR
 
          FOR k = 1 TO m_documentation[i].function[j].parameter.getlength()
-            DISPLAY "      Parameter : ", m_documentation[i].function[j].parameter[k].name, " - ", m_documentation[i].function[j].parameter[k].description
+            DISPLAY "      Parameter : ", m_documentation[i].function[j].parameter[k].name, " - ", m_documentation[i].function[j].parameter[k].type, " - ", m_documentation[i].function[j].parameter[k].description
          END FOR
 
          FOR k = 1 TO m_documentation[i].function[j].return_value.getlength()
-            DISPLAY "      Return Values : ", m_documentation[i].function[j].return_value[k].name, " - ", m_documentation[i].function[j].return_value[k].description
+            DISPLAY "      Return Values : ", m_documentation[i].function[j].return_value[k].name, " - ", m_documentation[i].function[j].return_value[k].type, " - ", m_documentation[i].function[j].return_value[k].description
          END FOR
       END FOR
    END FOR
@@ -307,6 +323,10 @@ END FUNCTION
 #------------------------------------------------------------------------------#
 # PRIVATE FUNCTIONS                                                            #
 #------------------------------------------------------------------------------#
+
+##
+# This function extracts the documentation from the module.
+#
 
 FUNCTION p_gt_extract_documentation()
 
@@ -357,12 +377,11 @@ DEFINE
          WHEN l_token.subString(1, 2) == "##"
             LET l_pos = p_gt_parse_documentation(l_pos)
 
-         #WHEN l_token.touppercase() == "DEFINE"
-         #   LET l_pos = gt_4gl_parse_define(l_pos)
+         WHEN l_token.touppercase() == "DEFINE"
+            LET l_pos = p_gt_parse_define(l_pos)
 
-
-         #WHEN l_token.touppercase() == "RETURN"
-         #   LET l_pos = gt_4gl_parse_return(l_pos)
+         WHEN l_token.touppercase() == "RETURN"
+            LET l_pos = p_gt_parse_return(l_pos)
 
          OTHERWISE
       END CASE
@@ -373,6 +392,13 @@ END FUNCTION
 #------------------------------------------------------------------------------#
 # PRIVATE FUNCTIONS                                                            #
 #------------------------------------------------------------------------------#
+
+##
+# This function parses the documentation blocks and extracts into the
+# m_documentation module variable.
+# @param l_pos The position the documentation block starts.
+# @return l_pos The end position of the documentation block.
+#
 
 FUNCTION p_gt_parse_documentation(l_pos)
 
@@ -388,23 +414,22 @@ DEFINE
    l_text             STRING,
    l_token            STRING,
    l_command          STRING,
-   l_function         STRING,
    l_documentation    STRING,
    l_tokenizer        base.stringtokenizer
 
-   LET l_function = NULL
    LET l_function_count = 0
    LET m_count = m_count + 1
    LET m_tag_count  = 0
    LET m_parameter_count = 0
    LET m_return_value_count = 0
+   LET m_current_function = NULL
 
    IF m_count > 1 THEN
-      LET l_function = p_gt_find_next_function(l_pos)
+      LET m_current_function = p_gt_find_next_function(l_pos)
 
-      IF l_function IS NOT NULL THEN
+      IF m_current_function IS NOT NULL THEN
          FOR i = 1 TO m_documentation[m_documentation_count].function.getlength()
-            IF m_documentation[m_documentation_count].function[i].name = l_function THEN
+            IF m_documentation[m_documentation_count].function[i].name = m_current_function THEN
                LET l_function_count = i
                EXIT FOR
             END IF
@@ -451,17 +476,17 @@ DEFINE
                LET m_parameter_count = m_parameter_count + 1
                LET l_index = l_line.getindexof(" ", 1)
                LET l_name = l_line.subString(1, l_index)
-               LET m_documentation[m_documentation_count].function[l_function_count].parameter[m_parameter_count].name = l_name
+               LET m_documentation[m_documentation_count].function[l_function_count].parameter[m_parameter_count].name = l_name.trim()
                LET l_text = l_line.subString(l_index, l_line.getLength())
-               LET m_documentation[m_documentation_count].function[l_function_count].parameter[m_parameter_count].description = l_text
+               LET m_documentation[m_documentation_count].function[l_function_count].parameter[m_parameter_count].description = l_text.trim()
 
             WHEN l_command == "@return"
                LET m_return_value_count = m_return_value_count + 1
                LET l_index = l_line.getindexof(" ", 1)
                LET l_name = l_line.subString(1, l_index)
-               LET m_documentation[m_documentation_count].function[l_function_count].return_value[m_return_value_count].name = l_name
+               LET m_documentation[m_documentation_count].function[l_function_count].return_value[m_return_value_count].name = l_name.trim()
                LET l_text = l_line.subString(l_index, l_line.getLength())
-               LET m_documentation[m_documentation_count].function[l_function_count].return_value[m_return_value_count].description = l_text
+               LET m_documentation[m_documentation_count].function[l_function_count].return_value[m_return_value_count].description = l_text.trim()
 
             OTHERWISE
                IF m_count == 1 THEN
@@ -489,6 +514,103 @@ DEFINE
    RETURN l_pos
 
 END FUNCTION
+
+##
+# Function to parse the DEFINEs.
+# @param l_pos The position the DEFINEs start from.
+# @return l_pos The end position of the DEFINEs.
+#
+
+FUNCTION p_gt_parse_define(l_pos)
+
+DEFINE
+   l_pos   INTEGER
+
+DEFINE
+   i                  INTEGER,
+   j                  INTEGER,
+   l_function_index   INTEGER,
+   l_name             STRING,
+   l_type             STRING
+
+   FOR i = 1 TO m_documentation[m_documentation_count].function.getlength()
+      IF m_documentation[m_documentation_count].function[i].name = m_current_function THEN
+         LET l_function_index = i
+         EXIT FOR
+      END IF
+   END FOR
+
+   IF l_function_index == 0 THEN
+      RETURN l_pos + 1
+   END IF
+
+   LET l_pos = gt_4gl_parse_define(l_function_index, l_pos)
+
+   FOR i = 1 TO gt_4gl_define_count(l_function_index)
+      CALL gt_4gl_define_value(l_function_index, i)
+         RETURNING l_name, l_type
+
+      FOR j = 1 TO gt_documentation_function_parameter_count(m_documentation_count, l_function_index)
+         #DISPLAY m_documentation[m_documentation_count].function[l_function_index].parameter[j].name, ":", l_name, ":", l_type
+         IF m_documentation[m_documentation_count].function[l_function_index].parameter[j].name == l_name THEN
+            #DISPLAY "MATCH!", l_function_index
+            LET m_documentation[m_documentation_count].function[l_function_index].parameter[j].type = l_type
+            EXIT FOR
+         END IF
+      END FOR
+   END FOR
+
+   RETURN l_pos
+
+END FUNCTION
+
+##
+# Function to parse the RETURNs.
+# @param l_pos The position the RETURNs start from.
+# @return l_pos The end position of the RETURNs.
+#
+
+FUNCTION p_gt_parse_return(l_pos)
+
+DEFINE
+   l_pos   INTEGER
+
+DEFINE
+   i                  INTEGER,
+   j                  INTEGER,
+   l_function_index   INTEGER,
+   l_name             STRING,
+   l_type             STRING
+
+   FOR i = 1 TO m_documentation[m_documentation_count].function.getlength()
+      IF m_documentation[m_documentation_count].function[i].name = m_current_function THEN
+         LET l_function_index = i
+         EXIT FOR
+      END IF
+   END FOR
+
+   IF l_function_index == 0 THEN
+      RETURN l_pos + 1
+   END IF
+
+   LET l_pos = gt_4gl_parse_return(l_function_index, l_pos)
+
+   FOR i = 1 TO gt_4gl_return_count(l_function_index)
+      CALL gt_4gl_return_value(l_function_index, i)
+         RETURNING l_type
+
+      LET m_documentation[m_documentation_count].function[l_function_index].return_value[i].type = l_type
+   END FOR
+
+   RETURN l_pos
+
+END FUNCTION
+
+##
+# Function to find the next FUNCTION statement.
+# @param l_pos The position to start from.
+# @return l_function The next function.
+#
 
 FUNCTION p_gt_find_next_function(l_pos)
 
