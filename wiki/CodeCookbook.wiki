@@ -23,7 +23,7 @@ If there isn't already an appropriate section, then add your link to Misc or cre
 
 ==Forms==
 
-  * [FormSize Set/Control form size]
+  * [FormSize Set size of form area in a window]
   
 ==Web/Network==
 
