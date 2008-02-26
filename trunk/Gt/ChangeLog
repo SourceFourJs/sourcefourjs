@@ -1,14 +1,19 @@
-2007-10-30
+2008-02-16 scottn
+  * Moved parsing code into its own libary
+  * Rewrote most of the parsing code in the process - it is much better now but still needs a fair amout of work
+  * Tidied up the directories
+
+2007-10-30 scottn
   * Fixed libGtCore unittests to work again
   * Included bug fix from Mark Rees in GtDocgen
   * Started on parsing of types for parameters and return values in GtDocgen
 
-2007-10-02
+2007-10-02 scottn
   * Improvement to XHTML generator
   * Added class to XHTML functions to allow for multiple classes
   * Removed gt_string_capitalize 
 
-2007-10-01
+2007-10-01 scottn
   * Added libgt_pdf.4gl to libGtFormat
   * Initial commit of GtDocGen
   * Added libgt_4gl_grammar
