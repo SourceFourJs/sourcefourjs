@@ -50,15 +50,14 @@ FUNCTION gt_main_function()
 
 DEFINE
    i                      INTEGER,
-   l_filename             STRING,
    l_log_file             STRING,
-	l_configuration_file   STRING
+   l_configuration_file   STRING
 
    LET l_log_file = "gtdocgen.log"
    LET l_configuration_file = NULL
 
    FOR i = 1 TO base.application.getargumentcount()
-	   IF base.application.getargument(i) == "-f" THEN
+	   IF base.application.getargument(i) == "-c" THEN
 		   LET l_configuration_file = base.application.getargument(i + 1)
 	   END IF
 
@@ -66,7 +65,7 @@ DEFINE
 		   LET l_configuration_file = base.application.getargument(i + 1)
 	   END IF
 
-      IF base.application.getargument(i) == "-l" THEN
+       IF base.application.getargument(i) == "-l" THEN
 		   LET l_log_file = base.application.getargument(i + 1)
 	   END IF
 

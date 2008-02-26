@@ -18,8 +18,6 @@
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/GtDocgen/libgt_xhtml.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="10" PARENT="3" NAME="libgt_xhtml.4gl" LABEL="libgt_xhtml.4gl" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/GtDocgen/gtdocgen_example.conf" ORDER="0" TYPE="conf File (.conf)" ID="11" PARENT="3" NAME="gtdocgen_example.conf" LABEL="gtdocgen_example.conf" />
       <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/GtDocgen/gtdocgen_example.css" ORDER="0" TYPE="css File (.css)" ID="12" PARENT="3" NAME="gtdocgen_example.css" LABEL="gtdocgen_example.css" />
-      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/GtDocgen/libgt_4gl_grammar.4gl" ORDER="0" TYPE="4gl File (.4gl)" PARENT="3" ID="13" NAME="libgt_4gl_grammar.4gl" LABEL="libgt_4gl_grammar.4gl" />
-      <FILE DESCRIPTION="" SOURCE_PATH="/home/work/projects/genero/sourcefourjs/trunk/Gt/GtDocgen/libgt_string.4gl" ORDER="0" TYPE="4gl File (.4gl)" ID="14" PARENT="3" NAME="libgt_string.4gl" LABEL="libgt_string.4gl" />
      </FILES>
     </APPLICATION>
    </APPLICATIONS>

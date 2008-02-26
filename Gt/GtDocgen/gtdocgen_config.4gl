@@ -58,7 +58,7 @@ END FUNCTION
 
 ##
 # This function returns the directory containing the source to parse.
-# @return l_source_directory The source directory to parse.
+# @return m_configuration.source_directory The source directory to parse.
 #
 
 FUNCTION gt_source_directory()
@@ -70,8 +70,8 @@ END FUNCTION
 ##
 # This function returns whether subdirectories of the source path are to be
 # parsed or not.
-# @return l_recursive TRUE if the parse should processes subdirectories, FALSE
-#                     otherwise.
+# @return m_configuration.recursive TRUE if the parse should processes
+#                                   subdirectories, FALSE otherwise.
 #
 
 FUNCTION gt_recursive()
@@ -82,7 +82,7 @@ END FUNCTION
 
 ##
 # This function returns the directory where the documentation is to be written to.
-# @return l_output_directory The output directory.
+# @return m_configuation.output_directory The output directory.
 #
 
 FUNCTION gt_output_directory()
@@ -93,7 +93,7 @@ END FUNCTION
 
 ##
 # This function returns the type of output to generate for the documentation.
-# @return l_format The output format required.
+# @return m_configuration.output_format The output format required.
 #
 
 FUNCTION gt_output_format()
@@ -104,7 +104,7 @@ END FUNCTION
 
 ##
 # This function returns the stylesheet to be used for the documentation.
-# @return l_stylesheet The stylesheet to use.
+# @return m_configuration.stylesheet The stylesheet to use.
 #
 
 FUNCTION gt_stylesheet()
@@ -115,7 +115,7 @@ END FUNCTION
 
 ##
 # This function returns the class id to be used for the documentation.
-# @return l_class_id The class id to use.
+# @return m_configuration.class_id The class id to use.
 #
 
 FUNCTION gt_class_id()
@@ -141,8 +141,8 @@ DEFINE
    l_value       STRING,
    l_buffer      STRING,
    l_variable    STRING,
-   l_filehdl     base.channel,
-   l_tokenizer   base.stringtokenizer
+   l_filehdl     base.Channel,
+   l_tokenizer   base.StringTokenizer
 
    LET l_ok = FALSE
    LET m_configuration.source_directory = NULL

@@ -37,14 +37,14 @@
       <LStr acceleratorName = "Alt-F4" />
    </ActionDefault>
    <ActionDefault name = "run"
-                  image = "q_accept"
+                  image = "accept_green_22"
                   text = "Run"
                   acceleratorName = "Ctrl-R">
       <LStr text = "Run"
             acceleratorName = "Ctrl-R" />
    </ActionDefault>
    <ActionDefault name = "cancel"
-                  image = "q_cancel"
+                  image = "delete_red_22"
                   text = "Cancel"
                   acceleratorName = "">
       <LStr text = "Cancel"
@@ -72,7 +72,7 @@
             comment = "Paste" />
    </ActionDefault>
    <ActionDefault name = "help"
-                  image = "q_help"
+                  image = "question_blue_22"
                   text = "Help"
                   comment = "Help">
       <LStr text = "Help"
