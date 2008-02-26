@@ -33,14 +33,11 @@
 IMPORT os
 
 DEFINE
-   m_in_define          SMALLINT,
-   m_in_return          SMALLINT,
-   m_in_function        SMALLINT,
-   m_in_documentation   SMALLINT,
-
+   m_function_found        SMALLINT,
    m_count                 INTEGER,
    m_tag_count             INTEGER,
    m_function_count        INTEGER,
+   m_function_index        INTEGER,
    m_parameter_count       INTEGER,
    m_return_value_count    INTEGER,
 	m_documentation_count   INTEGER,
@@ -57,7 +54,7 @@ DEFINE
          value   STRING
       END RECORD,
 
-      function   DYNAMIC ARRAY OF RECORD
+      method   DYNAMIC ARRAY OF RECORD
          name   STRING,
          text   STRING,
 
@@ -95,8 +92,19 @@ DEFINE
 END FUNCTION
 
 ##
+# Function to return the current function index.
+# @return m_function_index The current function index.
+#
+
+FUNCTION gt_function_index()
+
+   RETURN m_function_index
+
+END FUNCTION
+
+##
 # Function to return the documentation count.
-# @return m_documentation.getLength The documentation count.
+# @return m_documentation[].getLength() The documentation count.
 #
 
 FUNCTION gt_documentation_count()
@@ -108,9 +116,9 @@ END FUNCTION
 ##
 # Function to return the module documentation details.
 # @param l_documentation_index The index to use.
-# @return l_name The name of the file the documentation is from.
-# @return l_path The path to the file relative to the given root directory.
-# @return l_text The description of the module.
+# @return m_documentation[].name The name of the file the documentation is from.
+# @return m_documentation[].path The path to the file relative to the given root directory.
+# @return m_documentation[].text The description of the module.
 #
 
 FUNCTION gt_documentation_values(l_documentation_index)
@@ -123,6 +131,12 @@ DEFINE
           m_documentation[l_documentation_index].text
 
 END FUNCTION
+
+##
+# Function to return the documentation tag count.
+# @param l_documentation_index The index to use.
+# @return m_documentation[].tag.getLength() The length of tag array.
+#
 
 FUNCTION gt_documentation_tag_count(l_documentation_index)
 
@@ -149,7 +163,7 @@ FUNCTION gt_documentation_function_count(l_documentation_index)
 DEFINE
    l_documentation_index   INTEGER
 
-   RETURN m_documentation[l_documentation_index].function.getLength()
+   RETURN m_documentation[l_documentation_index].method.getLength()
 
 END FUNCTION
 
@@ -159,8 +173,8 @@ DEFINE
    l_documentation_index   INTEGER,
    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].function[l_function_index].name,
-          m_documentation[l_documentation_index].function[l_function_index].text
+   RETURN m_documentation[l_documentation_index].method[l_function_index].name,
+          m_documentation[l_documentation_index].method[l_function_index].text
 
 END FUNCTION
 
@@ -170,7 +184,7 @@ DEFINE
    l_documentation_index   INTEGER,
    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].function[l_function_index].tag.getLength()
+   RETURN m_documentation[l_documentation_index].method[l_function_index].tag.getLength()
 
 END FUNCTION
 
@@ -181,8 +195,8 @@ DEFINE
    l_function_index        INTEGER,
    l_tag_index             INTEGER
 
-   RETURN m_documentation[l_documentation_index].function[l_function_index].tag[l_tag_index].name,
-          m_documentation[l_documentation_index].function[l_function_index].tag[l_tag_index].value
+   RETURN m_documentation[l_documentation_index].method[l_function_index].tag[l_tag_index].name,
+          m_documentation[l_documentation_index].method[l_function_index].tag[l_tag_index].value
 
 END FUNCTION
 
@@ -192,7 +206,7 @@ DEFINE
    l_documentation_index   INTEGER,
    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].function[l_function_index].parameter.getLength()
+   RETURN m_documentation[l_documentation_index].method[l_function_index].parameter.getLength()
 
 END FUNCTION
 
@@ -203,9 +217,9 @@ DEFINE
    l_function_index        INTEGER,
    l_parameter_index       INTEGER
 
-   RETURN m_documentation[l_documentation_index].function[l_function_index].parameter[l_parameter_index].name,
-          m_documentation[l_documentation_index].function[l_function_index].parameter[l_parameter_index].type,
-          m_documentation[l_documentation_index].function[l_function_index].parameter[l_parameter_index].description
+   RETURN m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].name,
+          m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].type,
+          m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].description
 
 END FUNCTION
 
@@ -215,7 +229,7 @@ DEFINE
    l_documentation_index   INTEGER,
    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].function[l_function_index].return_value.getLength()
+   RETURN m_documentation[l_documentation_index].method[l_function_index].return_value.getLength()
 
 END FUNCTION
 
@@ -224,11 +238,11 @@ FUNCTION gt_documentation_function_return_value_values(l_documentation_index, l_
 DEFINE
    l_documentation_index   INTEGER,
    l_function_index        INTEGER,
-   l_return_value_index       INTEGER
+   l_return_value_index    INTEGER
 
-   RETURN m_documentation[l_documentation_index].function[l_function_index].return_value[l_return_value_index].name,
-          m_documentation[l_documentation_index].function[l_function_index].return_value[l_return_value_index].type,
-          m_documentation[l_documentation_index].function[l_function_index].return_value[l_return_value_index].description
+   RETURN m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].name,
+          m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].type,
+          m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].description
 
 END FUNCTION
 
@@ -245,7 +259,7 @@ DEFINE
 
 DEFINE
    l_ok                SMALLINT,
-   i,j,k               INTEGER,
+   i                   INTEGER,
    l_dirhdl            INTEGER,
    l_directory_count   INTEGER,
    l_file              STRING,
@@ -294,27 +308,27 @@ DISPLAY "FILE: ", os.path.join(l_directory, l_file)
    ELSE
    END IF
 
-   FOR i = 1 TO m_documentation_count
-      DISPLAY "Module : ", m_documentation[i].name
-      DISPLAY "         ", m_documentation[i].text
+   #FOR i = 1 TO m_documentation_count
+      #DISPLAY "Module : ", m_documentation[i].name
+      #DISPLAY "         ", m_documentation[i].text
 
-      FOR j = 1 TO m_documentation[i].function.getlength()
-         DISPLAY "   Function : ", m_documentation[i].function[j].name
-         DISPLAY "              ", m_documentation[i].function[j].text
+      #FOR j = 1 TO m_documentation[i].function.getlength()
+      #   DISPLAY "   Function : ", m_documentation[i].function[j].name
+      #   DISPLAY "              ", m_documentation[i].function[j].text
 
-         FOR k = 1 TO m_documentation[i].function[j].tag.getlength()
-            DISPLAY "      Tags : ", m_documentation[i].function[j].tag[k].name, " - ", m_documentation[i].function[j].tag[k].value
-         END FOR
+      #   FOR k = 1 TO m_documentation[i].function[j].tag.getlength()
+      #      DISPLAY "      Tags : ", m_documentation[i].function[j].tag[k].name, " : ", m_documentation[i].function[j].tag[k].value
+      #   END FOR
 
-         FOR k = 1 TO m_documentation[i].function[j].parameter.getlength()
-            DISPLAY "      Parameter : ", m_documentation[i].function[j].parameter[k].name, " - ", m_documentation[i].function[j].parameter[k].type, " - ", m_documentation[i].function[j].parameter[k].description
-         END FOR
+      #   FOR k = 1 TO m_documentation[i].function[j].parameter.getlength()
+      #      DISPLAY "      Parameter : ", m_documentation[i].function[j].parameter[k].name, " : ", m_documentation[i].function[j].parameter[k].type, " : ", m_documentation[i].function[j].parameter[k].description
+      #   END FOR
 
-         FOR k = 1 TO m_documentation[i].function[j].return_value.getlength()
-            DISPLAY "      Return Values : ", m_documentation[i].function[j].return_value[k].name, " - ", m_documentation[i].function[j].return_value[k].type, " - ", m_documentation[i].function[j].return_value[k].description
-         END FOR
-      END FOR
-   END FOR
+      #   FOR k = 1 TO m_documentation[i].function[j].return_value.getlength()
+      #      DISPLAY "      Return Values : ", m_documentation[i].function[j].return_value[k].name, " : ", m_documentation[i].function[j].return_value[k].type, " : ", m_documentation[i].function[j].return_value[k].description
+      #   END FOR
+      #END FOR
+   #END FOR
 
    RETURN l_ok
 
@@ -334,7 +348,6 @@ DEFINE
    i                    INTEGER,
    l_pos                INTEGER,
    l_token_count        INTEGER,
-   l_tmp                STRING,
    l_token              STRING
 
    LET l_pos = 0
@@ -344,6 +357,7 @@ DEFINE
    LET m_function_count = 0
    LET m_parameter_count = 0
    LET m_return_value_count = 0
+   LET m_function_found = FALSE
 
    LET l_token_count = gt_4gl_token_count()
 
@@ -359,9 +373,9 @@ DEFINE
             LET m_function_count = m_function_count + 1
 
             IF i == 1 THEN
-               LET m_documentation[m_documentation_count].function[m_function_count].name = gt_4gl_function_value(i)
+               LET m_documentation[m_documentation_count].method[m_function_count].name = gt_4gl_function_value(i)
             ELSE
-               LET m_documentation[m_documentation_count].function[m_function_count].parameter[m_parameter_count].name = gt_4gl_function_value(i)
+               LET m_documentation[m_documentation_count].method[m_function_count].parameter[m_parameter_count].name = gt_4gl_function_value(i)
             END IF
          END FOR
       END IF
@@ -373,15 +387,43 @@ DEFINE
       LET l_pos = l_pos + 1
       LET l_token = gt_4gl_next_token(l_pos)
 
+      IF l_token == "\"" THEN
+         LET l_pos = l_pos + 1
+
+         WHILE gt_4gl_next_token(l_pos) != "\""
+            #DISPLAY "---> ", gt_4gl_next_token(l_pos)
+            LET l_pos = l_pos + 1
+         END WHILE
+
+         CONTINUE WHILE
+      END IF
+
+      IF l_token == "'" THEN
+         LET l_pos = l_pos + 1
+
+         WHILE gt_4gl_next_token(l_pos) != "'"
+            LET l_pos = l_pos + 1
+         END WHILE
+
+         CONTINUE WHILE
+      END IF
+
       CASE
          WHEN l_token.subString(1, 2) == "##"
             LET l_pos = p_gt_parse_documentation(l_pos)
 
-         WHEN l_token.touppercase() == "DEFINE"
+         WHEN l_token.toUpperCase() == "DEFINE"
             LET l_pos = p_gt_parse_define(l_pos)
+            LET l_pos = l_pos - 1
 
-         WHEN l_token.touppercase() == "RETURN"
-            LET l_pos = p_gt_parse_return(l_pos)
+         WHEN l_token.toUpperCase() == "FUNCTION"
+           OR l_token.toUpperCase() == "MAIN"
+            LET m_function_found = TRUE
+
+         WHEN l_token.toUpperCase() == "RETURN"
+            IF gt_4gl_next_token(l_pos - 1) != "@" THEN
+               LET l_pos = p_gt_parse_return(l_pos)
+            END IF
 
          OTHERWISE
       END CASE
@@ -413,9 +455,7 @@ DEFINE
    l_name             STRING,
    l_text             STRING,
    l_token            STRING,
-   l_command          STRING,
-   l_documentation    STRING,
-   l_tokenizer        base.stringtokenizer
+   l_command          STRING
 
    LET l_function_count = 0
    LET m_count = m_count + 1
@@ -428,8 +468,8 @@ DEFINE
       LET m_current_function = p_gt_find_next_function(l_pos)
 
       IF m_current_function IS NOT NULL THEN
-         FOR i = 1 TO m_documentation[m_documentation_count].function.getlength()
-            IF m_documentation[m_documentation_count].function[i].name = m_current_function THEN
+         FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
+            IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
                LET l_function_count = i
                EXIT FOR
             END IF
@@ -476,17 +516,17 @@ DEFINE
                LET m_parameter_count = m_parameter_count + 1
                LET l_index = l_line.getindexof(" ", 1)
                LET l_name = l_line.subString(1, l_index)
-               LET m_documentation[m_documentation_count].function[l_function_count].parameter[m_parameter_count].name = l_name.trim()
+               LET m_documentation[m_documentation_count].method[l_function_count].parameter[m_parameter_count].name = l_name.trim()
                LET l_text = l_line.subString(l_index, l_line.getLength())
-               LET m_documentation[m_documentation_count].function[l_function_count].parameter[m_parameter_count].description = l_text.trim()
+               LET m_documentation[m_documentation_count].method[l_function_count].parameter[m_parameter_count].description = l_text.trim()
 
             WHEN l_command == "@return"
                LET m_return_value_count = m_return_value_count + 1
                LET l_index = l_line.getindexof(" ", 1)
                LET l_name = l_line.subString(1, l_index)
-               LET m_documentation[m_documentation_count].function[l_function_count].return_value[m_return_value_count].name = l_name.trim()
+               LET m_documentation[m_documentation_count].method[l_function_count].return_value[m_return_value_count].name = l_name.trim()
                LET l_text = l_line.subString(l_index, l_line.getLength())
-               LET m_documentation[m_documentation_count].function[l_function_count].return_value[m_return_value_count].description = l_text.trim()
+               LET m_documentation[m_documentation_count].method[l_function_count].return_value[m_return_value_count].description = l_text.trim()
 
             OTHERWISE
                IF m_count == 1 THEN
@@ -495,15 +535,15 @@ DEFINE
                   LET m_documentation[m_documentation_count].tag[m_tag_count].value = l_line.trim()
                ELSE
                   LET m_tag_count = m_tag_count + 1
-                  LET m_documentation[m_documentation_count].function[l_function_count].tag[m_tag_count].name = l_command.subString(2, l_command.getLength())
-                  LET m_documentation[m_documentation_count].function[l_function_count].tag[m_tag_count].value = l_line.trim()
+                  LET m_documentation[m_documentation_count].method[l_function_count].tag[m_tag_count].name = l_command.subString(2, l_command.getLength())
+                  LET m_documentation[m_documentation_count].method[l_function_count].tag[m_tag_count].value = l_line.trim()
                END IF
          END CASE
       ELSE
          IF m_count == 1 THEN
             LET m_documentation[m_documentation_count].text = m_documentation[m_documentation_count].text, " ", l_line.trim()
          ELSE
-            LET m_documentation[m_documentation_count].function[l_function_count].text = m_documentation[m_documentation_count].function[l_function_count].text, " ", l_line.trim()
+            LET m_documentation[m_documentation_count].method[l_function_count].text = m_documentation[m_documentation_count].method[l_function_count].text, " ", l_line.trim()
          END IF
       END IF
 
@@ -533,18 +573,31 @@ DEFINE
    l_name             STRING,
    l_type             STRING
 
-   FOR i = 1 TO m_documentation[m_documentation_count].function.getlength()
-      IF m_documentation[m_documentation_count].function[i].name = m_current_function THEN
-         LET l_function_index = i
-         EXIT FOR
-      END IF
-   END FOR
+   # m_function_found is only set to TRUE once the first FUNCTION statement has
+   # been found. So if it is FALSE then we must be looking at the modular
+   # DEFINEs.
 
-   IF l_function_index == 0 THEN
-      RETURN l_pos + 1
+   IF m_function_found == TRUE THEN
+      FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
+         IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
+            LET l_function_index = i
+            EXIT FOR
+         END IF
+      END FOR
+
+      # We did not find the function which should never happen!
+
+      IF l_function_index == 0 THEN
+         RETURN l_pos + 1
+      END IF
+   ELSE
+      LET l_function_index = 1
    END IF
 
-   LET l_pos = gt_4gl_parse_define(l_function_index, l_pos)
+   LET m_function_index = l_function_index
+
+   CALL gt_4gl_parse_define(l_pos, l_name)
+      RETURNING l_pos, l_name
 
    FOR i = 1 TO gt_4gl_define_count(l_function_index)
       CALL gt_4gl_define_value(l_function_index, i)
@@ -552,9 +605,9 @@ DEFINE
 
       FOR j = 1 TO gt_documentation_function_parameter_count(m_documentation_count, l_function_index)
          #DISPLAY m_documentation[m_documentation_count].function[l_function_index].parameter[j].name, ":", l_name, ":", l_type
-         IF m_documentation[m_documentation_count].function[l_function_index].parameter[j].name == l_name THEN
+         IF m_documentation[m_documentation_count].method[l_function_index].parameter[j].name == l_name THEN
             #DISPLAY "MATCH!", l_function_index
-            LET m_documentation[m_documentation_count].function[l_function_index].parameter[j].type = l_type
+            LET m_documentation[m_documentation_count].method[l_function_index].parameter[j].type = l_type
             EXIT FOR
          END IF
       END FOR
@@ -577,13 +630,11 @@ DEFINE
 
 DEFINE
    i                  INTEGER,
-   j                  INTEGER,
    l_function_index   INTEGER,
-   l_name             STRING,
    l_type             STRING
 
-   FOR i = 1 TO m_documentation[m_documentation_count].function.getlength()
-      IF m_documentation[m_documentation_count].function[i].name = m_current_function THEN
+   FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
+      IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
          LET l_function_index = i
          EXIT FOR
       END IF
@@ -599,7 +650,7 @@ DEFINE
       CALL gt_4gl_return_value(l_function_index, i)
          RETURNING l_type
 
-      LET m_documentation[m_documentation_count].function[l_function_index].return_value[i].type = l_type
+      LET m_documentation[m_documentation_count].method[l_function_index].return_value[i].type = l_type
    END FOR
 
    RETURN l_pos

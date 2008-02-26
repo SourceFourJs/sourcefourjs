@@ -55,7 +55,6 @@ FUNCTION gt_generate_xhtml_index()
 DEFINE
    l_ok                    SMALLINT,
    i                       INTEGER,
-   j                       INTEGER,
    l_documentation_count   INTEGER,
    l_filename              STRING,
    l_xhtmlhdl              STRING,
@@ -162,7 +161,7 @@ DEFINE
    l_return_value_name          STRING,
    l_return_value_type          STRING,
    l_return_value_description   STRING,
-   l_buffer                     base.stringbuffer
+   l_buffer                     base.StringBuffer
 
    LET l_class_id = gt_class_id()
    LET l_stylesheet = gt_stylesheet()
