@@ -22,7 +22,7 @@ PAGE (TEXT="&Two")
 
 Alt-O will switch to the first page, Alt-T will switch to the second page.
 
-That the standard Windows accelerator Control-Tab can also be used to manipulate the folder page if the focus is in the folder page.  (For the reaon why the focus must be in a folder page, what if there were two folders?, what folder widget would Control-Tab apply to?)
+The standard Windows accelerator Control-Tab can also be used to manipulate the folder page if the focus is in the folder page.  (For the reaon why the focus must be in a folder page think of the case 'what if there were two folders?, what folder widget would Control-Tab then apply to'?)
 
 If you want to programmatically change the folder page then there is an algorithm that I first referred to in the Genero developer mailing lists in August 2004.  This makes use of the fact that if there is only one visible PAGE it will be drawn on top and that any hidden pages that are then shown will not change what the current folder page is.  So the algorithm has three steps
 1) hide all folder pages except the one you want to display on top.
