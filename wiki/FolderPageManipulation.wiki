@@ -1,0 +1,45 @@
+#summary <DRAFT>Tips for Manipulating Folder Pages
+
+= Introduction =
+
+One of the often repeated questions in the 4js developer mailing lists is how to manipulate the FOLDER widgets so that a particular PAGE is on top.  Here are some tips/advice for manipulating the FOLDER widget.
+
+
+= Details =
+
+The one golden rule to remember is that when the GDC renders the FOLDER widget is that the PAGE that contains the field with the current focus will be drawn on top.
+
+So the simplest way to render a particular folder page on top is to "NEXT FIELD field" where field is a field on that folder page (preferably the field in the top-left corner of the page).
+
+However what do you do if you are in a MENU dialog where no field has the focus, or you  want the focus to be on a field that is not in the FOLDER.
+
+In the case of a MENU you do have the option of allowing the user to manipulate the folder page.  They can do this with the mouse.  If they want to do this with the keyboard, choose a unique letter in the text attributes for each PAGE and in the text attribute precede that letter with an &.  Then Alt-<letter> will allow the user to change folder page e.g.
+
+FOLDER ...
+PAGE (TEXT="&One")
+...
+PAGE (TEXT="&Two")
+
+Alt-O will switch to the first page, Alt-T will switch to the second page.
+
+Note that the standard Windows accelerator Control-Tab can also be used to manipulate the folder page.
+
+If you want to programmatically change the folder page then there is an algorithm that I first referred to in the Genero developer mailing lists in August 2005.  This makes use of the fact that if there is only one visible PAGE it will be drawn on top and that any hidden pages that are then shown will not change what the current folder page is.  So the algorithm has three steps
+1) hide all folder pages except the one you want to display on top.
+2) CALL ui.Interface.Refresh()
+3) unhide the pages you just hid.
+
+The algorithm assumes that all the folders and page widgets in the current form have a unique name.
+
+The following code extract implements that algorithm.
+
+As the algorithm does some DOM Tree manipulation, it is possible that the code will need to be altered in the future if the DOM Tree changes.  So each time you install a new version of Genero, it pays to check that this routine still works.
+
+
+
+ 
+
+
+
+ 
+ 
