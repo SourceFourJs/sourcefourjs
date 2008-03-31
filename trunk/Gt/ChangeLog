@@ -1,3 +1,8 @@
+2008-04-01 scottn
+  * Tidied up the 4gl files to get rid of warnings
+  * Got GtDocGen to the point where it will now generate its own documentation
+  * Added the gt_string_count function to libgt_string
+
 2008-02-16 scottn
   * Moved parsing code into its own libary
   * Rewrote most of the parsing code in the process - it is much better now but still needs a fair amout of work

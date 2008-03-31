@@ -512,11 +512,10 @@ END FUNCTION
 # @return l_pos The position in the token array once parsing is complete.
 #
 
-FUNCTION gt_4gl_parse_define(l_pos, l_name)
+FUNCTION gt_4gl_parse_define(l_pos)
 
 DEFINE
-   l_pos    INTEGER,
-   l_name   STRING
+   l_pos    INTEGER
 
 DEFINE
    i                  INTEGER,
@@ -538,8 +537,6 @@ DEFINE
       LET l_count = m_function[l_function_index].define.getLength()
    END IF
 
-   BREAKPOINT
-
    LET l_pos = l_pos + 1
    LET l_token = gt_4gl_next_token(l_pos)
 
@@ -556,13 +553,7 @@ DEFINE
             LET l_count = l_count + 1
 
             IF l_variable.getLength() > 0 THEN
-               LET l_tmp = l_variable
-
-               IF l_name.getCharAt(l_variable.getLength()) == "." THEN
-                  LET l_tmp = l_variable.subString(1, l_variable.getLength() - 1)
-               END IF
-
-               LET m_function[l_function_index].define[l_count].name = l_tmp
+               LET m_function[l_function_index].define[l_count].name = l_variable
 
                IF l_save > 0 THEN
                   FOR i = l_save TO l_count
@@ -607,7 +598,7 @@ DEFINE
             CONTINUE WHILE
 
          WHEN l_token.toUpperCase() == "END"
-            DISPLAY "FOUND END"
+            #DISPLAY "FOUND END"
             LET l_tmp = gt_4gl_next_token(l_pos + 1)
 
             IF l_tmp.toUpperCase() == "RECORD" THEN
@@ -642,25 +633,19 @@ DEFINE
             IF l_variable.getCharAt(l_variable.getLength()) == "." THEN
                LET l_variable = l_variable, l_token
                LET l_pos = l_pos + 1
-               LET l_Token = gt_4gl_next_token(l_pos)
+               LET l_token = gt_4gl_next_token(l_pos)
                CONTINUE WHILE
             END IF
 
-            DISPLAY "DATATYPE : ", l_token
-            CALL gt_4gl_parse_simple_datatype(l_pos, l_variable)
+            #DISPLAY "DATATYPE : ", l_token
+            CALL p_gt_4gl_parse_simple_datatype(l_pos, l_variable)
                RETURNING l_pos, l_variable, l_type
 
             LET i = i + 1
             LET l_count = l_count + 1
 
             IF l_variable.getLength() > 0 THEN
-               LET l_tmp = l_variable
-
-               IF l_name.getCharAt(l_variable.getLength()) == "." THEN
-                  LET l_tmp = l_variable.subString(1, l_variable.getLength() - 1)
-               END IF
-
-               LET m_function[l_function_index].define[l_count].name = l_tmp
+               LET m_function[l_function_index].define[l_count].name = l_variable
 
                IF l_save > 0 THEN
                   FOR i = l_save TO l_count
@@ -682,9 +667,9 @@ DEFINE
             END IF
 
             FOR i = 1 TO l_count
-            DISPLAY "DEFINE : ", i USING "###", " : ",
-                                 m_function[l_function_index].define[i].name, " : ",
-                                 m_function[l_function_index].define[i].type
+#DISPLAY "DEFINE : ", i USING "###", " : ",
+#                     m_function[l_function_index].define[i].name, " : ",
+#                     m_function[l_function_index].define[i].type
             END FOR
 
          WHEN gt_4gl_is_keyword(l_token)
@@ -706,134 +691,205 @@ DEFINE
 
       LET l_pos = l_pos + 1
       LET l_token = gt_4gl_next_token(l_pos)
-      DISPLAY "End token = ", l_token
+      #DISPLAY "End token = ", l_token
    END WHILE
-
-   RETURN l_pos, ""
-
-END FUNCTION
-
-##
-#
-#
-
-FUNCTION gt_4gl_parse_like(l_pos)
-
-DEFINE
-   l_pos   INTEGER
-
-DEFINE
-   l_token   STRING
-
-   LET l_token = gt_4gl_next_token(l_pos)
 
    RETURN l_pos
 
 END FUNCTION
 
-FUNCTION gt_4gl_parse_datatype(l_pos, l_name)
+##
+# This function returns the number of entries in the m_define array.
+# @return l_count The number of entries in the m_define array.
+#
+
+FUNCTION gt_4gl_return_count(l_function_index)
 
 DEFINE
-   l_pos    INTEGER,
-   l_name   STRING
+   l_function_index   INTEGER
 
-DEFINE
-   l_type    STRING,
-   l_token   STRING
-
-   LET l_token = gt_4gl_next_token(l_pos)
-
-   CASE
-      WHEN l_token.toUpperCase() == "DYNAMIC"
-        OR l_token.toUpperCase() == "ARRAY"
-
-        IF l_token.toUpperCase() == "DYNAMIC" THEN
-            LET l_pos = l_pos + 1
-         END IF
-
-         CALL gt_4gl_parse_array(l_pos, l_name)
-            RETURNING l_pos, l_name, l_type
-
-      WHEN l_token.toUpperCase() == "RECORD"
-         CALL gt_4gl_parse_record(l_pos, l_name)
-            RETURNING l_pos, l_name
-
-      OTHERWISE
-         CALL gt_4gl_parse_simple_datatype(l_pos, l_name)
-            RETURNING l_pos, l_name, l_type
-   END CASE
-
-   RETURN l_pos, l_name, l_type
+   RETURN m_function[l_function_index].return.getlength()
 
 END FUNCTION
 
 ##
-# This function parses the ARRAY statement.
+# This function returns the value of the m_define array for the given position.
+# @param l_count The position to get the value for.
+# @return l_value The value of the m_define array at the given position.
+#
+
+FUNCTION gt_4gl_return_value(l_function_index, l_return_index)
+
+DEFINE
+   l_function_index   INTEGER,
+   l_return_index     INTEGER
+
+   RETURN m_function[l_function_index].return[l_return_index].type
+
+END FUNCTION
+
+##
+# This function parses the RETURN statement.
 # @param l_pos The position in the token array to start from.
 # @return l_pos The position in the token array once parsing is complete.
 #
-FUNCTION gt_4gl_parse_array(l_pos, l_name)
+
+FUNCTION gt_4gl_parse_return(l_function_index, l_pos)
 
 DEFINE
-   l_pos    INTEGER,
-   l_name   STRING
+   l_function_index   INTEGER,
+   l_pos              INTEGER
 
 DEFINE
-   l_type        STRING,
-   l_token       STRING
+   i                INTEGER,
+   j                INTEGER,
+   l_count          INTEGER,
+   l_save           INTEGER,
+   l_index          INTEGER,
+   l_token          STRING,
+   l_return_value   STRING,
+   l_tmp            base.StringBuffer
 
-   LET l_type = "ARRAY"
-   LET l_name = l_name, "[]"
-   LET l_token = gt_4gl_next_token(l_pos)
-
-   WHILE l_token != "OF"
-      LET l_pos = l_pos + 1
-      LET l_token = gt_4gl_next_token(l_pos)
-   END WHILE
+   LET l_save = 0
+   LET l_return_value = ""
+   LET l_tmp = base.StringBuffer.create()
 
    LET l_pos = l_pos + 1
    LET l_token = gt_4gl_next_token(l_pos)
 
-   IF l_token.toUpperCase() == "RECORD" THEN
-      LET l_name = l_name, "."
-   END IF
+   WHILE TRUE
+      IF gt_4gl_is_keyword(l_token) THEN
+         EXIT WHILE
+      END IF
 
-   RETURN l_pos, l_name, l_type
+      LET l_return_value = l_return_value, l_token
+
+      LET l_pos = l_pos + 1
+      LET l_token = gt_4gl_next_token(l_pos)
+
+      CASE
+         WHEN l_token == "("
+            LET l_count = 0
+
+            WHILE TRUE
+               LET l_return_value = l_return_value, l_token
+               LET l_pos = l_pos + 1
+               LET l_token = gt_4gl_next_token(l_pos)
+
+               IF l_token == "(" THEN
+                  LET l_count = l_count + 1
+               END IF
+
+               IF l_token == ")" THEN
+                  IF l_count = 0 THEN
+                     EXIT WHILE
+                  ELSE
+                     LET l_count = l_count - 1
+                  END IF
+               END IF
+            END WHILE
+
+            CONTINUE WHILE
+
+         WHEN l_token == "["
+            LET l_return_value = l_return_value, l_token
+
+            WHILE TRUE
+               LET l_pos = l_pos + 1
+               LET l_token = gt_4gl_next_token(l_pos)
+
+               IF l_token == "]" THEN
+                  EXIT WHILE
+               END IF
+            END WHILE
+
+            CONTINUE WHILE
+
+         WHEN l_token == "."
+            WHILE l_token == "."
+               LET l_return_value = l_return_value, l_token
+               LET l_pos = l_pos + 1
+               LET l_token = gt_4gl_next_token(l_pos)
+            END WHILE
+
+            CONTINUE WHILE
+
+         WHEN l_token == "\""
+            WHILE TRUE
+               LET l_return_value = "STRING"
+               LET l_pos = l_pos + 1
+               LET l_token = gt_4gl_next_token(l_pos)
+
+               IF l_token == "\"" THEN
+                                    LET l_pos = l_pos + 1
+                  LET l_token = gt_4gl_next_token(l_pos)
+                  EXIT WHILE
+               END IF
+            END WHILE
+
+         WHEN l_token == "'"
+            WHILE TRUE
+               LET l_return_value = "STRING"
+               LET l_pos = l_pos + 1
+               LET l_token = gt_4gl_next_token(l_pos)
+
+               IF l_token == "'" THEN
+                  LET l_pos = l_pos + 1
+                  LET l_token = gt_4gl_next_token(l_pos)
+                  EXIT WHILE
+               END IF
+            END WHILE
+
+         OTHERWISE
+            LET i = i + 1
+#DISPLAY "RETURN : ", l_return_value
+            LET m_function[l_function_index].return[i].name = l_return_value
+
+            # Stored names will not include functions like getLength() etc
+
+            IF l_return_value.getCharAt(l_return_value.getLength()) == ")" THEN
+               LET l_index = gt_string_rfind(l_return_value, ".")
+               LET l_return_value = l_return_value.subString(1, l_index - 1)
+            END IF
+
+            FOR j = 1 TO m_function[l_function_index].define.getLength()
+               IF m_function[l_function_index].define[j].name == l_return_value THEN
+                  #DISPLAY l_return_value, " -> ", m_function[l_function_index].define[j].name, ":", m_function[l_function_index].define[j].type
+                  LET m_function[l_function_index].return[i].type = m_function[l_function_index].define[j].type
+                  EXIT FOR
+               END IF
+            END FOR
+
+            IF gt_string_is_empty(m_function[l_function_index].return[i].type) THEN
+               FOR j = 1 TO m_function[1].define.getLength()
+                  #DISPLAY l_return_value, " -> ", m_function[1].define[j].name, ":", m_function[1].define[j].type
+                  IF m_function[1].define[j].name == l_return_value THEN
+                     LET m_function[l_function_index].return[i].type = m_function[1].define[j].type
+                     EXIT FOR
+                  END IF
+               END FOR
+            END IF
+
+            IF l_token == "," THEN
+               LET l_return_value = ""
+            ELSE
+               EXIT WHILE
+            END IF
+      END CASE
+
+      LET l_pos = l_pos + 1
+      LET l_token = gt_4gl_next_token(l_pos)
+   END WHILE
+
+   RETURN l_pos
 
 END FUNCTION
 
-##
-# This function parses the RECORD statement.
-# @param l_pos The position in the token array to start from.
-# @return l_pos The position in the token array once parsing is complete.
-#
+#------------------------------------------------------------------------------#
+# PRIVATE FUNCTIONS                                                            #
+#------------------------------------------------------------------------------#
 
-FUNCTION gt_4gl_parse_record(l_pos, l_name)
-
-DEFINE
-   l_pos    INTEGER,
-   l_name   STRING
-
-DEFINE
-   l_token   STRING
-
-   LET l_token = gt_4gl_next_token(l_pos)
-
-   IF l_token.touppercase() == "LIKE" THEN
-      CALL gt_4gl_parse_like(l_pos)
-         RETURNING l_pos
-   ELSE
-      LET l_name = l_name, "."
-
-      CALL gt_4gl_parse_define(l_pos, l_name)
-         RETURNING l_pos, l_name
-   END IF
-
-   RETURN l_pos, l_name
-
-END FUNCTION
-
-FUNCTION gt_4gl_parse_simple_datatype(l_pos, l_name)
+FUNCTION p_gt_4gl_parse_simple_datatype(l_pos, l_name)
 
 DEFINE
    l_pos    INTEGER,
@@ -918,251 +974,6 @@ DEFINE
    RETURN l_pos, l_name, l_type
 
 END FUNCTION
-
-##
-# This function returns the number of entries in the m_define array.
-# @return l_count The number of entries in the m_define array.
-#
-
-FUNCTION gt_4gl_return_count(l_function_index)
-
-DEFINE
-   l_function_index   INTEGER
-
-   RETURN m_function[l_function_index].return.getlength()
-
-END FUNCTION
-
-##
-# This function returns the value of the m_define array for the given position.
-# @param l_count The position to get the value for.
-# @return l_value The value of the m_define array at the given position.
-#
-
-FUNCTION gt_4gl_return_value(l_function_index, l_return_index)
-
-DEFINE
-   l_function_index   INTEGER,
-   l_return_index     INTEGER
-
-   RETURN m_function[l_function_index].return[l_return_index].type
-
-END FUNCTION
-
-##
-# This function parses the RETURN statement.
-# @param l_pos The position in the token array to start from.
-# @return l_pos The position in the token array once parsing is complete.
-#
-
-FUNCTION gt_4gl_parse_return(l_function_index, l_pos)
-
-DEFINE
-   l_function_index   INTEGER,
-   l_pos              INTEGER
-
-DEFINE
-   i                INTEGER,
-   j                INTEGER,
-   l_save           INTEGER,
-   l_count          INTEGER,
-   l_index          INTEGER,
-   l_token          STRING,
-   l_return_value   STRING,
-   l_tmp            base.StringBuffer
-
-   LET l_save = 0
-   LET l_count = 0
-   LET l_return_value = ""
-   LET l_tmp = base.StringBuffer.create()
-
-   LET l_pos = l_pos + 1
-   LET l_token = gt_4gl_next_token(l_pos)
-
-   WHILE TRUE
-      LET l_return_value = l_return_value, l_token
-
-      LET l_pos = l_pos + 1
-      LET l_token = gt_4gl_next_token(l_pos)
-
-      CASE
-         WHEN l_token == "("
-            WHILE TRUE
-               LET l_return_value = l_return_value, l_token
-               LET l_pos = l_pos + 1
-               LET l_token = gt_4gl_next_token(l_pos)
-
-               IF l_token == ")" THEN
-                  EXIT WHILE
-               END IF
-            END WHILE
-
-            CONTINUE WHILE
-
-         WHEN l_token == "["
-            LET l_return_value = l_return_value, l_token
-
-            WHILE TRUE
-               LET l_pos = l_pos + 1
-               LET l_token = gt_4gl_next_token(l_pos)
-
-               IF l_token == "]" THEN
-                  EXIT WHILE
-               END IF
-            END WHILE
-
-            CONTINUE WHILE
-
-         WHEN l_token == "."
-            WHILE l_token == "."
-               LET l_return_value = l_return_value, l_token
-               LET l_pos = l_pos + 1
-               LET l_token = gt_4gl_next_token(l_pos)
-            END WHILE
-
-            CONTINUE WHILE
-
-         WHEN l_token == "\""
-            WHILE TRUE
-               LET l_return_value = "STRING"
-               LET l_pos = l_pos + 1
-               LET l_token = gt_4gl_next_token(l_pos)
-
-               IF l_token == "\"" THEN
-                                    LET l_pos = l_pos + 1
-                  LET l_token = gt_4gl_next_token(l_pos)
-                  EXIT WHILE
-               END IF
-            END WHILE
-
-         WHEN l_token == "'"
-            WHILE TRUE
-               LET l_return_value = "STRING"
-               LET l_pos = l_pos + 1
-               LET l_token = gt_4gl_next_token(l_pos)
-
-               IF l_token == "'" THEN
-                  LET l_pos = l_pos + 1
-                  LET l_token = gt_4gl_next_token(l_pos)
-                  EXIT WHILE
-               END IF
-            END WHILE
-
-         OTHERWISE
-            IF gt_4gl_is_keyword(l_token) THEN
-               LET i = i + 1
-               LET l_count = l_count + 1
-               #DISPLAY "RETURN : ", l_return_value
-               LET m_function[l_function_index].return[i].name = l_return_value
-
-               # Stored names will not include functions like getLength() etc
-
-               IF l_return_value.getCharAt(l_return_value.getLength()) == ")" THEN
-                  LET l_index = gt_string_rfind(l_return_value, ".")
-                  LET l_return_value = l_return_value.subString(1, l_index - 1)
-               END IF
-
-               FOR j = 1 TO m_function[l_function_index].define.getLength()
-                  IF m_function[l_function_index].define[j].name == l_return_value THEN
-                     DISPLAY l_return_value, " -> ", m_function[l_function_index].define[j].name, ":", m_function[l_function_index].define[j].type
-                     LET m_function[l_function_index].return[i].type = m_function[l_function_index].define[j].type
-                     EXIT FOR
-                  END IF
-               END FOR
-
-               IF gt_string_is_empty(m_function[l_function_index].return[i].type) THEN
-                  FOR j = 1 TO m_function[1].define.getLength()
-                     DISPLAY l_return_value, " -> ", m_function[1].define[j].name, ":", m_function[1].define[j].type
-                     IF m_function[1].define[j].name == l_return_value THEN
-                        LET m_function[l_function_index].return[i].type = m_function[1].define[j].type
-                        EXIT FOR
-                     END IF
-                  END FOR
-               END IF
-
-               LET l_return_value = ""
-               EXIT WHILE
-            ELSE
-            END IF
-      END CASE
-
-      LET l_pos = l_pos + 1
-      LET l_token = gt_4gl_next_token(l_pos)
-      EXIT WHILE
-   END WHILE
-
-   RETURN l_pos
-
-END FUNCTION
-
-FUNCTION gt_4gl_parse_4gl_expression()
-
-DEFINE
-   l_token   STRING
-
-   CASE
-      WHEN l_token.toUpperCase() == "INTERVAL"
-        OR l_token.toUpperCase() == "DATETIME"
-        OR l_token.toUpperCase() == "DATE"
-         #CALL gt_4gl_parse_time_expression()
-
-      WHEN l_token == "\""
-        OR l_token == "'"
-        OR l_token.toUpperCase() == "FUNCTION"
-
-      OTHERWISE
-
-   END CASE
-END FUNCTION
-
-##
-# This function parses the INSERT statement.
-# @param l_pos The position in the token array to start from.
-# @return l_pos The position in the token array once parsing is complete.
-#
-#TODO Implement gt_4gl_parse_insert
-FUNCTION gt_4gl_parse_insert(l_pos)
-
-DEFINE
-   l_pos   INTEGER
-
-   RETURN l_pos
-
-END FUNCTION
-
-##
-# This function parses the UPDATE statement.
-# @param l_pos The position in the token array to start from.
-# @return l_pos The position in the token array once parsing is complete.
-#
-#TODO Implement gt_4gl_parse_update
-FUNCTION gt_4gl_parse_update(l_pos)
-
-DEFINE
-   l_pos   INTEGER
-
-   RETURN l_pos
-
-END FUNCTION
-
-##
-# This function parses the DELETE statement.
-# @param l_pos The position in the token array to start from.
-# @return l_pos The position in the token array once parsing is complete.
-#
-#TODO Implement gt_4gl_parse_delete
-FUNCTION gt_4gl_parse_delete(l_pos)
-
-DEFINE
-   l_pos   INTEGER
-
-   RETURN l_pos
-
-END FUNCTION
-
-#------------------------------------------------------------------------------#
-# PRIVATE FUNCTIONS                                                            #
-#------------------------------------------------------------------------------#
 
 #------------------------------------------------------------------------------#
 # END OF MODULE                                                                #

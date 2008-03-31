@@ -135,7 +135,6 @@ DEFINE
 
 DEFINE
    l_ok    SMALLINT,
-   i       INTEGER,
    l_pos   INTEGER
 
    LET l_ok = FALSE
@@ -164,7 +163,6 @@ DEFINE
 
 DEFINE
    l_ok    SMALLINT,
-   i       INTEGER,
    l_pos   INTEGER
 
    LET l_ok = FALSE
@@ -198,7 +196,6 @@ DEFINE
 
 DEFINE
    l_ok    SMALLINT,
-   i       INTEGER,
    l_pos   INTEGER
 
    LET l_ok = FALSE
@@ -232,7 +229,6 @@ DEFINE
 
 DEFINE
    l_ok    SMALLINT,
-   i       INTEGER,
    l_pos   INTEGER
 
    LET l_ok = FALSE
@@ -266,7 +262,6 @@ DEFINE
 
 DEFINE
    l_ok    SMALLINT,
-   i       INTEGER,
    l_pos   INTEGER
 
    LET l_ok = FALSE
@@ -295,7 +290,6 @@ DEFINE
 
 DEFINE
    l_ok    SMALLINT,
-   i       INTEGER,
    l_pos   INTEGER
 
    LET l_ok = FALSE
@@ -324,7 +318,6 @@ DEFINE
 
 DEFINE
    l_ok        SMALLINT,
-   i           INTEGER,
    l_pos       INTEGER,
    l_filehdl   STRING,
    l_body      base.stringbuffer
@@ -377,7 +370,6 @@ DEFINE
 
 DEFINE
    l_ok     SMALLINT,
-   i        INTEGER,
    l_pos    INTEGER,
    l_apos   INTEGER,
    l_filehdl   STRING,
@@ -435,7 +427,6 @@ DEFINE
 
 DEFINE
    l_ok    SMALLINT,
-   i       INTEGER,
    l_pos   INTEGER
 
    LET l_ok = FALSE
@@ -461,8 +452,7 @@ END FUNCTION
 FUNCTION gt_send_all_emails()
 
 DEFINE
-   l_ok   SMALLINT,
-   i      INTEGER
+   l_ok   SMALLINT
 
    LET l_ok = FALSE
 
@@ -864,9 +854,7 @@ DEFINE
    l_dummy        SMALLINT,
    i              INTEGER,
    l_to           STRING,
-   l_sockethdl    STRING,
-   l_attachment   STRING
-
+   l_sockethdl    STRING
 
    LET l_ok = FALSE
 

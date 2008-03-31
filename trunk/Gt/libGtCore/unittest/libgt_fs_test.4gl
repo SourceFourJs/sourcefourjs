@@ -45,11 +45,9 @@ FUNCTION test_fs_lib()
 
 DEFINE
    l_ok          SMALLINT,
-   l_fs          STRING,
    l_path        STRING,
    l_filehdl     STRING,
-   l_volumes     STRING,
-   l_tokenizer   base.stringtokenizer
+   l_volumes     STRING
 
    CALL gt_ut_log("Testing gt_filesystem_separator...")
 

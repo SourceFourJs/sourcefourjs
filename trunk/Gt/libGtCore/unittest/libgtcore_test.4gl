@@ -50,7 +50,6 @@ FUNCTION run_tests()
 
 DEFINE
    l_all           SMALLINT,
-   i               INTEGER,
    l_smtp_port     INTEGER,
    l_to            STRING,
    l_from          STRING,

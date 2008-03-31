@@ -48,14 +48,11 @@ CONSTANT S43 = 15
 CONSTANT S44 = 21
 
 DEFINE
-   m_initialized         SMALLINT,
    m_state               ARRAY[4] OF FLOAT,
    m_count               ARRAY[2] OF FLOAT,
    m_buffer              ARRAY[64] OF FLOAT,
    m_padding             ARRAY[64] OF FLOAT,
-   m_digest              ARRAY[16] OF FLOAT,
-   m_encryption_string   CHAR(128),
-   m_encryption_array    ARRAY[2,128] OF CHAR(1)
+   m_digest              ARRAY[16] OF FLOAT
 
 #------------------------------------------------------------------------------#
 # Function to set the WHENEVER ANY ERROR function for this module              #

@@ -474,8 +474,7 @@ DEFINE
    l_mode       STRING
 
 DEFINE
-   l_value   INTEGER,
-   l_char    STRING
+   l_value   INTEGER
 
    #---------------------------------------------------------------------------#
    # Allow modes to be entered as either 666 or 0666                           #
@@ -579,13 +578,16 @@ END FUNCTION
 #                     cannot be determined NULL is returned.
 #
 
+# TODO Implement gt_guess_file_content
 FUNCTION gt_guess_file_content(l_filename)
 
 DEFINE
    l_filename   STRING
 
 DEFINE
-   l_filehdl   base.channel
+   l_type      STRING
+
+   RETURN l_type
 
 END FUNCTION
 
@@ -750,7 +752,6 @@ DEFINE
    l_iohdl   STRING
 
 DEFINE
-   i          INTEGER,
    l_pos      INTEGER,
    l_buffer   STRING,
    l_io       base.channel
@@ -1198,8 +1199,7 @@ DEFINE
 DEFINE
    l_ok          SMALLINT,
    l_path        STRING,
-   l_dirhdl      STRING,
-   l_tokenizer   base.stringtokenizer
+   l_dirhdl      STRING
 
    LET l_ok = FALSE
    LET l_dirhdl = NULL

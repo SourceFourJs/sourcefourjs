@@ -60,9 +60,9 @@
 # @version $Id$
 #
 
-#------------------------------------------------------------------------------#
-# Function to set the WHENEVER ANY ERROR function for this module              #
-#------------------------------------------------------------------------------#
+##
+# Function to set the WHENEVER ANY ERROR function for this module
+#
 
 FUNCTION libgt_binary_id()
 

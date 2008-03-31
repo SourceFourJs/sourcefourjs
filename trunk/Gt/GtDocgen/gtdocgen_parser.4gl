@@ -42,6 +42,7 @@ DEFINE
    m_return_value_count    INTEGER,
 	m_documentation_count   INTEGER,
 
+   m_root_directory        STRING,
    m_current_function      STRING,
 
 	m_documentation   DYNAMIC ARRAY OF RECORD
@@ -92,6 +93,17 @@ DEFINE
 END FUNCTION
 
 ##
+# Function to get the root directory for the documentation
+# @return m_root_directory The documentation root directory
+#
+
+FUNCTION get_documentation_root_directory()
+
+   RETURN m_root_directory
+
+END FUNCTION
+
+##
 # Function to return the current function index.
 # @return m_function_index The current function index.
 #
@@ -135,7 +147,7 @@ END FUNCTION
 ##
 # Function to return the documentation tag count.
 # @param l_documentation_index The index to use.
-# @return m_documentation[].tag.getLength() The length of tag array.
+# @return m_documentation[].tag.getLength() The length of the tag array.
 #
 
 FUNCTION gt_documentation_tag_count(l_documentation_index)
@@ -146,6 +158,14 @@ DEFINE
    RETURN m_documentation[l_documentation_index].tag.getLength()
 
 END FUNCTION
+
+##
+# Function to return the documentation tag values.
+# @param l_documentation_index The index to use.
+# @param l_tag_index The index to use.
+# @return m_documentation[].tag[].name The name of the tag.
+# @return m_documentation[].tag[].value The value of the tag.
+#
 
 FUNCTION gt_documentation_tag_values(l_documentation_index, l_tag_index)
 
@@ -158,6 +178,12 @@ DEFINE
 
 END FUNCTION
 
+##
+# Function to return the documentation function count.
+# @param l_documentation_index The index to use.
+# @return m_documentation[].method.getLength() The length of the function array.
+#
+
 FUNCTION gt_documentation_function_count(l_documentation_index)
 
 DEFINE
@@ -166,6 +192,14 @@ DEFINE
    RETURN m_documentation[l_documentation_index].method.getLength()
 
 END FUNCTION
+
+##
+# Function to return the documentation function values.
+# @param l_documentation_index The documentation index to use.
+# @param l_function_index The function index to use.
+# @return m_documentation[].method.[].name The name of the method.
+# @return m_documentation[].method[].text The method documentation text.
+#
 
 FUNCTION gt_documentation_function_values(l_documentation_index, l_function_index)
 
@@ -178,6 +212,12 @@ DEFINE
 
 END FUNCTION
 
+##
+# Function to return the function tag count.
+# @param l_documentation_index The documentation index to use.
+# @param l_function_index The function index to use.
+# @return m_documentation[].method[].tag.getLength() The length of the function tag array.
+#
 FUNCTION gt_documentation_function_tag_count(l_documentation_index, l_function_index)
 
 DEFINE
@@ -187,6 +227,15 @@ DEFINE
    RETURN m_documentation[l_documentation_index].method[l_function_index].tag.getLength()
 
 END FUNCTION
+
+##
+# Function to return the function tag values.
+# @param l_documentation_index The documentation index to use.
+# @param l_function_index The function index to use.
+# @param l_tag index The tag index to use.
+# @return m_documentation[].method[].tag[].name The name of the function tag.
+# @return m_documentation[].method[].tag[].value The value of the function tag.
+#
 
 FUNCTION gt_documentation_function_tag_values(l_documentation_index, l_function_index, l_tag_index)
 
@@ -200,6 +249,13 @@ DEFINE
 
 END FUNCTION
 
+##
+# Function to return the function parameter count.
+# @param l_documentation_index The documentation index.
+# @param l_function_index The function index.
+# @return m_documentation[].method[].parameter.getLength() The length of the parameter array.
+#
+
 FUNCTION gt_documentation_function_parameter_count(l_documentation_index, l_function_index)
 
 DEFINE
@@ -209,6 +265,16 @@ DEFINE
    RETURN m_documentation[l_documentation_index].method[l_function_index].parameter.getLength()
 
 END FUNCTION
+
+##
+# Function to return the function parameter values.
+# @param l_documentation_index The documentation index.
+# @param l_function_index The function index.
+# @param l_parameter_index The parameter index.
+# @return m_documentation[].method[].parameter[].name The name of the parameter.
+# @return m_documentation[].method[].parameter[].type The type of the parameter.
+# @return m_documentation[].method[].parameter[].description The description of the parameter.
+#
 
 FUNCTION gt_documentation_function_parameter_values(l_documentation_index, l_function_index, l_parameter_index)
 
@@ -223,6 +289,13 @@ DEFINE
 
 END FUNCTION
 
+##
+# Function to return the function return value count.
+# @param l_documentation_index The documentation index.
+# @param l_function_index The function index.
+# @return m_documentation[].method[].return_value.getLength() The length of the return value array.
+#
+
 FUNCTION gt_documentation_function_return_value_count(l_documentation_index, l_function_index)
 
 DEFINE
@@ -232,6 +305,16 @@ DEFINE
    RETURN m_documentation[l_documentation_index].method[l_function_index].return_value.getLength()
 
 END FUNCTION
+
+##
+# Function to return the function return value values.
+# @param l_documentation_index The documentation index.
+# @param l_function_index The function index.
+# @param l_return_value_index The return value index.
+# @return m_documentation[].method[].return_value[].name The name of the return value.
+# @return m_documentation[].method[].return_value[].type The type of the return value.
+# @return m_documentation[].method[].return_value[].description The description of the return value.
+#
 
 FUNCTION gt_documentation_function_return_value_values(l_documentation_index, l_function_index, l_return_value_index)
 
@@ -268,42 +351,55 @@ DEFINE
    LET l_ok = FALSE
    LET l_dirhdl = NULL
 
+   IF m_root_directory IS NULL THEN
+      LET m_root_directory = l_directory
+   END IF
+
    IF os.path.isdirectory(l_directory) THEN
       CALL os.path.dirfmask(5)
       CALL os.path.dirsort("name", 1)
 
       LET l_dirhdl = os.path.diropen(l_directory)
 
-      IF l_dirhdl IS NOT NULL THEN
-         LET l_file = os.path.dirnext(l_dirhdl)
+      LET l_file = os.path.dirNext(l_dirhdl)
 
-         WHILE l_file IS NOT NULL
-            IF os.path.isdirectory(l_file) THEN
-               LET l_directory_count = l_directory_count + 1
-               LET l_directory_list[l_directory_count] = l_file
-            END IF
-
-            IF l_file.substring(l_file.getlength() - 3, l_file.getLength()) == ".4gl" THEN
-               LET m_documentation_count = m_documentation_count + 1
-               LET m_documentation[m_documentation_count].name = l_file
-               LET m_documentation[m_documentation_count].path = l_directory
-               CALL gt_4gl_parser_init()
-DISPLAY "FILE: ", os.path.join(l_directory, l_file)
-               CALL gt_parse_4gl_file(os.path.join(l_directory, l_file), TRUE)
-               CALL p_gt_extract_documentation()
-               LET l_ok = TRUE
-            END IF
-
-            LET l_file = os.path.dirnext(l_dirhdl)
-         END WHILE
-
-         CALL os.path.dirclose(l_dirhdl)
-
-         IF gt_recursive() THEN
-            FOR i = 1 TO l_directory_list.getlength()
-               LET l_ok = gt_parse_source(l_directory_list[i])
-            END FOR
+      WHILE l_file IS NOT NULL
+         IF l_file == "."
+         OR l_file == ".." THEN
+            CONTINUE WHILE
          END IF
+
+         IF l_directory.getCharAt(l_directory.getLength()) == os.path.separator() THEN
+            LET l_file = l_directory, l_file
+         ELSE
+            LET l_file = l_directory, os.path.separator(), l_file
+         END IF
+
+         IF os.path.isdirectory(l_file) THEN
+            LET l_directory_count = l_directory_count + 1
+            LET l_directory_list[l_directory_count] = l_file
+         END IF
+
+         IF l_file.substring(l_file.getlength() - 3, l_file.getLength()) == ".4gl" THEN
+            LET m_documentation_count = m_documentation_count + 1
+            LET m_documentation[m_documentation_count].name = l_file
+            LET m_documentation[m_documentation_count].path = l_directory.subString(m_root_directory.getLength() + 1, l_directory.getLength())
+            CALL gt_4gl_parser_init()
+DISPLAY "Processing ", l_file, "..."
+            CALL gt_parse_4gl_file(l_file, TRUE)
+            CALL p_gt_extract_documentation()
+            LET l_ok = TRUE
+         END IF
+
+         LET l_file = os.path.dirNext(l_dirhdl)
+      END WHILE
+
+      CALL os.path.dirclose(l_dirhdl)
+
+      IF gt_recursive() THEN
+         FOR i = 1 TO l_directory_list.getlength()
+            LET l_ok = gt_parse_source(l_directory_list[i])
+         END FOR
       END IF
    ELSE
    END IF
@@ -391,7 +487,6 @@ DEFINE
          LET l_pos = l_pos + 1
 
          WHILE gt_4gl_next_token(l_pos) != "\""
-            #DISPLAY "---> ", gt_4gl_next_token(l_pos)
             LET l_pos = l_pos + 1
          END WHILE
 
@@ -423,6 +518,7 @@ DEFINE
          WHEN l_token.toUpperCase() == "RETURN"
             IF gt_4gl_next_token(l_pos - 1) != "@" THEN
                LET l_pos = p_gt_parse_return(l_pos)
+               LET l_pos = l_pos - 1
             END IF
 
          OTHERWISE
@@ -481,6 +577,8 @@ DEFINE
       ELSE
          RETURN l_pos + 1
       END IF
+   ELSE
+      LET l_function_count = 2
    END IF
 
    WHILE NOT gt_4gl_is_keyword(l_token)
@@ -491,6 +589,10 @@ DEFINE
       LET l_line = l_token.trim()
 
       IF l_line.getCharAt(1) != "#" THEN
+         EXIT WHILE
+      END IF
+
+      IF l_line.subString(1, 2) == "##" THEN
          EXIT WHILE
       END IF
 
@@ -596,8 +698,8 @@ DEFINE
 
    LET m_function_index = l_function_index
 
-   CALL gt_4gl_parse_define(l_pos, l_name)
-      RETURNING l_pos, l_name
+   CALL gt_4gl_parse_define(l_pos)
+      RETURNING l_pos
 
    FOR i = 1 TO gt_4gl_define_count(l_function_index)
       CALL gt_4gl_define_value(l_function_index, i)
