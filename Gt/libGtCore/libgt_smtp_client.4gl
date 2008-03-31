@@ -37,7 +37,6 @@
 #
 
 DEFINE
-   m_serial         INTEGER,
    m_socket_count   INTEGER,
    m_connections    FLOAT,
    m_bytesread      FLOAT,
@@ -107,7 +106,6 @@ DEFINE
 
 DEFINE
    l_ok              SMALLINT,
-   i                 INTEGER,
    l_status          INTEGER,
    l_data            STRING,
    l_sockethdl       STRING,

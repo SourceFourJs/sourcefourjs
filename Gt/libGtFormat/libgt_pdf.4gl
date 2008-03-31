@@ -30,9 +30,9 @@
 # @version $Id$
 #
 
-#------------------------------------------------------------------------------#
-# Function to set WHENEVER ANY ERROR for this module                           #
-#------------------------------------------------------------------------------#
+##
+# Function to set WHENEVER ANY ERROR for this module
+#
 
 FUNCTION libgt_pdf_id()
 

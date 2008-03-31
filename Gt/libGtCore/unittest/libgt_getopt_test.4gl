@@ -49,7 +49,7 @@ FUNCTION test_getopt_lib()
       CALL gt_ut_log("Passed")
    ELSE
       CALL gt_ut_log("FAILED")
-      RETURN
+      RETURN FALSE
    END IF
 
    CALL gt_ut_log("Testing gt_argument...")
@@ -58,7 +58,7 @@ FUNCTION test_getopt_lib()
       CALL gt_ut_log("Passed")
    ELSE
       CALL gt_ut_log("FAILED")
-      RETURN
+      RETURN FALSE
    END IF
 
    RETURN TRUE

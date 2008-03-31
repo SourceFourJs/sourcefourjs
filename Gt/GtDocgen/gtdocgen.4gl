@@ -86,8 +86,8 @@ DEFINE
 
          CASE
             WHEN gt_output_format() == "XHTML"
-               CALL gt_generate_xhtml_index()
                CALL gt_generate_xhtml_documentation()
+               CALL gt_generate_xhtml_index(gt_source_directory())
 
             OTHERWISE
          END CASE

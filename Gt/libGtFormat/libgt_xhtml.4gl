@@ -41,9 +41,9 @@ DEFINE
       xhtml        om.saxdocumenthandler
    END RECORD
 
-#------------------------------------------------------------------------------#
-# Function to set WHENEVER ANY ERROR for this module                           #
-#------------------------------------------------------------------------------#
+##
+# Function to set WHENEVER ANY ERROR for this module
+#
 
 FUNCTION libgt_xhtml_id()
 
@@ -145,8 +145,7 @@ FUNCTION gt_xhtml_header(l_xhtmlhdl, l_title)
 
 DEFINE
    l_xhtmlhdl     STRING,
-   l_title        STRING,
-   l_stylesheet   STRING
+   l_title        STRING
 
 DEFINE
    l_pos          INTEGER,

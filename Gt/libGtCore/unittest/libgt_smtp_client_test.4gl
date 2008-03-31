@@ -22,15 +22,6 @@
 # IN THE SOFTWARE.                                                             #
 #------------------------------------------------------------------------------#
 
-DEFINE
-    m_count   INTEGER,
-
-    m_unittest DYNAMIC ARRAY OF RECORD
-        module   STRING,
-        name     STRING,
-        result   STRING
-    END RECORD
-
 #------------------------------------------------------------------------------#
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#

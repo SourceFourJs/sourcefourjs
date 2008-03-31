@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf8" ?>
+<Workspace defaultApplication="23" id="1" version="2.0">
+  <Project dataBaseSchema="" id="2" label="Gt" targetDirectory="$(WorkspaceDir)/build">
+    <Project dataBaseSchema="" id="37" label="GtDocgen" targetDirectory="$(WorkspaceDir)/build">
+      <Application commandLineArguments="--configuration-file gtdocgen.conf --log-file docgen.log" dataBaseSchema="" dependencies="4||44||57" id="38" label="gtdocgen" targetDirectory="$(WorkspaceDir)/build">
+        <File filePath="GtDocgen/gtdocgen.4gl" id="39"/>
+        <File filePath="GtDocgen/gtdocgen_config.4gl" id="40"/>
+        <File filePath="GtDocgen/gtdocgen_parser.4gl" id="41"/>
+        <File filePath="GtDocgen/gtdocgen_xhtml_generator.4gl" id="42"/>
+      </Application>
+    </Project>
+    <Project dataBaseSchema="" id="3" label="libGtCore" targetDirectory="$(WorkspaceDir)/build">
+      <Library dataBaseSchema="" dependencies="" id="4" label="libgtcore" targetDirectory="$(WorkspaceDir)/build">
+        <File filePath="libGtCore/libgt.4st" id="22"/>
+        <File filePath="libGtCore/libgt_binary.4gl" id="6"/>
+        <File filePath="libGtCore/libgt_binary_utils.4gl" id="7"/>
+        <File filePath="libGtCore/libgt_email.4gl" id="8"/>
+        <File filePath="libGtCore/libgt_encryption.4gl" id="9"/>
+        <File filePath="libGtCore/libgt_exception.4gl" id="10"/>
+        <File filePath="libGtCore/libgt_fs.4gl" id="11"/>
+        <File filePath="libGtCore/libgt_getopt.4gl" id="12"/>
+        <File filePath="libGtCore/libgt_md5.4gl" id="13"/>
+        <File filePath="libGtCore/libgt_smtp_client.4gl" id="14"/>
+        <File filePath="libGtCore/libgt_string.4gl" id="15"/>
+        <File filePath="libGtCore/libgt_system.4gl" id="16"/>
+        <File filePath="libGtCore/libgt_unittest.4ad" id="19"/>
+        <File filePath="libGtCore/libgt_unittest.4gl" id="17"/>
+        <File filePath="libGtCore/libgt_unittest.4tb" id="20"/>
+        <File filePath="libGtCore/libgt_unittest.4tm" id="21"/>
+        <File filePath="libGtCore/libgt_unittest.per" id="18"/>
+      </Library>
+      <Application dataBaseSchema="" dependencies="4" id="23" label="libgtcore_test" targetDirectory="$(WorkspaceDir)/build">
+        <File filePath="libGtCore/unittest/libgt_binary_test.4gl" id="24"/>
+        <File filePath="libGtCore/unittest/libgt_binary_utils_test.4gl" id="25"/>
+        <File filePath="libGtCore/unittest/libgt_email_test.4gl" id="27"/>
+        <File filePath="libGtCore/unittest/libgt_email_test_csv.txt" id="36"/>
+        <File filePath="libGtCore/unittest/libgt_email_test_template.txt" id="35"/>
+        <File filePath="libGtCore/unittest/libgt_encryption_test.4gl" id="28"/>
+        <File filePath="libGtCore/unittest/libgt_exception_test.4gl" id="29"/>
+        <File filePath="libGtCore/unittest/libgt_fs_test.4gl" id="30"/>
+        <File filePath="libGtCore/unittest/libgt_getopt_test.4gl" id="31"/>
+        <File filePath="libGtCore/unittest/libgt_md5_test.4gl" id="32"/>
+        <File filePath="libGtCore/unittest/libgt_smtp_client_test.4gl" id="33"/>
+        <File filePath="libGtCore/unittest/libgt_string_test.4gl" id="34"/>
+        <File filePath="libGtCore/unittest/libgtcore_test.4gl" id="26"/>
+      </Application>
+    </Project>
+    <Project dataBaseSchema="" id="43" label="libGtFormat" targetDirectory="$(WorkspaceDir)/build">
+      <Library dataBaseSchema="" dependencies="" id="44" label="libgtformat" targetDirectory="$(WorkspaceDir)/build">
+        <File filePath="libGtFormat/libgt_xhtml.4gl" id="45"/>
+      </Library>
+    </Project>
+    <Project id="56" label="libGtParser" targetDirectory="$(WorkspaceDir)/build">
+      <Library id="57" label="libgtparser" targetDirectory="$(WorkspaceDir)/build">
+        <File filePath="libGtParser/libgt_4gl_grammar.4gl" id="62" postCompileStep="" preCompileStep=""/>
+        <File filePath="libGtParser/libgt_4gl_parser.4gl" id="63" postCompileStep="" preCompileStep=""/>
+      </Library>
+    </Project>
+    <Project id="64" label="Utilities" targetDirectory="$(WorkspaceDir)/build">
+      <Application id="65" label="gt_viewvc_client">
+        <File filePath="Utilities/gt_viewvc_client.4gl" id="66"/>
+      </Application>
+    </Project>
+  </Project>
+</Workspace>

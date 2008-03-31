@@ -32,9 +32,9 @@
 # @version $Id$
 #
 
-#------------------------------------------------------------------------------#
-# Function to set WHENEVER ANY ERROR for this module                           #
-#------------------------------------------------------------------------------#
+##
+# Function to set WHENEVER ANY ERROR for this module
+#
 
 FUNCTION libgt_string_id()
 
@@ -433,6 +433,45 @@ DEFINE
    CALL l_buffer.append(l_string.substring(l_start, l_end))
 
    RETURN l_buffer.tostring()
+
+END FUNCTION
+
+##
+# This function counts the number of occurrences of the given pattern in the
+# given string.
+# @param l_string The string to search in.
+# @param l_pattern The pattern to search for.
+# @return l_count The number of occurrences.
+#
+
+FUNCTION gt_string_count(l_string, l_pattern)
+
+DEFINE
+   l_string    STRING,
+   l_pattern   STRING
+
+DEFINE
+   i          INTEGER,
+   l_pos      INTEGER,
+   l_end      INTEGER,
+   l_count    INTEGER,
+   l_start    INTEGER
+
+   LET l_count = 0
+   LET l_start = 1
+   LET l_end = l_string.getlength()
+
+   FOR i = l_start TO l_end
+      LET l_pos = l_string.getindexof(l_pattern, i)
+
+      IF l_pos > 0 THEN
+         LET l_count = l_count + 1
+         LET l_start = l_pos + l_pattern.getlength()
+         LET i = l_start
+      END IF
+   END FOR
+
+   RETURN l_count
 
 END FUNCTION
 

@@ -22,6 +22,17 @@
 # IN THE SOFTWARE.                                                             #
 #------------------------------------------------------------------------------#
 
+##
+# Encryption Library
+#
+# This library provides the basic encryption functionality.
+#
+# @category System Program
+# @author Scott Newton
+# @date August 2007
+# @version $Id$
+#
+
 IMPORT util
 
 DEFINE
@@ -98,8 +109,7 @@ END FUNCTION
 ##
 # This function decrypts the given string.
 # @param l_input The string to be decrypted.
-# @param l_type The type of encryption the string is encrypted with.
-#               (XORString|MD5|None).
+# @param l_type The type of encryption the string is encrypted with (XORString|MD5|None).
 # @return l_decrypted_string The decrypted string.
 #
 
