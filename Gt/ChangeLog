@@ -1,3 +1,6 @@
+2008-04-08 scottn
+  * Added the libgt_pop3_client library
+
 2008-04-01 scottn
   * Tidied up the 4gl files to get rid of warnings
   * Got GtDocGen to the point where it will now generate its own documentation

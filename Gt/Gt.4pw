@@ -20,6 +20,8 @@
         <File filePath="libGtCore/libgt_fs.4gl" id="11"/>
         <File filePath="libGtCore/libgt_getopt.4gl" id="12"/>
         <File filePath="libGtCore/libgt_md5.4gl" id="13"/>
+        <File filePath="libGtCore/libgt_pop3_client.4gl" id="68"/>
+        <File filePath="libGtCore/libgt_regex.4gl" id="69"/>
         <File filePath="libGtCore/libgt_smtp_client.4gl" id="14"/>
         <File filePath="libGtCore/libgt_string.4gl" id="15"/>
         <File filePath="libGtCore/libgt_system.4gl" id="16"/>
