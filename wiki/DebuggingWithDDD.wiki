@@ -2,7 +2,7 @@
 
 = Introduction =
 
-The 4Js runner can utilise the graphical GNU DDD (Data Display Debugger) for debugging programs. This !HowTo documents how to do it. GNU DDD is a graphical front-end for command-line debuggers like GDB.
+The 4Js runner can utilise the graphical GNU [http://www.gnu.org/software/ddd/ DDD] (Data Display Debugger) for debugging programs. This !HowTo documents how to do it. GNU DDD is a graphical front-end for command-line debuggers like GDB.
 
 = Prerequisites =
 
