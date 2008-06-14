@@ -30,4 +30,7 @@ If there isn't already an appropriate section, then add your link to Misc or cre
   * [FetchingAWebPage Fetch a web page using openClientSocket.]
   * [ABasicSMTPClient A basic SMTP client using openClientSocket.]
 
+==Tesing/Debugging==
+
+  * [DebuggingWithDDD Debugging with ddd]
 ==Misc==
