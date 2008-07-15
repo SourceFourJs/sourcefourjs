@@ -23,3 +23,7 @@ You are constrained by the types of charts available.  For instance there is no 
 
 The one thing both drawing charts in CANVAS and using Google Charts lack is the ability to respond to a click in the chart. 
 
+The following links are available to run Genero Google Charts
+
+GWC: http://demo.4js.com.au/cgi-bin/gas/cxf/fglccgi/wa/r/fj/ajax-chart
+GDC-AX: http://demo.4js.com.au/cgi-bin/gas/cxf/fglccgi/wa/r/fj/gdc-chart
