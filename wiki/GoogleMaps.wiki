@@ -92,4 +92,6 @@ LET url = SFMT("http://maps.google.com/staticmap?center=%1&zoom=%3&size=512x512&
 DISPLAY url TO url
 }}}
 
+Note: the c_googlekey is a constant from Google that helps limit the use of this service.  The key is linked to the URL so you'll need to apply for your own key.
+
 My program does the above in two steps but it could be easily be written as 1 click of a button instead of 2, and there are a few extra google services that could be incorporated as well.  The GWC tutorial also shows another way to interact with Googlemaps. http://www.4js.com/online_documentation/fjs-gas-2.11.01-manual-html/User/GWC_Tutorial.html
