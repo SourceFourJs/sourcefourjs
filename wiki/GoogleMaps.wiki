@@ -9,7 +9,7 @@ The Genero Web Services COM extension library provides classes and methods that 
 
 I have taken advantage of that functionality to produce an example interacting with google maps.  Amongst the many services google offer there is a web service documented here  http://code.google.com/apis/maps/documentation/services.html#Geocoding_Direct that allows you to pass an address and the web service will return the latitude and longitude of the address.  From that you can then draw an image using a URL that google offers that will draw a map centred on a latitude and longitude.
 
-You can run my GoogleMaps example app via GDC-Active X here http://demo.4js.com.au/cgi-bin/gas/cxf/fglccgi/wa/r/fj/googlemaps, or even better create a HTTP short-cut in a 2.1x GDC  with the same URL.  It can also be run through the GWC http://demo.4js.com.au/cgi-bin/gas/cxf/fglccgi/wa/r/fj/ajax-googlemaps. The source is available for download from http://code.google.com/p/sourcefourjs/downloads/list
+You can run my GoogleMaps example app via GDC-Active X here http://demo.4js.com.au/cgi-bin/gas/cxf/fglccgi/wa/r/fj/gdc-googlemaps, or even better create a HTTP short-cut in a 2.1x GDC  with the same URL.  It can also be run through GWC and a Web Browser http://demo.4js.com.au/cgi-bin/gas/cxf/fglccgi/wa/r/fj/ajax-googlemaps. The source is available for download from http://code.google.com/p/sourcefourjs/downloads/list
 
 If you have a screen in your application with an address, it would be very easy to adapt and incorporate this into your existing Genero application.
 
