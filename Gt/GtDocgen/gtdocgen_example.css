@@ -1,19 +1,19 @@
 /* GtDocgen Example CSS */
 
 body {
-	background-color: white;
+	background-color: #e5e5e5;
 	background-image: url("genero_green_transparent.png");
 }
 
 h1 {
-	color: #9fa617;
+	color: #a2c511;
 	font-size: xxx-large;
 	font-weight: bold;
 	text-align: center;
 }
 
 h2 {
-	color: #9fa617;
+	color: #a2c511;
 	font-size: xx-large;
 	font-weight: bold;
 	text-align: center;
@@ -25,7 +25,9 @@ h3 {
 }
 
 table {
+	width: 100%;
 	table-layout: automatic;
+    background-color: #e5e5e5;
 }
 
 th {
@@ -35,7 +37,7 @@ th {
 	font-weight: bold;
 	font-style: italic;
 	text-align: left;
-	background-color: #9fa617;
+	background-color: #a2c511;
 }
 
 td {
@@ -45,7 +47,6 @@ td {
 	font-weight: normal;
 	font-style: normal;
 	text-align: left;
-	background-color: #e8eef2; 
 }
 
 div.title {
@@ -53,7 +54,6 @@ div.title {
 }
 
 table.index {
-	width: 100%;
 }
 
 th.index {
@@ -61,12 +61,10 @@ th.index {
 }
 
 table.parameter {
-	width: 95%;
 	margin: auto;
 }
 
 table.returnvalue {
-	width: 95%;
 	margin: auto;
 }
 

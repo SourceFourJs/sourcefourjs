@@ -36,24 +36,24 @@
 IMPORT os
 
 DEFINE
-   m_serial        INTEGER,
-   m_smtp_port     INTEGER,
-   m_email_count   INTEGER,
+    m_serial        INTEGER,
+    m_smtp_port     INTEGER,
+    m_email_count   INTEGER,
 	m_smtp_server   STRING,
 
-   m_email_list DYNAMIC ARRAY OF RECORD
-      handle        STRING,
-      from          STRING,
-      to            STRING,
-      cc            STRING,
-      bcc           STRING,
-      subject       STRING,
-      body          STRING,
-      attachment_list   DYNAMIC ARRAY OF RECORD
-         name   STRING,
-         data   STRING
-      END RECORD
-   END RECORD
+    m_email_list DYNAMIC ARRAY OF RECORD
+        handle    STRING,
+        from      STRING,
+        to        STRING,
+        cc        STRING,
+        bcc       STRING,
+        subject   STRING,
+        body      STRING,
+        attachment_list DYNAMIC ARRAY OF RECORD
+            name   STRING,
+            data   STRING
+        END RECORD
+    END RECORD
 
 #------------------------------------------------------------------------------#
 # Function to set WHENEVER ANY ERROR for this module                           #
@@ -77,9 +77,9 @@ END FUNCTION
 FUNCTION gt_set_smtp_server(l_smtp_server)
 
 DEFINE
-   l_smtp_server   STRING
+    l_smtp_server   STRING
 
-   LET m_smtp_server = l_smtp_server.trim()
+    LET m_smtp_server = l_smtp_server.trim()
 
 END FUNCTION
 
@@ -91,9 +91,9 @@ END FUNCTION
 FUNCTION gt_set_smtp_port(l_smtp_port)
 
 DEFINE
-   l_smtp_port   INTEGER
+    l_smtp_port   INTEGER
 
-   LET m_smtp_port = l_smtp_port
+    LET m_smtp_port = l_smtp_port
 
 END FUNCTION
 
@@ -104,20 +104,20 @@ END FUNCTION
 
 FUNCTION gt_create_email()
 
-   LET m_serial = m_serial + 1
-   LET m_email_count = m_email_count + 1
-   LET m_email_list[m_email_count].handle = NULL
-   LET m_email_list[m_email_count].from = ""
-   LET m_email_list[m_email_count].to = ''
-   LET m_email_list[m_email_count].cc = ""
-   LET m_email_list[m_email_count].bcc = ""
-   LET m_email_list[m_email_count].subject = ""
-   LET m_email_list[m_email_count].body = ""
-   CALL m_email_list[m_email_count].attachment_list.clear()
+    LET m_serial = m_serial + 1
+    LET m_email_count = m_email_count + 1
+    LET m_email_list[m_email_count].handle = NULL
+    LET m_email_list[m_email_count].from = ""
+    LET m_email_list[m_email_count].to = ''
+    LET m_email_list[m_email_count].cc = ""
+    LET m_email_list[m_email_count].bcc = ""
+    LET m_email_list[m_email_count].subject = ""
+    LET m_email_list[m_email_count].body = ""
+    CALL m_email_list[m_email_count].attachment_list.clear()
 
-   LET m_email_list[m_email_count].handle = gt_next_serial("EMAIL")
+    LET m_email_list[m_email_count].handle = gt_next_serial("EMAIL")
 
-   RETURN m_email_list[m_email_count].handle
+    RETURN m_email_list[m_email_count].handle
 
 END FUNCTION
 
@@ -130,22 +130,22 @@ END FUNCTION
 FUNCTION gt_set_email_from_address(l_emailhdl, l_from)
 
 DEFINE
-   l_emailhdl   STRING,
-   l_from       STRING
+    l_emailhdl   STRING,
+    l_from       STRING
 
 DEFINE
-   l_ok    SMALLINT,
-   l_pos   INTEGER
+    l_ok    SMALLINT,
+    l_pos   INTEGER
 
-   LET l_ok = FALSE
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_ok = FALSE
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      LET m_email_list[l_pos].from = l_from.trim()
-      LET l_ok = TRUE
-   END IF
+    IF l_pos > 0 THEN
+        LET m_email_list[l_pos].from = l_from.trim()
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -158,27 +158,27 @@ END FUNCTION
 FUNCTION gt_set_email_to_address(l_emailhdl, l_to)
 
 DEFINE
-   l_emailhdl   STRING,
-   l_to         STRING
+    l_emailhdl   STRING,
+    l_to         STRING
 
 DEFINE
-   l_ok    SMALLINT,
-   l_pos   INTEGER
+    l_ok    SMALLINT,
+    l_pos   INTEGER
 
-   LET l_ok = FALSE
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_ok = FALSE
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      IF m_email_list[l_pos].to.getLength() == 0 THEN
-         LET m_email_list[l_pos].to = l_to.trim()
-      ELSE
-         LET m_email_list[l_pos].to = m_email_list[l_pos].to, ",", l_to.trim()
-      END IF
+    IF l_pos > 0 THEN
+        IF m_email_list[l_pos].to.getLength() == 0 THEN
+            LET m_email_list[l_pos].to = l_to.trim()
+        ELSE
+            LET m_email_list[l_pos].to = m_email_list[l_pos].to, ",", l_to.trim()
+        END IF
 
-      LET l_ok = TRUE
-   END IF
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -191,27 +191,27 @@ END FUNCTION
 FUNCTION gt_set_email_cc_address(l_emailhdl, l_cc)
 
 DEFINE
-   l_emailhdl   STRING,
-   l_cc         STRING
+    l_emailhdl   STRING,
+    l_cc         STRING
 
 DEFINE
-   l_ok    SMALLINT,
-   l_pos   INTEGER
+    l_ok    SMALLINT,
+    l_pos   INTEGER
 
-   LET l_ok = FALSE
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_ok = FALSE
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      IF m_email_list[l_pos].cc.getLength() == 0 THEN
-         LET m_email_list[l_pos].cc = l_cc.trim()
-      ELSE
-         LET m_email_list[l_pos].cc = m_email_list[l_pos].cc, ",", l_cc.trim()
-      END IF
+    IF l_pos > 0 THEN
+        IF m_email_list[l_pos].cc.getLength() == 0 THEN
+            LET m_email_list[l_pos].cc = l_cc.trim()
+        ELSE
+            LET m_email_list[l_pos].cc = m_email_list[l_pos].cc, ",", l_cc.trim()
+        END IF
 
-      LET l_ok = TRUE
-   END IF
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -224,27 +224,27 @@ END FUNCTION
 FUNCTION gt_set_email_bcc_address(l_emailhdl, l_bcc)
 
 DEFINE
-   l_emailhdl   STRING,
-   l_bcc        STRING
+    l_emailhdl   STRING,
+    l_bcc         STRING
 
 DEFINE
-   l_ok    SMALLINT,
-   l_pos   INTEGER
+    l_ok    SMALLINT,
+    l_pos   INTEGER
 
-   LET l_ok = FALSE
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_ok = FALSE
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      IF m_email_list[l_pos].bcc.getLength() == 0 THEN
-         LET m_email_list[l_pos].bcc = l_bcc.trim()
-      ELSE
-         LET m_email_list[l_pos].bcc = m_email_list[l_pos].bcc, ",", l_bcc.trim()
-      END IF
+    IF l_pos > 0 THEN
+        IF m_email_list[l_pos].bcc.getLength() == 0 THEN
+            LET m_email_list[l_pos].bcc = l_bcc.trim()
+        ELSE
+            LET m_email_list[l_pos].bcc = m_email_list[l_pos].bcc, ",", l_bcc.trim()
+        END IF
 
-      LET l_ok = TRUE
-   END IF
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -257,22 +257,22 @@ END FUNCTION
 FUNCTION gt_set_email_subject(l_emailhdl, l_subject)
 
 DEFINE
-   l_emailhdl   STRING,
-   l_subject    STRING
+    l_emailhdl   STRING,
+    l_subject    STRING
 
 DEFINE
-   l_ok    SMALLINT,
-   l_pos   INTEGER
+    l_ok    SMALLINT,
+    l_pos   INTEGER
 
-   LET l_ok = FALSE
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_ok = FALSE
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      LET m_email_list[l_pos].subject = l_subject.trim()
-      LET l_ok = TRUE
-   END IF
+    IF l_pos > 0 THEN
+        LET m_email_list[l_pos].subject = l_subject.trim()
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -285,22 +285,22 @@ END FUNCTION
 FUNCTION gt_set_email_body(l_emailhdl, l_body)
 
 DEFINE
-   l_emailhdl   STRING,
-   l_body       STRING
+    l_emailhdl   STRING,
+    l_body        STRING
 
 DEFINE
-   l_ok    SMALLINT,
-   l_pos   INTEGER
+    l_ok    SMALLINT,
+    l_pos   INTEGER
 
-   LET l_ok = FALSE
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_ok = FALSE
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      LET m_email_list[l_pos].body = l_body.trim()
-      LET l_ok = TRUE
-   END IF
+    IF l_pos > 0 THEN
+        LET m_email_list[l_pos].body = l_body.trim()
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -313,46 +313,46 @@ END FUNCTION
 FUNCTION gt_set_email_body_from_file(l_emailhdl, l_file)
 
 DEFINE
-   l_emailhdl   STRING,
-   l_file       STRING
+    l_emailhdl   STRING,
+    l_file       STRING
 
 DEFINE
-   l_ok        SMALLINT,
-   l_pos       INTEGER,
-   l_filehdl   STRING,
-   l_body      base.stringbuffer
+    l_ok        SMALLINT,
+    l_pos       INTEGER,
+    l_filehdl   STRING,
+    l_body      base.stringbuffer
 
-   LET l_ok = FALSE
-   LET l_body = base.stringbuffer.create()
+    LET l_ok = FALSE
+    LET l_body = base.stringbuffer.create()
 
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      IF gt_file_exists(l_file) THEN
-         CALL gt_file_open(l_file, "r", "")
-            RETURNING l_ok, l_filehdl
+    IF l_pos > 0 THEN
+        IF gt_file_exists(l_file) THEN
+            CALL gt_file_open(l_file, "r", "")
+                RETURNING l_ok, l_filehdl
 
-         IF l_ok THEN
-            WHILE gt_file_read(l_filehdl)
-               CALL l_body.append(gt_io_buffer(l_filehdl))
-               CALL l_body.append("\n")
-            END WHILE
-         ELSE
-            CALL gt_set_error("ERROR", SFMT(%"Unable to open file %1", l_file))
+            IF l_ok THEN
+                WHILE gt_file_read(l_filehdl)
+                    CALL l_body.append(gt_io_buffer(l_filehdl))
+                    CALL l_body.append("\n")
+                END WHILE
+            ELSE
+                CALL gt_set_error("ERROR", SFMT(%"Unable to open file %1", l_file))
+                LET l_ok = FALSE
+            END IF
+        ELSE
+            CALL gt_set_error("ERROR", SFMT(%"The file %1 does not exist", l_file))
             LET l_ok = FALSE
-         END IF
-      ELSE
-         CALL gt_set_error("ERROR", SFMT(%"The file %1 does not exist", l_file))
-         LET l_ok = FALSE
-      END IF
+        END IF
 
-      IF l_ok THEN
-         LET m_email_list[l_pos].body = l_body.tostring()
-         LET l_ok = TRUE
-      END IF
-   END IF
+        IF l_ok THEN
+            LET m_email_list[l_pos].body = l_body.tostring()
+            LET l_ok = TRUE
+        END IF
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -365,52 +365,52 @@ END FUNCTION
 FUNCTION gt_set_email_attachment(l_emailhdl, l_attachment)
 
 DEFINE
-   l_emailhdl     STRING,
-   l_attachment   STRING
+    l_emailhdl     STRING,
+    l_attachment   STRING
 
 DEFINE
-   l_ok     SMALLINT,
-   l_pos    INTEGER,
-   l_apos   INTEGER,
-   l_filehdl   STRING,
-   l_body      base.stringbuffer
+    l_ok        SMALLINT,
+    l_pos       INTEGER,
+    l_apos      INTEGER,
+    l_filehdl   STRING,
+    l_body      base.stringbuffer
 
-   LET l_ok = FALSE
-   LET l_attachment = l_attachment.trim()
-   LET l_body = base.stringbuffer.create()
+    LET l_ok = FALSE
+    LET l_attachment = l_attachment.trim()
+    LET l_body = base.stringbuffer.create()
 
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      LET l_apos = m_email_list[l_pos].attachment_list.getlength()
-      LET l_apos = l_apos + 1
+    IF l_pos > 0 THEN
+        LET l_apos = m_email_list[l_pos].attachment_list.getlength()
+        LET l_apos = l_apos + 1
 
-      IF gt_file_exists(l_attachment) THEN
-         CALL gt_file_open(l_attachment, "r", "")
-            RETURNING l_ok, l_filehdl
+        IF gt_file_exists(l_attachment) THEN
+            CALL gt_file_open(l_attachment, "r", "")
+                RETURNING l_ok, l_filehdl
 
-         IF l_ok THEN
-            WHILE gt_file_read(l_filehdl)
-               CALL l_body.append(gt_io_buffer(l_filehdl))
-               CALL l_body.append("\n")
-            END WHILE
-         ELSE
-            CALL gt_set_error("ERROR", SFMT(%"Unable to open attachment %1", l_attachment))
+            IF l_ok THEN
+                WHILE gt_file_read(l_filehdl)
+                    CALL l_body.append(gt_io_buffer(l_filehdl))
+                    CALL l_body.append("\n")
+                END WHILE
+            ELSE
+                CALL gt_set_error("ERROR", SFMT(%"Unable to open attachment %1", l_attachment))
+                LET l_ok = FALSE
+            END IF
+        ELSE
+            CALL gt_set_error("ERROR", SFMT(%"The attachment %1 does not exist", l_attachment))
             LET l_ok = FALSE
-         END IF
-      ELSE
-         CALL gt_set_error("ERROR", SFMT(%"The attachment %1 does not exist", l_attachment))
-         LET l_ok = FALSE
-      END IF
+        END IF
 
-      IF l_ok THEN
-         LET m_email_list[l_pos].attachment_list[l_apos].name = l_attachment
-         LET m_email_list[l_pos].attachment_list[l_apos].data = l_body.tostring()
-         LET l_ok = TRUE
-      END IF
-   END IF
+        IF l_ok THEN
+            LET m_email_list[l_pos].attachment_list[l_apos].name = l_attachment
+            LET m_email_list[l_pos].attachment_list[l_apos].data = l_body.tostring()
+            LET l_ok = TRUE
+        END IF
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -423,24 +423,24 @@ END FUNCTION
 FUNCTION gt_send_email(l_emailhdl)
 
 DEFINE
-   l_emailhdl   STRING
+    l_emailhdl   STRING
 
 DEFINE
-   l_ok    SMALLINT,
-   l_pos   INTEGER
+    l_ok     SMALLINT,
+    l_pos    INTEGER
 
-   LET l_ok = FALSE
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_ok = FALSE
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_pos > 0 THEN
-      IF p_gt_dispatch_email(l_pos) THEN
-         LET l_ok = TRUE
-      ELSE
-         LET l_ok = FALSE
-      END IF
-   END IF
+    IF l_pos > 0 THEN
+        IF p_gt_dispatch_email(l_pos) THEN
+            LET l_ok = TRUE
+        ELSE
+            LET l_ok = FALSE
+        END IF
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -452,15 +452,15 @@ END FUNCTION
 FUNCTION gt_send_all_emails()
 
 DEFINE
-   l_ok   SMALLINT
+    l_ok   SMALLINT
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   IF p_gt_dispatch_email(0) THEN
-      LET l_ok = TRUE
-   END IF
+    IF p_gt_dispatch_email(0) THEN
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -479,62 +479,62 @@ END FUNCTION
 FUNCTION gt_send_email_notification(l_from, l_to, l_cc, l_bcc, l_subject, l_body)
 
 DEFINE
-   l_from      STRING,
-   l_to        STRING,
-   l_cc        STRING,
-   l_bcc       STRING,
-   l_subject   STRING,
-   l_body      STRING
+    l_from      STRING,
+    l_to        STRING,
+    l_cc        STRING,
+    l_bcc       STRING,
+    l_subject   STRING,
+    l_body      STRING
 
 DEFINE
-   l_ok         SMALLINT,
-   l_pos        INTEGER,
-   l_emailhdl   STRING
+    l_ok         SMALLINT,
+    l_pos        INTEGER,
+    l_emailhdl   STRING
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   LET l_emailhdl = gt_create_email()
+    LET l_emailhdl = gt_create_email()
 
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_emailhdl IS NOT NULL THEN
-      LET l_ok = gt_set_email_from_address(l_emailhdl, l_from)
+    IF l_emailhdl IS NOT NULL THEN
+        LET l_ok = gt_set_email_from_address(l_emailhdl, l_from)
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_to_address(l_emailhdl, l_to)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_to_address(l_emailhdl, l_to)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_cc_address(l_emailhdl, l_cc)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_cc_address(l_emailhdl, l_cc)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_bcc_address(l_emailhdl, l_bcc)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_bcc_address(l_emailhdl, l_bcc)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_subject(l_emailhdl, l_subject)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_subject(l_emailhdl, l_subject)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_body(l_emailhdl, l_body)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_body(l_emailhdl, l_body)
+        END IF
 
-      IF l_ok THEN
-         IF p_gt_dispatch_email(l_pos) THEN
-            LET l_ok = TRUE
-         ELSE
-            CALL gt_set_error("ERROR", SFMT(%"Error in sending email notification %1", l_emailhdl))
-         END IF
-      ELSE
-         CALL gt_set_error("ERROR", SFMT(%"Error in creating email notification %1", l_emailhdl))
-      END IF
-   ELSE
-      CALL gt_set_error("ERROR", %"Unable to create email notification")
-      LET l_ok = FALSE
-   END IF
+        IF l_ok THEN
+            IF p_gt_dispatch_email(l_pos) THEN
+                LET l_ok = TRUE
+            ELSE
+                CALL gt_set_error("ERROR", SFMT(%"Error in sending email notification %1", l_emailhdl))
+            END IF
+        ELSE
+            CALL gt_set_error("ERROR", SFMT(%"Error in creating email notification %1", l_emailhdl))
+        END IF
+    ELSE
+        CALL gt_set_error("ERROR", %"Unable to create email notification")
+        LET l_ok = FALSE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -545,67 +545,67 @@ END FUNCTION
 FUNCTION gt_send_email_with_attachment(l_from, l_to, l_cc, l_bcc, l_subject, l_body, l_attachment)
 
 DEFINE
-   l_from         STRING,
-   l_to           STRING,
-   l_cc           STRING,
-   l_bcc          STRING,
-   l_subject      STRING,
-   l_body         STRING,
-   l_attachment   STRING
+    l_from         STRING,
+    l_to           STRING,
+    l_cc           STRING,
+    l_bcc          STRING,
+    l_subject      STRING,
+    l_body         STRING,
+    l_attachment   STRING
 
 DEFINE
-   l_ok         SMALLINT,
-   l_pos        INTEGER,
-   l_emailhdl   STRING
+    l_ok         SMALLINT,
+    l_pos        INTEGER,
+    l_emailhdl   STRING
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   LET l_emailhdl = gt_create_email()
+    LET l_emailhdl = gt_create_email()
 
-   LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = p_gt_find_email(l_emailhdl)
 
-   IF l_emailhdl IS NOT NULL THEN
-      LET l_ok = gt_set_email_from_address(l_emailhdl, l_from)
+    IF l_emailhdl IS NOT NULL THEN
+        LET l_ok = gt_set_email_from_address(l_emailhdl, l_from)
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_to_address(l_emailhdl, l_to)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_to_address(l_emailhdl, l_to)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_cc_address(l_emailhdl, l_cc)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_cc_address(l_emailhdl, l_cc)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_bcc_address(l_emailhdl, l_bcc)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_bcc_address(l_emailhdl, l_bcc)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_subject(l_emailhdl, l_subject)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_subject(l_emailhdl, l_subject)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_body(l_emailhdl, l_body)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_body(l_emailhdl, l_body)
+        END IF
 
-      IF l_ok THEN
-         LET l_ok = gt_set_email_attachment(l_emailhdl, l_attachment)
-      END IF
+        IF l_ok THEN
+            LET l_ok = gt_set_email_attachment(l_emailhdl, l_attachment)
+        END IF
 
-      IF l_ok THEN
-         IF p_gt_dispatch_email(l_pos) THEN
-            LET l_ok = TRUE
-         ELSE
-            CALL gt_set_error("ERROR", SFMT(%"Error in sending email notification %1", l_emailhdl))
-         END IF
-      ELSE
-         CALL gt_set_error("ERROR", SFMT(%"Error in creating email notification %1", l_emailhdl))
-      END IF
-   ELSE
-      CALL gt_set_error("ERROR", %"Unable to create email notification")
-      LET l_ok = FALSE
-   END IF
+        IF l_ok THEN
+            IF p_gt_dispatch_email(l_pos) THEN
+                LET l_ok = TRUE
+            ELSE
+                CALL gt_set_error("ERROR", SFMT(%"Error in sending email notification %1", l_emailhdl))
+            END IF
+        ELSE
+            CALL gt_set_error("ERROR", SFMT(%"Error in creating email notification %1", l_emailhdl))
+        END IF
+    ELSE
+        CALL gt_set_error("ERROR", %"Unable to create email notification")
+        LET l_ok = FALSE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -623,122 +623,122 @@ END FUNCTION
 FUNCTION gt_mail_merge(l_csv_file, l_template)
 
 DEFINE
-   l_csv_file   STRING,
-   l_template   STRING
+    l_csv_file   STRING,
+    l_template   STRING
 
 DEFINE
-   l_ok           SMALLINT,
-   i              INTEGER,
-   l_to           STRING,
-   l_from         STRING,
-   l_body         STRING,
-   l_token        STRING,
-   l_fields       STRING,
-   l_tokens       STRING,
-   l_filehdl      STRING,
-   l_subject      STRING,
-   l_text         base.stringbuffer,
-   l_tokenizer    base.stringtokenizer,
-   l_field_list   DYNAMIC ARRAY OF STRING
+    l_ok           SMALLINT,
+    i              INTEGER,
+    l_to           STRING,
+    l_from         STRING,
+    l_body         STRING,
+    l_token        STRING,
+    l_fields       STRING,
+    l_tokens       STRING,
+    l_filehdl      STRING,
+    l_subject      STRING,
+    l_text         base.stringbuffer,
+    l_tokenizer    base.stringtokenizer,
+    l_field_list   DYNAMIC ARRAY OF STRING
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   #---------------------------------------------------------------------------#
-   # Read in the template file                                                 #
-   #---------------------------------------------------------------------------#
+    #--------------------------------------------------------------------------#
+    # Read in the template file                                                #
+    #--------------------------------------------------------------------------#
 
-   IF gt_file_exists(l_template) THEN
-      CALL gt_file_open(l_template, "r", "")
-         RETURNING l_ok, l_filehdl
-
-      IF l_ok THEN
-         LET l_text = base.stringbuffer.create()
-
-         IF gt_file_read(l_filehdl) THEN
-            LET l_from = gt_io_buffer(l_filehdl)
-         END IF
-
-         IF gt_file_read(l_filehdl) THEN
-            LET l_subject = gt_io_buffer(l_filehdl)
-         END IF
-
-         WHILE gt_file_read(l_filehdl)
-            CALL l_text.append(gt_io_buffer(l_filehdl))
-            CALL l_text.append("\n")
-         END WHILE
-      ELSE
-         CALL gt_set_error("ERROR", SFMT(%"Unable to open file %1", l_template))
-         LET l_ok = FALSE
-      END IF
-   ELSE
-      CALL gt_set_error("ERROR", SFMT(%"The template file %1 does not exist", l_template))
-      LET l_ok = FALSE
-   END IF
-
-   #---------------------------------------------------------------------------#
-   # Read the field names from the csv file                                    #
-   #---------------------------------------------------------------------------#
-
-   IF l_ok THEN
-      IF gt_file_exists(l_csv_file) THEN
-         CALL gt_file_open(l_csv_file, "r", "")
+    IF gt_file_exists(l_template) THEN
+        CALL gt_file_open(l_template, "r", "")
             RETURNING l_ok, l_filehdl
 
-         IF l_ok THEN
+        IF l_ok THEN
+            LET l_text = base.stringbuffer.create()
+
             IF gt_file_read(l_filehdl) THEN
-               LET i = 0
-               LET l_fields = gt_io_buffer(l_filehdl)
-               LET l_tokenizer = base.stringtokenizer.create(l_fields.trim(), ",")
-
-               WHILE l_tokenizer.hasmoretokens()
-                  LET i = i + 1
-                  LET l_field_list[i] = "<", l_tokenizer.nexttoken(), ">"
-               END WHILE
-            ELSE
-               CALL gt_set_error("ERROR", SFMT(%"Unable to read file %1", l_csv_file))
+                LET l_from = gt_io_buffer(l_filehdl)
             END IF
-         ELSE
-            CALL gt_set_error("ERROR", SFMT(%"Unable to open file %1", l_csv_file))
+
+            IF gt_file_read(l_filehdl) THEN
+                LET l_subject = gt_io_buffer(l_filehdl)
+            END IF
+
+            WHILE gt_file_read(l_filehdl)
+                CALL l_text.append(gt_io_buffer(l_filehdl))
+                CALL l_text.append("\n")
+            END WHILE
+        ELSE
+            CALL gt_set_error("ERROR", SFMT(%"Unable to open file %1", l_template))
             LET l_ok = FALSE
-         END IF
-      ELSE
-         CALL gt_set_error("ERROR", SFMT(%"The csv file %1 does not exist", l_csv_file))
-         LET l_ok = FALSE
-      END IF
-   END IF
+        END IF
+    ELSE
+        CALL gt_set_error("ERROR", SFMT(%"The template file %1 does not exist", l_template))
+        LET l_ok = FALSE
+    END IF
 
-   #---------------------------------------------------------------------------#
-   # Iterate over the lines in the csv file                                    #
-   #---------------------------------------------------------------------------#
+    #--------------------------------------------------------------------------#
+    # Read the field names from the csv file                                   #
+    #--------------------------------------------------------------------------#
 
-   IF l_ok THEN
-      WHILE gt_file_read(l_filehdl)
-         LET i = 0
-         LET l_body = l_text.toString()
-         LET l_tokens = gt_io_buffer(l_filehdl)
-         LET l_tokenizer = base.stringtokenizer.createext(l_tokens.trim(), ",", "", TRUE)
+    IF l_ok THEN
+        IF gt_file_exists(l_csv_file) THEN
+            CALL gt_file_open(l_csv_file, "r", "")
+                RETURNING l_ok, l_filehdl
 
-         WHILE l_tokenizer.hasmoretokens()
-            LET i = i + 1
-            LET l_token = l_tokenizer.nexttoken()
-            LET l_token = l_token.trim()
+            IF l_ok THEN
+                IF gt_file_read(l_filehdl) THEN
+                    LET i = 0
+                    LET l_fields = gt_io_buffer(l_filehdl)
+                    LET l_tokenizer = base.stringtokenizer.create(l_fields.trim(), ",")
 
-            IF l_token.getcharat(1) == "\"" THEN
-               LET l_token = l_token.substring(2, l_token.getLength() - 1)
-            END IF
-
-            IF i == 1 THEN
-               LET l_to = l_token
+                    WHILE l_tokenizer.hasmoretokens()
+                        LET i = i + 1
+                        LET l_field_list[i] = "<", l_tokenizer.nexttoken(), ">"
+                    END WHILE
+                ELSE
+                    CALL gt_set_error("ERROR", SFMT(%"Unable to read file %1", l_csv_file))
+                END IF
             ELSE
-               LET l_body = gt_string_replace(l_body, l_field_list[i], l_token, TRUE)
+                CALL gt_set_error("ERROR", SFMT(%"Unable to open file %1", l_csv_file))
+                LET l_ok = FALSE
             END IF
-         END WHILE
+        ELSE
+            CALL gt_set_error("ERROR", SFMT(%"The csv file %1 does not exist", l_csv_file))
+            LET l_ok = FALSE
+        END IF
+    END IF
 
-         LET l_ok = gt_send_email_notification(l_from, l_to, "", "", l_subject, l_body)
-      END WHILE
-   END IF
+    #--------------------------------------------------------------------------#
+    # Iterate over the lines in the csv file                                   #
+    #--------------------------------------------------------------------------#
 
-   RETURN l_ok
+    IF l_ok THEN
+        WHILE gt_file_read(l_filehdl)
+            LET i = 0
+            LET l_body = l_text.toString()
+            LET l_tokens = gt_io_buffer(l_filehdl)
+            LET l_tokenizer = base.stringtokenizer.createext(l_tokens.trim(), ",", "", TRUE)
+
+            WHILE l_tokenizer.hasmoretokens()
+                LET i = i + 1
+                LET l_token = l_tokenizer.nexttoken()
+                LET l_token = l_token.trim()
+
+                IF l_token.getcharat(1) == "\"" THEN
+                    LET l_token = l_token.substring(2, l_token.getLength() - 1)
+                END IF
+
+                IF i == 1 THEN
+                    LET l_to = l_token
+                ELSE
+                    LET l_body = gt_string_replace(l_body, l_field_list[i], l_token, TRUE)
+                END IF
+            END WHILE
+
+            LET l_ok = gt_send_email_notification(l_from, l_to, "", "", l_subject, l_body)
+        END WHILE
+    END IF
+
+    RETURN l_ok
 
 END FUNCTION
 
@@ -756,22 +756,22 @@ END FUNCTION
 FUNCTION p_gt_find_email(l_emailhdl)
 
 DEFINE
-   l_emailhdl   STRING
+    l_emailhdl   STRING
 
 DEFINE
-   i       INTEGER,
-   l_pos   INTEGER
+    i       INTEGER,
+    l_pos   INTEGER
 
-   LET l_pos = 0
+    LET l_pos = 0
 
-   FOR i = 1 TO m_email_count
-      IF m_email_list[i].handle == l_emailhdl THEN
-         LET l_pos = i
-         EXIT FOR
-      END IF
-   END FOR
+    FOR i = 1 TO m_email_count
+        IF m_email_list[i].handle == l_emailhdl THEN
+            LET l_pos = i
+            EXIT FOR
+        END IF
+    END FOR
 
-   RETURN l_pos
+    RETURN l_pos
 
 END FUNCTION
 
@@ -785,55 +785,55 @@ END FUNCTION
 FUNCTION p_gt_create_email_message(l_pos)
 
 DEFINE
-   l_pos   INTEGER
+    l_pos   INTEGER
 
 DEFINE
-   i         INTEGER,
-   l_date    STRING,
-   l_email   base.stringbuffer
+    i         INTEGER,
+    l_date    STRING,
+    l_email   base.stringbuffer
 
-   LET l_email = base.stringbuffer.create()
+    LET l_email = base.stringbuffer.create()
 
-   CALL l_email.append("From: ")
-   CALL l_email.append(m_email_list[l_pos].from)
-   CALL l_email.append("\r\n")
+    CALL l_email.append("From: ")
+    CALL l_email.append(m_email_list[l_pos].from)
+    CALL l_email.append("\r\n")
 
-   CALL l_email.append("To: ")
-   CALL l_email.append(m_email_list[l_pos].to)
-   CALL l_email.append("\r\n")
+    CALL l_email.append("To: ")
+    CALL l_email.append(m_email_list[l_pos].to)
+    CALL l_email.append("\r\n")
 
-   CALL l_email.append("Cc: ")
-   CALL l_email.append(m_email_list[l_pos].cc)
-   CALL l_email.append("\r\n")
+    CALL l_email.append("Cc: ")
+    CALL l_email.append(m_email_list[l_pos].cc)
+    CALL l_email.append("\r\n")
 
-   CALL l_email.append("Subject: ")
-   CALL l_email.append(m_email_list[l_pos].subject)
-   CALL l_email.append("\r\n")
+    CALL l_email.append("Subject: ")
+    CALL l_email.append(m_email_list[l_pos].subject)
+    CALL l_email.append("\r\n")
 
-   CALL l_email.append("Date: ") #Date: Wed, 29 Aug 2007 21:50:46 -0600
-   LET l_date = TODAY USING "ddd, dd mmm yyyy"
-   LET l_date = l_date, " ", TIME(CURRENT)
-   CALL l_email.append(l_date)
-   CALL l_email.append("\r\n")
+    CALL l_email.append("Date: ") #Date: Wed, 29 Aug 2007 21:50:46 -0600
+    LET l_date = TODAY USING "ddd, dd mmm yyyy"
+    LET l_date = l_date, " ", TIME(CURRENT)
+    CALL l_email.append(l_date)
+    CALL l_email.append("\r\n")
 
-   CALL l_email.append("User-Agent: GtMailer/1.0")
-   CALL l_email.append("\r\n")
+    CALL l_email.append("User-Agent: GtMailer/1.0")
+    CALL l_email.append("\r\n")
 
-   CALL l_email.append("\r\n")
+    CALL l_email.append("\r\n")
 
-   CALL l_email.append(m_email_list[l_pos].body)
-   CALL l_email.append("\r\n")
+    CALL l_email.append(m_email_list[l_pos].body)
+    CALL l_email.append("\r\n")
 
-   # TODO This is a first shot at attachments - more work required
-   IF m_email_list[l_pos].attachment_list.getlength() > 0 THEN
-      FOR i = 1 TO m_email_list[l_pos].attachment_list.getlength()
-         CALL l_email.append("\r\n")
-         CALL l_email.append("\r\n")
-         CALL l_email.append(m_email_list[l_pos].attachment_list[i].data)
-      END FOR
-   END IF
+    # TODO This is a first shot at attachments - more work required
+    IF m_email_list[l_pos].attachment_list.getlength() > 0 THEN
+        FOR i = 1 TO m_email_list[l_pos].attachment_list.getlength()
+            CALL l_email.append("\r\n")
+            CALL l_email.append("\r\n")
+            CALL l_email.append(m_email_list[l_pos].attachment_list[i].data)
+        END FOR
+    END IF
 
-   RETURN l_email.tostring()
+    RETURN l_email.tostring()
 
 END FUNCTION
 
@@ -847,113 +847,113 @@ END FUNCTION
 FUNCTION p_gt_dispatch_email(l_pos)
 
 DEFINE
-   l_pos   INTEGER
+    l_pos   INTEGER
 
 DEFINE
-   l_ok           SMALLINT,
-   l_dummy        SMALLINT,
-   i              INTEGER,
-   l_to           STRING,
-   l_sockethdl    STRING
+    l_ok          SMALLINT,
+    l_dummy       SMALLINT,
+    i             INTEGER,
+    l_to          STRING,
+    l_sockethdl   STRING
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   CALL gt_connect_to_smtp_server(m_smtp_server, m_smtp_port)
-      RETURNING l_ok, l_sockethdl
+    CALL gt_connect_to_smtp_server(m_smtp_server, m_smtp_port)
+        RETURNING l_ok, l_sockethdl
 
-   #---------------------------------------------------------------------------#
-   # If l_pos is zero then we want to send all the queued emails               #
-   #---------------------------------------------------------------------------#
+    #--------------------------------------------------------------------------#
+    # If l_pos is zero then we want to send all the queued emails              #
+    #--------------------------------------------------------------------------#
 
-   IF l_pos == 0 THEN
-      FOR i = 1 TO m_email_count
-         IF l_ok THEN
-            IF gt_smtp_mail_from(l_sockethdl, m_email_list[i].from) THEN
-               LET l_ok = TRUE
+    IF l_pos == 0 THEN
+        FOR i = 1 TO m_email_count
+            IF l_ok THEN
+                IF gt_smtp_mail_from(l_sockethdl, m_email_list[i].from) THEN
+                    LET l_ok = TRUE
+                ELSE
+                    LET l_ok = FALSE
+                END IF
+            END IF
+
+            IF l_ok THEN
+                LET l_to = m_email_list[i].to
+
+                IF m_email_list[i].cc.getlength() > 0 THEN
+                    LET l_to = l_to, ",", m_email_list[i].cc
+                END IF
+
+                IF m_email_list[i].bcc.getlength() > 0 THEN
+                    LET l_to = l_to, ",", m_email_list[i].bcc
+                END IF
+
+                IF gt_smtp_rcpt_to(l_sockethdl, l_to) THEN
+                    LET l_ok = TRUE
+                ELSE
+                    LET l_ok = FALSE
+                END IF
+            END IF
+
+            IF l_ok THEN
+                IF gt_smtp_data(l_sockethdl, p_gt_create_email_message(i)) THEN
+                    LET l_ok = TRUE
+                ELSE
+                    LET l_ok = FALSE
+                END IF
+            END IF
+        END FOR
+    ELSE
+        IF l_ok THEN
+            IF gt_smtp_mail_from(l_sockethdl, m_email_list[l_pos].from) THEN
+                LET l_ok = TRUE
             ELSE
-               LET l_ok = FALSE
+                LET l_ok = FALSE
             END IF
-         END IF
+        END IF
 
-         IF l_ok THEN
-            LET l_to = m_email_list[i].to
+        IF l_ok THEN
+            LET l_to = m_email_list[l_pos].to
 
-            IF m_email_list[i].cc.getlength() > 0 THEN
-               LET l_to = l_to, ",", m_email_list[i].cc
+            IF m_email_list[l_pos].cc.getlength() > 0 THEN
+              LET l_to = l_to, ",", m_email_list[l_pos].cc
             END IF
 
-            IF m_email_list[i].bcc.getlength() > 0 THEN
-               LET l_to = l_to, ",", m_email_list[i].bcc
+            IF m_email_list[l_pos].bcc.getlength() > 0 THEN
+                LET l_to = l_to, ",", m_email_list[l_pos].bcc
             END IF
 
             IF gt_smtp_rcpt_to(l_sockethdl, l_to) THEN
-               LET l_ok = TRUE
+                LET l_ok = TRUE
             ELSE
-               LET l_ok = FALSE
+                LET l_ok = FALSE
             END IF
-         END IF
+        END IF
 
-         IF l_ok THEN
-            IF gt_smtp_data(l_sockethdl, p_gt_create_email_message(i)) THEN
-               LET l_ok = TRUE
+        IF l_ok THEN
+            IF gt_smtp_data(l_sockethdl, p_gt_create_email_message(l_pos)) THEN
+                LET l_ok = TRUE
             ELSE
-               LET l_ok = FALSE
+                LET l_ok = FALSE
             END IF
-         END IF
-      END FOR
-   ELSE
-      IF l_ok THEN
-         IF gt_smtp_mail_from(l_sockethdl, m_email_list[l_pos].from) THEN
-            LET l_ok = TRUE
-         ELSE
-            LET l_ok = FALSE
-         END IF
-      END IF
+        END IF
+    END IF
 
-      IF l_ok THEN
-         LET l_to = m_email_list[l_pos].to
+    #--------------------------------------------------------------------------#
+    # RFC 2821 requires that we send quit even if something goes wrong         #
+    #--------------------------------------------------------------------------#
 
-         IF m_email_list[l_pos].cc.getlength() > 0 THEN
-           LET l_to = l_to, ",", m_email_list[l_pos].cc
-         END IF
+    IF l_ok THEN
+        IF l_pos == 0 THEN
+            CALL m_email_list.clear()
+        ELSE
+            CALL m_email_list.deleteelement(l_pos)
+            LET m_email_count = m_email_count - 1
+        END IF
+    END IF
 
-         IF m_email_list[l_pos].bcc.getlength() > 0 THEN
-            LET l_to = l_to, ",", m_email_list[l_pos].bcc
-         END IF
+    CALL gt_smtp_quit(l_sockethdl)
+        RETURNING l_dummy
 
-         IF gt_smtp_rcpt_to(l_sockethdl, l_to) THEN
-            LET l_ok = TRUE
-         ELSE
-            LET l_ok = FALSE
-         END IF
-      END IF
-
-      IF l_ok THEN
-         IF gt_smtp_data(l_sockethdl, p_gt_create_email_message(l_pos)) THEN
-            LET l_ok = TRUE
-         ELSE
-            LET l_ok = FALSE
-         END IF
-      END IF
-   END IF
-
-   #---------------------------------------------------------------------------#
-   # RFC 2821 requires that we send quit even if something goes wrong          #
-   #---------------------------------------------------------------------------#
-
-   IF l_ok THEN
-      IF l_pos == 0 THEN
-         CALL m_email_list.clear()
-      ELSE
-         CALL m_email_list.deleteelement(l_pos)
-         LET m_email_count = m_email_count - 1
-      END IF
-   END IF
-
-   CALL gt_smtp_quit(l_sockethdl)
-      RETURNING l_dummy
-
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 

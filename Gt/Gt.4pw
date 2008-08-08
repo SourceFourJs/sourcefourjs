@@ -1,67 +1,85 @@
 <?xml version="1.0" encoding="utf8" ?>
-<Workspace defaultApplication="23" id="1" version="2.0">
-  <Project dataBaseSchema="" id="2" label="Gt" targetDirectory="$(WorkspaceDir)/build">
-    <Project dataBaseSchema="" id="37" label="GtDocgen" targetDirectory="$(WorkspaceDir)/build">
-      <Application commandLineArguments="--configuration-file gtdocgen.conf --log-file docgen.log" dataBaseSchema="" dependencies="4||44||57" id="38" label="gtdocgen" targetDirectory="$(WorkspaceDir)/build">
-        <File filePath="GtDocgen/gtdocgen.4gl" id="39"/>
-        <File filePath="GtDocgen/gtdocgen_config.4gl" id="40"/>
-        <File filePath="GtDocgen/gtdocgen_parser.4gl" id="41"/>
-        <File filePath="GtDocgen/gtdocgen_xhtml_generator.4gl" id="42"/>
+<Workspace id="0" version="2.0">
+  <Project id="81" label="Gt" targetDirectory="$(WorkspaceDir)/build">
+    <Application id="10" label="gt_viewvc_client">
+      <File filePath="Utilities/gt_viewvc_client.4gl" id="9"/>
+    </Application>
+    <Project id="8" label="GtDocgen">
+      <Application commandLineArguments="--configuration-file /home/work/projects/genero/sourcefourjs/trunk/Gt/build/gtdocgen.conf " dependencies="67||60||50" id="3" label="gtdocgen">
+        <File filePath="GtDocgen/gtdocgen.4gl" id="2"/>
+        <File filePath="GtDocgen/gtdocgen_config.4gl" id="4"/>
+        <File filePath="GtDocgen/gtdocgen_parser.4gl" id="5"/>
+        <File filePath="GtDocgen/gtdocgen_xhtml_generator.4gl" id="6"/>
       </Application>
     </Project>
-    <Project dataBaseSchema="" id="3" label="libGtCore" targetDirectory="$(WorkspaceDir)/build">
-      <Library dataBaseSchema="" dependencies="" id="4" label="libgtcore" targetDirectory="$(WorkspaceDir)/build">
-        <File filePath="libGtCore/libgt.4st" id="22"/>
-        <File filePath="libGtCore/libgt_binary.4gl" id="6"/>
-        <File filePath="libGtCore/libgt_binary_utils.4gl" id="7"/>
-        <File filePath="libGtCore/libgt_email.4gl" id="8"/>
-        <File filePath="libGtCore/libgt_encryption.4gl" id="9"/>
-        <File filePath="libGtCore/libgt_exception.4gl" id="10"/>
-        <File filePath="libGtCore/libgt_fs.4gl" id="11"/>
-        <File filePath="libGtCore/libgt_getopt.4gl" id="12"/>
-        <File filePath="libGtCore/libgt_md5.4gl" id="13"/>
-        <File filePath="libGtCore/libgt_pop3_client.4gl" id="68"/>
-        <File filePath="libGtCore/libgt_regex.4gl" id="69"/>
-        <File filePath="libGtCore/libgt_smtp_client.4gl" id="14"/>
-        <File filePath="libGtCore/libgt_string.4gl" id="15"/>
-        <File filePath="libGtCore/libgt_system.4gl" id="16"/>
-        <File filePath="libGtCore/libgt_unittest.4ad" id="19"/>
-        <File filePath="libGtCore/libgt_unittest.4gl" id="17"/>
-        <File filePath="libGtCore/libgt_unittest.4tb" id="20"/>
-        <File filePath="libGtCore/libgt_unittest.4tm" id="21"/>
-        <File filePath="libGtCore/libgt_unittest.per" id="18"/>
+    <Project id="51" label="libGtCore">
+      <Library id="50" label="libGtCore">
+        <File filePath="libGtCore/libgt.4st" id="29"/>
+        <File filePath="libGtCore/libgt_binary.4gl" id="30"/>
+        <File filePath="libGtCore/libgt_binary_utils.4gl" id="31"/>
+        <File filePath="libGtCore/libgt_email.4gl" id="32"/>
+        <File filePath="libGtCore/libgt_encryption.4gl" id="33"/>
+        <File filePath="libGtCore/libgt_exception.4gl" id="34"/>
+        <File filePath="libGtCore/libgt_fs.4gl" id="35"/>
+        <File filePath="libGtCore/libgt_getopt.4gl" id="36"/>
+        <File filePath="libGtCore/libgt_md5.4gl" id="37"/>
+        <File filePath="libGtCore/libgt_pop3_client.4gl" id="38"/>
+        <File filePath="libGtCore/libgt_regex.4gl" id="39"/>
+        <File filePath="libGtCore/libgt_smtp_client.4gl" id="40"/>
+        <File filePath="libGtCore/libgt_string.4gl" id="41"/>
+        <File filePath="libGtCore/libgt_system.4gl" id="42"/>
+        <File filePath="libGtCore/libgt_unittest.4ad" id="43"/>
+        <File filePath="libGtCore/libgt_unittest.4fd" id="44"/>
+        <File filePath="libGtCore/libgt_unittest.4gl" id="45"/>
+        <File filePath="libGtCore/libgt_unittest.4tb" id="46"/>
+        <File filePath="libGtCore/libgt_unittest.4tm" id="47"/>
+        <File filePath="libGtCore/libgt_validators.4gl" id="49"/>
       </Library>
-      <Application dataBaseSchema="" dependencies="4" id="23" label="libgtcore_test" targetDirectory="$(WorkspaceDir)/build">
-        <File filePath="libGtCore/unittest/libgt_binary_test.4gl" id="24"/>
-        <File filePath="libGtCore/unittest/libgt_binary_utils_test.4gl" id="25"/>
-        <File filePath="libGtCore/unittest/libgt_email_test.4gl" id="27"/>
-        <File filePath="libGtCore/unittest/libgt_email_test_csv.txt" id="36"/>
-        <File filePath="libGtCore/unittest/libgt_email_test_template.txt" id="35"/>
-        <File filePath="libGtCore/unittest/libgt_encryption_test.4gl" id="28"/>
-        <File filePath="libGtCore/unittest/libgt_exception_test.4gl" id="29"/>
-        <File filePath="libGtCore/unittest/libgt_fs_test.4gl" id="30"/>
-        <File filePath="libGtCore/unittest/libgt_getopt_test.4gl" id="31"/>
-        <File filePath="libGtCore/unittest/libgt_md5_test.4gl" id="32"/>
-        <File filePath="libGtCore/unittest/libgt_smtp_client_test.4gl" id="33"/>
-        <File filePath="libGtCore/unittest/libgt_string_test.4gl" id="34"/>
-        <File filePath="libGtCore/unittest/libgtcore_test.4gl" id="26"/>
+      <Application dependencies="50" id="25" label="libgtcore_test">
+        <File filePath="libGtCore/unittest/libgt_binary_test.4gl" id="11"/>
+        <File filePath="libGtCore/unittest/libgt_binary_utils_test.4gl" id="12"/>
+        <File filePath="libGtCore/unittest/libgt_email_test.4gl" id="13"/>
+        <File filePath="libGtCore/unittest/libgt_encryption_test.4gl" id="14"/>
+        <File filePath="libGtCore/unittest/libgt_exception_test.4gl" id="15"/>
+        <File filePath="libGtCore/unittest/libgt_fs_test.4gl" id="16"/>
+        <File filePath="libGtCore/unittest/libgt_getopt_test.4gl" id="17"/>
+        <File filePath="libGtCore/unittest/libgt_md5_test.4gl" id="18"/>
+        <File filePath="libGtCore/unittest/libgt_pop3_client_test.4gl" id="19"/>
+        <File filePath="libGtCore/unittest/libgt_regex_test.4gl" id="20"/>
+        <File filePath="libGtCore/unittest/libgt_smtp_client_test.4gl" id="21"/>
+        <File filePath="libGtCore/unittest/libgt_string_test.4gl" id="22"/>
+        <File filePath="libGtCore/unittest/libgt_validators_test.4gl" id="23"/>
+        <File filePath="libGtCore/unittest/libgtcore_test.4gl" id="24"/>
       </Application>
     </Project>
-    <Project dataBaseSchema="" id="43" label="libGtFormat" targetDirectory="$(WorkspaceDir)/build">
-      <Library dataBaseSchema="" dependencies="" id="44" label="libgtformat" targetDirectory="$(WorkspaceDir)/build">
-        <File filePath="libGtFormat/libgt_xhtml.4gl" id="45"/>
+    <Project id="61" label="libGtFormat">
+      <Library dependencies="50" id="60" label="libGtFormat">
+        <File filePath="libGtFormat/libgt_pdf.4gl" id="58"/>
+        <File filePath="libGtFormat/libgt_xhtml.4gl" id="59"/>
       </Library>
-    </Project>
-    <Project id="56" label="libGtParser" targetDirectory="$(WorkspaceDir)/build">
-      <Library id="57" label="libgtparser" targetDirectory="$(WorkspaceDir)/build">
-        <File filePath="libGtParser/libgt_4gl_grammar.4gl" id="62" postCompileStep="" preCompileStep=""/>
-        <File filePath="libGtParser/libgt_4gl_parser.4gl" id="63" postCompileStep="" preCompileStep=""/>
-      </Library>
-    </Project>
-    <Project id="64" label="Utilities" targetDirectory="$(WorkspaceDir)/build">
-      <Application id="65" label="gt_viewvc_client">
-        <File filePath="Utilities/gt_viewvc_client.4gl" id="66"/>
+      <Application dependencies="50||60" id="55" label="libgtformat_test">
+        <File filePath="libGtFormat/unittest/libgt_pdf_test.4gl" id="52"/>
+        <File filePath="libGtFormat/unittest/libgt_xhtml_test.4gl" id="53"/>
+        <File filePath="libGtFormat/unittest/libgtformat_test.4gl" id="54"/>
       </Application>
+    </Project>
+    <Project id="82" label="libGtNetwork">
+      <Library id="64" label="libGtNetwork">
+        <File filePath="libGtNetwork/libgt_ftp_client.4gl" id="62"/>
+        <File filePath="libGtNetwork/libgt_pop3_client.4gl" id="63"/>
+      </Library>
+    </Project>
+    <Project id="84" label="libGtParser">
+      <Library dependencies="50" id="67" label="libGtParser">
+        <File filePath="libGtParser/libgt_4gl_grammar.4gl" id="65"/>
+        <File filePath="libGtParser/libgt_4gl_parser.4gl" id="66"/>
+      </Library>
+    </Project>
+    <Project id="85" label="libGtUI">
+      <Library id="70" label="libGtUI">
+        <File filePath="libGtUI/lib_cui_exception.4gl" id="68"/>
+        <File filePath="libGtUI/lib_exception.per" id="69"/>
+      </Library>
     </Project>
   </Project>
 </Workspace>

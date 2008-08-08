@@ -29,10 +29,10 @@
 FUNCTION libgt_md5_test_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -44,21 +44,22 @@ END FUNCTION
 FUNCTION test_md5_lib()
 
 DEFINE
-   l_count                INTEGER,
-   l_encrypted_string     STRING,
-   l_unencrypted_string   STRING,
-   l_interval             INTERVAL MINUTE TO FRACTION(3),
-   l_end_time             DATETIME MINUTE TO FRACTION(3),
-   l_start_time           DATETIME MINUTE TO FRACTION(3)
+    l_count                INTEGER,
+    l_encrypted_string     STRING,
+    l_unencrypted_string   STRING,
+    l_interval             INTERVAL MINUTE TO FRACTION(3),
+    l_end_time             DATETIME MINUTE TO FRACTION(3),
+    l_start_time           DATETIME MINUTE TO FRACTION(3)
 
-   CALL gt_ut_log("Testing MD5 with \"\"...")
+    CALL gt_ut_log("Testing MD5 with \"\"...")
 
-   IF gt_md5string("") == "D41D8CD98F00B204E9800998ECF8427E" THEN
-    	CALL gt_ut_log("Passed")
-   ELSE
-   	CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_md5string("") == "D41D8CD98F00B204E9800998ECF8427E" THEN
+     	CALL gt_ut_log("Passed")
+    ELSE
+    	CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
 	CALL gt_ut_log("Testing MD5 with \"a\"...")
 
@@ -66,6 +67,7 @@ DEFINE
 		CALL gt_ut_log("Passed")
 	ELSE
 		CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
 		RETURN FALSE
 	END IF
 
@@ -75,6 +77,7 @@ DEFINE
  		CALL gt_ut_log("Passed")
  	ELSE
  		CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
  		RETURN FALSE
  	END IF
 
@@ -84,6 +87,7 @@ DEFINE
  		CALL gt_ut_log("Passed")
  	ELSE
  		CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
  		RETURN FALSE
  	END IF
 
@@ -93,6 +97,7 @@ DEFINE
  		CALL gt_ut_log("Passed")
  	ELSE
  		CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
  		RETURN FALSE
  	END IF
 
@@ -102,6 +107,7 @@ DEFINE
 		CALL gt_ut_log("Passed")
 	ELSE
 		CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
 		RETURN FALSE
 	END IF
 
@@ -111,38 +117,39 @@ DEFINE
  		CALL gt_ut_log("Passed")
  	ELSE
  		CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
  		RETURN FALSE
  	END IF
 
-   CALL gt_ut_log("Load testing encryption of MD5 type... (20 iterations)")
-   CALL gt_ut_log("Please wait...")
+    CALL gt_ut_log("Load testing encryption of MD5 type... (20 iterations)")
+    CALL gt_ut_log("Please wait...")
 
-   LET l_count = 0
-   LET l_start_time = CURRENT
+    LET l_count = 0
+    LET l_start_time = CURRENT
 
-   WHILE TRUE
-      LET l_count = l_count + 1
-      LET l_encrypted_string = "F96B697D7CB7938D525A2F31AAF161D0"
-      LET l_unencrypted_string = "message digest"
+    WHILE TRUE
+        LET l_count = l_count + 1
+        LET l_encrypted_string = "F96B697D7CB7938D525A2F31AAF161D0"
+        LET l_unencrypted_string = "message digest"
 
-      IF gt_md5string(l_unencrypted_string) != l_encrypted_string THEN
-         CALL gt_ut_log(l_count || " - FALSE")
-         RETURN FALSE
-      END IF
+        IF gt_md5string(l_unencrypted_string) != l_encrypted_string THEN
+            CALL gt_ut_log(l_count || " - FALSE")
+            RETURN FALSE
+        END IF
 
-      IF l_count > 20 THEN
-         EXIT WHILE
-      END IF
-   END WHILE
+        IF l_count > 20 THEN
+            EXIT WHILE
+        END IF
+    END WHILE
 
-   LET l_end_time = CURRENT
-   LET l_interval = l_end_time - l_start_time
+    LET l_end_time = CURRENT
+    LET l_interval = l_end_time - l_start_time
 
-   CALL gt_ut_log("Passed")
-   CALL gt_ut_log("Iterations took " || l_interval || " seconds")
-   CALL gt_ut_log("Time per iteration:" || l_interval / 20 || " seconds")
+    CALL gt_ut_log("Passed")
+    CALL gt_ut_log("Iterations took " || l_interval || " seconds")
+    CALL gt_ut_log("Time per iteration:" || l_interval / 20 || " seconds")
 
-   RETURN TRUE
+    RETURN TRUE
 
 END FUNCTION
 

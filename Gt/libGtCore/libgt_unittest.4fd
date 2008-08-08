@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Form database_name="formonly" defaultspacing="true" delimiters=" " fourSTFile="" gstVersion="15a01" height="25" lstrtoallcomment="false" lstrtoallitem="false" lstrtoalltext="false" lstrtoalltitle="false" name="libgt_unittest" percommentattribute="------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+ END OF FORM                                                                  #
+------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+" percommentheader="$Id: libgt_unittest.per 26 2007-09-06 22:04:47Z quantumchaos451 $
+------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+ Copyright (c) 2007 Scott Newton &lt;scottn@ihug.co.nz&gt;                          #
+                                                                              #
+ MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+                                                                              #
+ Permission is hereby granted, free of charge, to any person obtaining a copy #
+ of this software and associated documentation files (the &quot;Software&quot;), to     #
+ deal in the Software without restriction, including without limitation the   #
+ rights to use, copy, modify, merge, publish, distribute, sublicense, and/or  #
+ sell copies of the Software, and to permit persons to whom the Software is   #
+ furnished to do so, subject to the following conditions:                     #
+ The above copyright notice and this permission notice shall be included in   #
+ all copies or substantial portions of the Software.                          #
+                                                                              #
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR   #
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,     #
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE  #
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER       #
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      #
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS #
+ IN THE SOFTWARE.                                                             #
+------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+#
+ Form for Unit Testing.
+ @category Library Form
+ @author Scott Newton
+ @date August 2007
+ @version $Id: libgt_unittest.per 26 2007-09-06 22:04:47Z quantumchaos451 $
+" percommentinstruction="" percommentlayout="" percommentschema="" posX="0" posY="0" spacing="normal" text="" version="$Id: libgt_unittest.per 26 2007-09-06 22:04:47Z quantumchaos451 $" width="80">
+  <HBox height="23" hidden="" name="hb1" posX="2" posY="1" style="" tag="" width="76">
+    <Group fontPitch="default" gridChildrenInParent="--------" height="23" hidden="--------" lstrcomment="false" lstrtext="true" name="g1" posX="2" posY="1" text="Results" width="38">
+      <Table fontPitch="default" height="21" hidden="--------" lstrcomment="false" name="results_scr" posX="1" posY="1" tabName="results_scr" totalRows="19" unhidableColumns="--------" unitHeight="10 LINES" unmovableColumns="--------" unsizableColumns="--------" unsortableColumns="--------" wantFixedPageSize="--------" width="36">
+        <TableColumn colName="emodule" fieldId="0" height="1" lstrtext="false" name="emodule" sqlTabName="formonly" tabIndex="1" text="Module" unhidable="--------" unmovable="--------" unsizable="--------" unsortable="--------" width="15">
+          <Edit autoNext="--------" case="NONE" century="R" color="black" fontPitch="default" height="1" hidden="--------" invisible="--------" lstrcomment="false" lstrtitle="false" noEntry="--------" notNull="--------" required="--------" reverse="--------" scroll="--------" sizePolicy="initial" verify="--------" width="15" zeroFill="--------"/>
+        </TableColumn>
+        <TableColumn colName="eresult" fieldId="1" height="1" lstrtext="false" name="eresult" sqlTabName="formonly" tabIndex="2" text="Result" unhidable="--------" unmovable="--------" unsizable="--------" unsortable="--------" width="18">
+          <Edit autoNext="--------" case="NONE" century="R" color="black" colorCondition="%V%sPassed%=%C5%V%sFAILED%=%C3" fontPitch="default" height="1" hidden="--------" invisible="--------" lstrcomment="false" lstrtitle="false" noEntry="--------" notNull="--------" required="--------" reverse="--------" scroll="--------" sizePolicy="initial" verify="--------" width="18" zeroFill="--------"/>
+        </TableColumn>
+      </Table>
+    </Group>
+    <Group fontPitch="default" gridChildrenInParent="--------" height="23" hidden="--------" lstrcomment="false" lstrtext="true" name="g2" posX="40" posY="1" text="Log" width="38">
+      <Table fontPitch="default" height="21" hidden="--------" lstrcomment="false" name="log_scr" posX="1" posY="1" tabName="log_scr" totalRows="19" unhidableColumns="--------" unitHeight="10 LINES" unmovableColumns="--------" unsizableColumns="--------" unsortableColumns="--------" wantFixedPageSize="--------" width="36">
+        <TableColumn colName="elog" fieldId="2" height="1" lstrtext="false" name="elog" sqlTabName="formonly" tabIndex="3" text="Output" unhidable="--------" unmovable="--------" unsizable="--------" unsortable="--------" width="34">
+          <Edit autoNext="--------" case="NONE" century="R" color="black" colorCondition="%V%sPassed%=%C5%V%sFAILED%=%C3" fontPitch="default" height="1" hidden="--------" invisible="--------" lstrcomment="false" lstrtitle="false" noEntry="--------" notNull="--------" required="--------" reverse="--------" scroll="--------" sizePolicy="initial" verify="--------" width="34" zeroFill="--------"/>
+        </TableColumn>
+      </Table>
+    </Group>
+  </HBox>
+  <RecordView SRType="default" fromTable="true" name="results_scr" tableKey="tb1">
+    <Link colKey="Col1" colName="formonly.emodule" fromTable="true"/>
+    <Link colKey="Col2" colName="formonly.eresult" fromTable="true"/>
+  </RecordView>
+  <RecordView SRType="default" fromTable="true" name="log_scr" tableKey="tb2">
+    <Link colKey="Col3" colName="formonly.elog" fromTable="true"/>
+  </RecordView>
+</Form>

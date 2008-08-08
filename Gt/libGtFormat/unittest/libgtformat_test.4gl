@@ -38,7 +38,7 @@ DEFINE
 	WHENEVER ANY ERROR CALL gt_system_error
 	LET l_id = "$Id$"
 
-   CALL gt_ut_init()
+    CALL gt_ut_init()
 
 END MAIN
 
@@ -49,28 +49,28 @@ END MAIN
 FUNCTION run_tests()
 
 DEFINE
-   l_all           SMALLINT,
-   i               INTEGER,
-   l_smtp_port     INTEGER,
-   l_to            STRING,
-   l_from          STRING,
-   l_smtp_server   STRING
+    l_all           SMALLINT,
+    i               INTEGER,
+    l_smtp_port     INTEGER,
+    l_to            STRING,
+    l_from          STRING,
+    l_smtp_server   STRING
 
-   LET l_all = FALSE
+    LET l_all = FALSE
 
-   IF gt_find_argument("all") THEN
-      LET l_all = TRUE
-   END IF
+    IF gt_find_argument("all") THEN
+        LET l_all = TRUE
+    END IF
 
-   IF base.application.getargumentcount() == 0 THEN
-      DISPLAY "Argument Count = ", base.application.getargumentcount()
-      LET l_all = TRUE
-   END IF
+    IF base.application.getargumentcount() == 0 THEN
+        DISPLAY "Argument Count = ", base.application.getargumentcount()
+        LET l_all = TRUE
+    END IF
 
-   IF l_all OR gt_find_argument("xhtml") THEN
-      CALL gt_ut_log("******* XHTML Format Library *******")
-      CALL gt_ut_result("XHTML Format Library", TRUE)
-   END IF
+    IF l_all OR gt_find_argument("xhtml") THEN
+        CALL gt_ut_log("******* XHTML Format Library *******")
+        CALL gt_ut_result("XHTML Format Library", TRUE)
+    END IF
 
 END FUNCTION
 

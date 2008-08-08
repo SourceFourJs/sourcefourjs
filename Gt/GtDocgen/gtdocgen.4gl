@@ -38,7 +38,7 @@ DEFINE
 	WHENEVER ANY ERROR STOP
 	LET l_id = "$Id$"
 
-   CALL gt_main_function()
+    CALL gt_main_function()
 
 END MAIN
 
@@ -49,32 +49,32 @@ END MAIN
 FUNCTION gt_main_function()
 
 DEFINE
-   i                      INTEGER,
-   l_log_file             STRING,
-   l_configuration_file   STRING
+    i                      INTEGER,
+    l_log_file             STRING,
+    l_configuration_file   STRING
 
-   LET l_log_file = "gtdocgen.log"
-   LET l_configuration_file = NULL
+    LET l_log_file = "gtdocgen.log"
+    LET l_configuration_file = NULL
 
-   FOR i = 1 TO base.application.getargumentcount()
-	   IF base.application.getargument(i) == "-c" THEN
-		   LET l_configuration_file = base.application.getargument(i + 1)
-	   END IF
+    FOR i = 1 TO base.application.getargumentcount()
+	    IF base.application.getargument(i) == "-c" THEN
+		    LET l_configuration_file = base.application.getargument(i + 1)
+	    END IF
 
-	   IF base.application.getargument(i) == "--configuration-file" THEN
-		   LET l_configuration_file = base.application.getargument(i + 1)
-	   END IF
+	    IF base.application.getargument(i) == "--configuration-file" THEN
+		    LET l_configuration_file = base.application.getargument(i + 1)
+	    END IF
 
-       IF base.application.getargument(i) == "-l" THEN
-		   LET l_log_file = base.application.getargument(i + 1)
-	   END IF
+         IF base.application.getargument(i) == "-l" THEN
+		    LET l_log_file = base.application.getargument(i + 1)
+	    END IF
 
-	   IF base.application.getargument(i) == "--log-file" THEN
-		   LET l_log_file = base.application.getargument(i + 1)
-	   END IF
-   END FOR
+	    IF base.application.getargument(i) == "--log-file" THEN
+		    LET l_log_file = base.application.getargument(i + 1)
+	    END IF
+    END FOR
 
-   CALL startlog(l_log_file)
+    CALL startlog(l_log_file)
 
 	IF l_configuration_file IS NULL THEN
 		CALL errorlog(%"No configuration file specified")
@@ -84,14 +84,14 @@ DEFINE
 	IF gt_read_configuration_file(l_configuration_file) THEN
 		IF gt_parse_source(gt_source_directory()) THEN
 
-         CASE
-            WHEN gt_output_format() == "XHTML"
-               CALL gt_generate_xhtml_documentation()
-               CALL gt_generate_xhtml_index(gt_source_directory())
+            CASE
+                WHEN gt_output_format() == "XHTML"
+                    CALL gt_generate_xhtml_documentation()
+                    CALL gt_generate_xhtml_index(gt_source_directory())
 
-            OTHERWISE
-         END CASE
-      END IF
+                OTHERWISE
+            END CASE
+        END IF
 	END IF
 
 END FUNCTION
@@ -99,9 +99,6 @@ END FUNCTION
 #------------------------------------------------------------------------------#
 # PRIVATE FUNCTIONS                                                            #
 #------------------------------------------------------------------------------#
-
-FUNCTION gt_system_error()
-END FUNCTION
 
 #------------------------------------------------------------------------------#
 # END OF MODULE                                                                #

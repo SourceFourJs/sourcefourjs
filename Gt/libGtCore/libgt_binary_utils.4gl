@@ -61,8 +61,8 @@
 #
 
 DEFINE
-    m_ascii_table_initialized   SMALLINT,
-    m_ascii_table               CHAR(256)
+     m_ascii_table_initialized   SMALLINT,
+     m_ascii_table               CHAR(256)
 
 #------------------------------------------------------------------------------#
 # Function to set the WHENEVER ANY ERROR function for this module              #
@@ -71,10 +71,10 @@ DEFINE
 FUNCTION libgt_binary_utils_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -87,29 +87,29 @@ END FUNCTION
 FUNCTION gt_asc(l_string)
 
 DEFINE
-   l_string   CHAR(1)
+    l_string   CHAR(1)
 
 DEFINE
-   i   SMALLINT
+    i   SMALLINT
 
-   # init table if not done already
-   IF NOT m_ascii_table_initialized THEN
-        LET m_ascii_table_initialized = TRUE
+    # init table if not done already
+    IF NOT m_ascii_table_initialized THEN
+          LET m_ascii_table_initialized = TRUE
 
-        FOR i = 1 TO 256
-            LET m_ascii_table[i,i] = ASCII i
-        END FOR
-    END IF
+          FOR i = 1 TO 256
+                LET m_ascii_table[i,i] = ASCII i
+          END FOR
+     END IF
 
-    FOR i = 1 TO 256
-        IF l_string[1,1] == m_ascii_table[i] THEN
-            RETURN i
-            EXIT FOR
-        END IF
-    END FOR
+     FOR i = 1 TO 256
+          IF l_string[1,1] == m_ascii_table[i] THEN
+                RETURN i
+                EXIT FOR
+          END IF
+     END FOR
 
-    # still nothing found, return 0 as an error
-    RETURN 0
+     # still nothing found, return 0 as an error
+     RETURN 0
 
 END FUNCTION
 
@@ -122,25 +122,25 @@ END FUNCTION
 FUNCTION gt_chr(l_char)
 
 DEFINE
-   l_char   SMALLINT
+    l_char   SMALLINT
 
 DEFINE
-   i   SMALLINT
+    i   SMALLINT
 
-   # init table if not done already
-   IF NOT m_ascii_table_initialized THEN
-      LET m_ascii_table_initialized = TRUE
+    # init table if not done already
+    IF NOT m_ascii_table_initialized THEN
+        LET m_ascii_table_initialized = TRUE
 
-      FOR i = 1 TO 256
-         LET m_ascii_table[i,i] = ASCII i
-      END FOR
-   END IF
+        FOR i = 1 TO 256
+            LET m_ascii_table[i,i] = ASCII i
+        END FOR
+    END IF
 
-   IF l_char > 0 AND l_char < 257 THEN
-      RETURN m_ascii_table[l_char]
-   ELSE
-      RETURN 0
-   END IF
+    IF l_char > 0 AND l_char < 257 THEN
+        RETURN m_ascii_table[l_char]
+    ELSE
+        RETURN 0
+    END IF
 
 END FUNCTION
 
@@ -157,44 +157,44 @@ END FUNCTION
 # no 0-clashes if the string to encrypt is plain ASCII.
 # @param l_text The input text.
 # @param l_crypt The string to use for encryption. Pass in NULL if you want
-#                the routine to use it's own internal encryption string.
+#                     the routine to use it's own internal encryption string.
 # @return l_result The encrypted string.
 #
 
 FUNCTION gt_xorstring(l_text, l_crypt)
 
 DEFINE
-   l_text    STRING,
-   l_crypt   STRING
+    l_text    STRING,
+    l_crypt   STRING
 
 DEFINE
-   i          SMALLINT,
-   l_length   SMALLINT,
-   l_tmp      STRING,
-   l_result   STRING
+    i          SMALLINT,
+    l_length   SMALLINT,
+    l_tmp      STRING,
+    l_result   STRING
 
-   LET l_tmp = ""
-   LET l_result = ""
+    LET l_tmp = ""
+    LET l_result = ""
 
-   IF l_crypt.getLength() == 0 THEN
-     	LET l_crypt = ASCII(126), ASCII(35),  ASCII(39),  ASCII(180),
-                    ASCII(96),  ASCII(41),  ASCII(40),  ASCII(38),
-						  ASCII(37),  ASCII(37),  ASCII(36),  ASCII(167),
-						  ASCII(178), ASCII(179), ASCII(91),  ASCII(93),
-						  ASCII(33),  ASCII(63),  ASCII(125), ASCII(123)
-   END IF
+    IF l_crypt.getLength() == 0 THEN
+      	LET l_crypt = ASCII(126), ASCII(35),  ASCII(39),  ASCII(180),
+                      ASCII(96),  ASCII(41),  ASCII(40),  ASCII(38),
+   				      ASCII(37),  ASCII(37),  ASCII(36),  ASCII(167),
+				      ASCII(178), ASCII(179), ASCII(91),  ASCII(93),
+					  ASCII(33),  ASCII(63),  ASCII(125), ASCII(123)
+    END IF
 
-   WHILE l_crypt.getLength() < 1024
-      LET l_crypt = l_crypt, l_crypt
-   END WHILE
+    WHILE l_crypt.getLength() < 1024
+        LET l_crypt = l_crypt, l_crypt
+    END WHILE
 
-   LET l_length = l_text.getLength()
+    LET l_length = l_text.getLength()
 
-   FOR i = 1 TO l_length
-      LET l_result = l_result, gt_chr(gt_bitxorbyte(gt_asc(l_text.getCharAt(i)), gt_asc(l_crypt.getCharAt(i))))
-   END FOR
+    FOR i = 1 TO l_length
+        LET l_result = l_result, gt_chr(gt_bitxorbyte(gt_asc(l_text.getCharAt(i)), gt_asc(l_crypt.getCharAt(i))))
+    END FOR
 
-   RETURN l_result.subString(1, l_length)
+    RETURN l_result.subString(1, l_length)
 
 END FUNCTION
 
@@ -207,68 +207,68 @@ END FUNCTION
 FUNCTION gt_hex2dec(l_hex)
 
 DEFINE
-   l_hex   STRING
+    l_hex   STRING
 
 DEFINE
-   i          SMALLINT,
-   l_length   SMALLINT,
-   l_value    SMALLINT,
-   l_result   FLOAT,
-   l_char     STRING
+    i          SMALLINT,
+    l_length   SMALLINT,
+    l_value    SMALLINT,
+    l_result   FLOAT,
+    l_char     STRING
 
-   LET l_result = 0
-   LET l_hex = l_hex.toUpperCase()
+    LET l_result = 0
+    LET l_hex = l_hex.toUpperCase()
 
-   IF l_hex.getLength() > 8 THEN
-      LET l_hex = l_hex.subString(1, 8)
-   END IF
+    IF l_hex.getLength() > 8 THEN
+        LET l_hex = l_hex.subString(1, 8)
+    END IF
 
-   LET l_length = l_hex.getLength()
+    LET l_length = l_hex.getLength()
 
-   FOR i = 0 TO l_length - 1
-      LET l_char = l_hex.getCharAt(l_hex.getLength() - i)
-      LET l_value = 0
+    FOR i = 0 TO l_length - 1
+        LET l_char = l_hex.getCharAt(l_hex.getLength() - i)
+        LET l_value = 0
 
-      CASE
-         WHEN l_char == "0"
-            LET l_value = l_char
-         WHEN l_char == "1"
-            LET l_value = l_char
-         WHEN l_char == "2"
-            LET l_value = l_char
-         WHEN l_char == "3"
-            LET l_value = l_char
-         WHEN l_char == "4"
-            LET l_value = l_char
-         WHEN l_char == "5"
-            LET l_value = l_char
-         WHEN l_char == "6"
-            LET l_value = l_char
-         WHEN l_char == "7"
-            LET l_value = l_char
-         WHEN l_char == "8"
-            LET l_value = l_char
-         WHEN l_char == "9"
-            LET l_value = l_char
-         WHEN l_char == "A"
-            LET l_value = 10
-         WHEN l_char == "B"
-            LET l_value = 11
-         WHEN l_char == "C"
-            LET l_value = 12
-         WHEN l_char == "D"
-            LET l_value = 13
-         WHEN l_char == "E"
-            LET l_value = 14
-         WHEN l_char == "F"
-            LET l_value = 15
-      END CASE
+        CASE
+            WHEN l_char == "0"
+                LET l_value = l_char
+            WHEN l_char == "1"
+                LET l_value = l_char
+            WHEN l_char == "2"
+                LET l_value = l_char
+            WHEN l_char == "3"
+                LET l_value = l_char
+            WHEN l_char == "4"
+                LET l_value = l_char
+            WHEN l_char == "5"
+                LET l_value = l_char
+            WHEN l_char == "6"
+                LET l_value = l_char
+            WHEN l_char == "7"
+                LET l_value = l_char
+            WHEN l_char == "8"
+                LET l_value = l_char
+            WHEN l_char == "9"
+                LET l_value = l_char
+            WHEN l_char == "A"
+                LET l_value = 10
+            WHEN l_char == "B"
+                LET l_value = 11
+            WHEN l_char == "C"
+                LET l_value = 12
+            WHEN l_char == "D"
+                LET l_value = 13
+            WHEN l_char == "E"
+                LET l_value = 14
+            WHEN l_char == "F"
+                LET l_value = 15
+        END CASE
 
-      LET l_result = l_result + (l_value * (16 ** i))
+        LET l_result = l_result + (l_value * (16 ** i))
 
-   END FOR
+    END FOR
 
-   RETURN l_result
+    RETURN l_result
 
 END FUNCTION
 
@@ -281,36 +281,36 @@ END FUNCTION
 FUNCTION gt_dec2hex(l_decimal)
 
 DEFINE
-   l_decimal   FLOAT
+    l_decimal   FLOAT
 
 DEFINE
-   l_modulus   SMALLINT,
-   l_old       SMALLINT,
-   l_table     CHAR(16),
-   l_hex       CHAR(64)
+    l_modulus   SMALLINT,
+    l_old       SMALLINT,
+    l_table     CHAR(16),
+    l_hex       CHAR(64)
 
-   LET l_hex = ""
-   LET l_table = "0123456789ABCDEF"
+    LET l_hex = ""
+    LET l_table = "0123456789ABCDEF"
 
-   WHILE l_decimal > 0
-      LET l_modulus = l_decimal MOD 16
+    WHILE l_decimal > 0
+        LET l_modulus = l_decimal MOD 16
 
-      IF l_decimal - l_modulus <= 0 THEN
-         LET l_hex = l_hex clipped, l_table[l_modulus+1, l_modulus+1]
-         LET l_decimal = 0
-      ELSE
-         LET l_decimal = l_decimal - l_modulus
-         LET l_old = l_decimal
-         LET l_decimal = l_decimal / 16
-         LET l_hex = l_hex clipped, l_table[l_modulus+1, l_modulus+1]
-      END IF
-   END WHILE
+        IF l_decimal - l_modulus <= 0 THEN
+            LET l_hex = l_hex clipped, l_table[l_modulus+1, l_modulus+1]
+            LET l_decimal = 0
+        ELSE
+            LET l_decimal = l_decimal - l_modulus
+            LET l_old = l_decimal
+            LET l_decimal = l_decimal / 16
+            LET l_hex = l_hex clipped, l_table[l_modulus+1, l_modulus+1]
+        END IF
+    END WHILE
 
-   IF Length(l_hex) MOD 2 <> 0 THEN
-      LET l_hex = l_hex clipped,"0"
-   END IF
+    IF Length(l_hex) MOD 2 <> 0 THEN
+        LET l_hex = l_hex clipped,"0"
+    END IF
 
-   RETURN gt_string_reverse(l_hex clipped)
+    RETURN gt_string_reverse(l_hex clipped)
 
 END FUNCTION
 
@@ -323,29 +323,29 @@ END FUNCTION
 FUNCTION gt_num2BCD(l_number)
 
 DEFINE
-   l_number   INTEGER
+    l_number   INTEGER
 
 DEFINE
-   i          SMALLINT,
-   l_length   SMALLINT,
-   l_string   STRING,
-   l_BCD      STRING
+    i          SMALLINT,
+    l_length   SMALLINT,
+    l_string   STRING,
+    l_BCD      STRING
 
-   LET l_BCD = ""
-   LET l_string = l_number
-   LET l_string = l_string.trimLeft()
+    LET l_BCD = ""
+    LET l_string = l_number
+    LET l_string = l_string.trimLeft()
 
-   IF l_string.getLength() MOD 2 <> 0 THEN
-      LET l_string = "0", l_string
-   END IF
+    IF l_string.getLength() MOD 2 <> 0 THEN
+        LET l_string = "0", l_string
+    END IF
 
-   LET l_length = l_string.getLength()
+    LET l_length = l_string.getLength()
 
-   FOR i = 0 TO (l_length / 2) - 1
-      LET l_BCD = l_BCD, gt_chr(l_string.subString((i * 2) + 1, 2))
-   END FOR
+    FOR i = 0 TO (l_length / 2) - 1
+        LET l_BCD = l_BCD, gt_chr(l_string.subString((i * 2) + 1, 2))
+    END FOR
 
-   RETURN l_BCD
+    RETURN l_BCD
 
 END FUNCTION
 
@@ -358,26 +358,26 @@ END FUNCTION
 FUNCTION gt_BCD2num(l_BCD)
 
 DEFINE
-   l_BCD   STRING
+    l_BCD   STRING
 
 DEFINE
-   i          SMALLINT,
-   l_length   SMALLINT,
-   l_number   INTEGER,
-   l_string   STRING,
-   l_copy     STRING
+    i          SMALLINT,
+    l_length   SMALLINT,
+    l_number   INTEGER,
+    l_string   STRING,
+    l_copy     STRING
 
-   LET l_string = ""
-   LET l_copy = l_BCD
-   LET l_length = l_copy.getLength()
+    LET l_string = ""
+    LET l_copy = l_BCD
+    LET l_length = l_copy.getLength()
 
-   FOR i = 1 TO l_length
-      LET l_string = l_string, gt_asc(l_copy.subString(i, 1))
-   END FOR
+    FOR i = 1 TO l_length
+        LET l_string = l_string, gt_asc(l_copy.subString(i, 1))
+    END FOR
 
-   LET l_number=l_string
+    LET l_number=l_string
 
-   RETURN l_number
+    RETURN l_number
 
 END FUNCTION
 

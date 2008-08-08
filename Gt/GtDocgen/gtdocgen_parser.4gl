@@ -33,49 +33,49 @@
 IMPORT os
 
 DEFINE
-   m_function_found        SMALLINT,
-   m_count                 INTEGER,
-   m_tag_count             INTEGER,
-   m_function_count        INTEGER,
-   m_function_index        INTEGER,
-   m_parameter_count       INTEGER,
-   m_return_value_count    INTEGER,
+    m_function_found        SMALLINT,
+    m_count                 INTEGER,
+    m_tag_count             INTEGER,
+    m_function_count        INTEGER,
+    m_function_index        INTEGER,
+    m_parameter_count       INTEGER,
+    m_return_value_count    INTEGER,
 	m_documentation_count   INTEGER,
 
-   m_root_directory        STRING,
-   m_current_function      STRING,
+    m_root_directory        STRING,
+    m_current_function      STRING,
 
-	m_documentation   DYNAMIC ARRAY OF RECORD
-      name   STRING,
-      path   STRING,
-      text   STRING,
+	m_documentation DYNAMIC ARRAY OF RECORD
+        name   STRING,
+        path   STRING,
+        text   STRING,
 
-      tag   DYNAMIC ARRAY OF RECORD
-         name    STRING,
-         value   STRING
-      END RECORD,
-
-      method   DYNAMIC ARRAY OF RECORD
-         name   STRING,
-         text   STRING,
-
-         tag   DYNAMIC ARRAY OF RECORD
+        tag DYNAMIC ARRAY OF RECORD
             name    STRING,
             value   STRING
-         END RECORD,
+        END RECORD,
 
-         parameter DYNAMIC ARRAY OF RECORD
-            name          STRING,
-            type          STRING,
-            description   STRING
-         END RECORD,
+        method DYNAMIC ARRAY OF RECORD
+            name   STRING,
+            text   STRING,
 
-         return_value DYNAMIC ARRAY OF RECORD
-            name          STRING,
-            type          STRING,
-            description   STRING
-         END RECORD
-      END RECORD
+            tag DYNAMIC ARRAY OF RECORD
+                name    STRING,
+                value   STRING
+            END RECORD,
+
+            parameter DYNAMIC ARRAY OF RECORD
+                name          STRING,
+                type          STRING,
+                description   STRING
+            END RECORD,
+
+            return_value DYNAMIC ARRAY OF RECORD
+                name          STRING,
+                type          STRING,
+                description   STRING
+            END RECORD
+        END RECORD
 	END RECORD
 
 ##
@@ -99,7 +99,7 @@ END FUNCTION
 
 FUNCTION get_documentation_root_directory()
 
-   RETURN m_root_directory
+    RETURN m_root_directory
 
 END FUNCTION
 
@@ -110,7 +110,7 @@ END FUNCTION
 
 FUNCTION gt_function_index()
 
-   RETURN m_function_index
+    RETURN m_function_index
 
 END FUNCTION
 
@@ -121,7 +121,7 @@ END FUNCTION
 
 FUNCTION gt_documentation_count()
 
-   RETURN m_documentation.getLength()
+    RETURN m_documentation.getLength()
 
 END FUNCTION
 
@@ -136,11 +136,11 @@ END FUNCTION
 FUNCTION gt_documentation_values(l_documentation_index)
 
 DEFINE
-   l_documentation_index   INTEGER
+    l_documentation_index   INTEGER
 
-   RETURN m_documentation[l_documentation_index].name,
-          m_documentation[l_documentation_index].path,
-          m_documentation[l_documentation_index].text
+    RETURN m_documentation[l_documentation_index].name,
+             m_documentation[l_documentation_index].path,
+             m_documentation[l_documentation_index].text
 
 END FUNCTION
 
@@ -153,9 +153,9 @@ END FUNCTION
 FUNCTION gt_documentation_tag_count(l_documentation_index)
 
 DEFINE
-   l_documentation_index   INTEGER
+    l_documentation_index   INTEGER
 
-   RETURN m_documentation[l_documentation_index].tag.getLength()
+    RETURN m_documentation[l_documentation_index].tag.getLength()
 
 END FUNCTION
 
@@ -170,11 +170,11 @@ END FUNCTION
 FUNCTION gt_documentation_tag_values(l_documentation_index, l_tag_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_tag_index             INTEGER
+    l_documentation_index   INTEGER,
+    l_tag_index             INTEGER
 
-   RETURN m_documentation[l_documentation_index].tag[l_tag_index].name,
-          m_documentation[l_documentation_index].tag[l_tag_index].value
+    RETURN m_documentation[l_documentation_index].tag[l_tag_index].name,
+             m_documentation[l_documentation_index].tag[l_tag_index].value
 
 END FUNCTION
 
@@ -187,9 +187,9 @@ END FUNCTION
 FUNCTION gt_documentation_function_count(l_documentation_index)
 
 DEFINE
-   l_documentation_index   INTEGER
+    l_documentation_index   INTEGER
 
-   RETURN m_documentation[l_documentation_index].method.getLength()
+    RETURN m_documentation[l_documentation_index].method.getLength()
 
 END FUNCTION
 
@@ -204,11 +204,11 @@ END FUNCTION
 FUNCTION gt_documentation_function_values(l_documentation_index, l_function_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_function_index        INTEGER
+    l_documentation_index   INTEGER,
+    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].method[l_function_index].name,
-          m_documentation[l_documentation_index].method[l_function_index].text
+    RETURN m_documentation[l_documentation_index].method[l_function_index].name,
+             m_documentation[l_documentation_index].method[l_function_index].text
 
 END FUNCTION
 
@@ -221,10 +221,10 @@ END FUNCTION
 FUNCTION gt_documentation_function_tag_count(l_documentation_index, l_function_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_function_index        INTEGER
+    l_documentation_index   INTEGER,
+    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].method[l_function_index].tag.getLength()
+    RETURN m_documentation[l_documentation_index].method[l_function_index].tag.getLength()
 
 END FUNCTION
 
@@ -240,12 +240,12 @@ END FUNCTION
 FUNCTION gt_documentation_function_tag_values(l_documentation_index, l_function_index, l_tag_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_function_index        INTEGER,
-   l_tag_index             INTEGER
+    l_documentation_index   INTEGER,
+    l_function_index        INTEGER,
+    l_tag_index             INTEGER
 
-   RETURN m_documentation[l_documentation_index].method[l_function_index].tag[l_tag_index].name,
-          m_documentation[l_documentation_index].method[l_function_index].tag[l_tag_index].value
+    RETURN m_documentation[l_documentation_index].method[l_function_index].tag[l_tag_index].name,
+             m_documentation[l_documentation_index].method[l_function_index].tag[l_tag_index].value
 
 END FUNCTION
 
@@ -259,10 +259,10 @@ END FUNCTION
 FUNCTION gt_documentation_function_parameter_count(l_documentation_index, l_function_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_function_index        INTEGER
+    l_documentation_index   INTEGER,
+    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].method[l_function_index].parameter.getLength()
+    RETURN m_documentation[l_documentation_index].method[l_function_index].parameter.getLength()
 
 END FUNCTION
 
@@ -279,13 +279,13 @@ END FUNCTION
 FUNCTION gt_documentation_function_parameter_values(l_documentation_index, l_function_index, l_parameter_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_function_index        INTEGER,
-   l_parameter_index       INTEGER
+    l_documentation_index   INTEGER,
+    l_function_index        INTEGER,
+    l_parameter_index       INTEGER
 
-   RETURN m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].name,
-          m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].type,
-          m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].description
+    RETURN m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].name,
+             m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].type,
+             m_documentation[l_documentation_index].method[l_function_index].parameter[l_parameter_index].description
 
 END FUNCTION
 
@@ -299,10 +299,10 @@ END FUNCTION
 FUNCTION gt_documentation_function_return_value_count(l_documentation_index, l_function_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_function_index        INTEGER
+    l_documentation_index   INTEGER,
+    l_function_index        INTEGER
 
-   RETURN m_documentation[l_documentation_index].method[l_function_index].return_value.getLength()
+    RETURN m_documentation[l_documentation_index].method[l_function_index].return_value.getLength()
 
 END FUNCTION
 
@@ -319,13 +319,13 @@ END FUNCTION
 FUNCTION gt_documentation_function_return_value_values(l_documentation_index, l_function_index, l_return_value_index)
 
 DEFINE
-   l_documentation_index   INTEGER,
-   l_function_index        INTEGER,
-   l_return_value_index    INTEGER
+    l_documentation_index   INTEGER,
+    l_function_index        INTEGER,
+    l_return_value_index    INTEGER
 
-   RETURN m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].name,
-          m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].type,
-          m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].description
+    RETURN m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].name,
+             m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].type,
+             m_documentation[l_documentation_index].method[l_function_index].return_value[l_return_value_index].description
 
 END FUNCTION
 
@@ -338,95 +338,95 @@ END FUNCTION
 FUNCTION gt_parse_source(l_directory)
 
 DEFINE
-   l_directory   STRING
+    l_directory   STRING
 
 DEFINE
-   l_ok                SMALLINT,
-   i                   INTEGER,
-   l_dirhdl            INTEGER,
-   l_directory_count   INTEGER,
-   l_file              STRING,
-   l_directory_list    DYNAMIC ARRAY OF STRING
+    l_ok                SMALLINT,
+    i                   INTEGER,
+    l_dirhdl            INTEGER,
+    l_directory_count   INTEGER,
+    l_file              STRING,
+    l_directory_list    DYNAMIC ARRAY OF STRING
 
-   LET l_ok = FALSE
-   LET l_dirhdl = NULL
+    LET l_ok = FALSE
+    LET l_dirhdl = NULL
 
-   IF m_root_directory IS NULL THEN
-      LET m_root_directory = l_directory
-   END IF
+    IF m_root_directory IS NULL THEN
+        LET m_root_directory = l_directory
+    END IF
 
-   IF os.path.isdirectory(l_directory) THEN
-      CALL os.path.dirfmask(5)
-      CALL os.path.dirsort("name", 1)
+    IF os.path.isdirectory(l_directory) THEN
+        CALL os.path.dirfmask(5)
+        CALL os.path.dirsort("name", 1)
 
-      LET l_dirhdl = os.path.diropen(l_directory)
+        LET l_dirhdl = os.path.diropen(l_directory)
 
-      LET l_file = os.path.dirNext(l_dirhdl)
+        LET l_file = os.path.dirNext(l_dirhdl)
 
-      WHILE l_file IS NOT NULL
-         IF l_file == "."
-         OR l_file == ".." THEN
-            CONTINUE WHILE
-         END IF
+        WHILE l_file IS NOT NULL
+            IF l_file == "."
+            OR l_file == ".." THEN
+                CONTINUE WHILE
+            END IF
 
-         IF l_directory.getCharAt(l_directory.getLength()) == os.path.separator() THEN
-            LET l_file = l_directory, l_file
-         ELSE
-            LET l_file = l_directory, os.path.separator(), l_file
-         END IF
+            IF l_directory.getCharAt(l_directory.getLength()) == os.path.separator() THEN
+                LET l_file = l_directory, l_file
+            ELSE
+                LET l_file = l_directory, os.path.separator(), l_file
+            END IF
 
-         IF os.path.isdirectory(l_file) THEN
-            LET l_directory_count = l_directory_count + 1
-            LET l_directory_list[l_directory_count] = l_file
-         END IF
+            IF os.path.isdirectory(l_file) THEN
+                LET l_directory_count = l_directory_count + 1
+                LET l_directory_list[l_directory_count] = l_file
+            END IF
 
-         IF l_file.substring(l_file.getlength() - 3, l_file.getLength()) == ".4gl" THEN
-            LET m_documentation_count = m_documentation_count + 1
-            LET m_documentation[m_documentation_count].name = l_file
-            LET m_documentation[m_documentation_count].path = l_directory.subString(m_root_directory.getLength() + 1, l_directory.getLength())
-            CALL gt_4gl_parser_init()
+            IF l_file.substring(l_file.getlength() - 3, l_file.getLength()) == ".4gl" THEN
+                LET m_documentation_count = m_documentation_count + 1
+                LET m_documentation[m_documentation_count].name = l_file
+                LET m_documentation[m_documentation_count].path = l_directory.subString(m_root_directory.getLength() + 1, l_directory.getLength())
+                CALL gt_4gl_parser_init()
 DISPLAY "Processing ", l_file, "..."
-            CALL gt_parse_4gl_file(l_file, TRUE)
-            CALL p_gt_extract_documentation()
-            LET l_ok = TRUE
-         END IF
+                CALL gt_parse_4gl_file(l_file, TRUE)
+                CALL p_gt_extract_documentation()
+                LET l_ok = TRUE
+            END IF
 
-         LET l_file = os.path.dirNext(l_dirhdl)
-      END WHILE
+            LET l_file = os.path.dirNext(l_dirhdl)
+        END WHILE
 
-      CALL os.path.dirclose(l_dirhdl)
+        CALL os.path.dirclose(l_dirhdl)
 
-      IF gt_recursive() THEN
-         FOR i = 1 TO l_directory_list.getlength()
-            LET l_ok = gt_parse_source(l_directory_list[i])
-         END FOR
-      END IF
-   ELSE
-   END IF
+        IF gt_recursive() THEN
+            FOR i = 1 TO l_directory_list.getlength()
+                LET l_ok = gt_parse_source(l_directory_list[i])
+            END FOR
+        END IF
+    ELSE
+    END IF
 
-   #FOR i = 1 TO m_documentation_count
-      #DISPLAY "Module : ", m_documentation[i].name
-      #DISPLAY "         ", m_documentation[i].text
+    #FOR i = 1 TO m_documentation_count
+        #DISPLAY "Module : ", m_documentation[i].name
+        #DISPLAY "            ", m_documentation[i].text
 
-      #FOR j = 1 TO m_documentation[i].function.getlength()
-      #   DISPLAY "   Function : ", m_documentation[i].function[j].name
-      #   DISPLAY "              ", m_documentation[i].function[j].text
+        #FOR j = 1 TO m_documentation[i].function.getlength()
+        #    DISPLAY "    Function : ", m_documentation[i].function[j].name
+        #    DISPLAY "                  ", m_documentation[i].function[j].text
 
-      #   FOR k = 1 TO m_documentation[i].function[j].tag.getlength()
-      #      DISPLAY "      Tags : ", m_documentation[i].function[j].tag[k].name, " : ", m_documentation[i].function[j].tag[k].value
-      #   END FOR
+        #    FOR k = 1 TO m_documentation[i].function[j].tag.getlength()
+        #        DISPLAY "        Tags : ", m_documentation[i].function[j].tag[k].name, " : ", m_documentation[i].function[j].tag[k].value
+        #    END FOR
 
-      #   FOR k = 1 TO m_documentation[i].function[j].parameter.getlength()
-      #      DISPLAY "      Parameter : ", m_documentation[i].function[j].parameter[k].name, " : ", m_documentation[i].function[j].parameter[k].type, " : ", m_documentation[i].function[j].parameter[k].description
-      #   END FOR
+        #    FOR k = 1 TO m_documentation[i].function[j].parameter.getlength()
+        #        DISPLAY "        Parameter : ", m_documentation[i].function[j].parameter[k].name, " : ", m_documentation[i].function[j].parameter[k].type, " : ", m_documentation[i].function[j].parameter[k].description
+        #    END FOR
 
-      #   FOR k = 1 TO m_documentation[i].function[j].return_value.getlength()
-      #      DISPLAY "      Return Values : ", m_documentation[i].function[j].return_value[k].name, " : ", m_documentation[i].function[j].return_value[k].type, " : ", m_documentation[i].function[j].return_value[k].description
-      #   END FOR
-      #END FOR
-   #END FOR
+        #    FOR k = 1 TO m_documentation[i].function[j].return_value.getlength()
+        #        DISPLAY "        Return Values : ", m_documentation[i].function[j].return_value[k].name, " : ", m_documentation[i].function[j].return_value[k].type, " : ", m_documentation[i].function[j].return_value[k].description
+        #    END FOR
+        #END FOR
+    #END FOR
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -441,89 +441,89 @@ END FUNCTION
 FUNCTION p_gt_extract_documentation()
 
 DEFINE
-   i                    INTEGER,
-   l_pos                INTEGER,
-   l_token_count        INTEGER,
-   l_token              STRING
+    i               INTEGER,
+    l_pos           INTEGER,
+    l_token_count   INTEGER,
+    l_token         STRING
 
-   LET l_pos = 0
+    LET l_pos = 0
 
-   LET m_count = 0
-   LET m_tag_count = 0
-   LET m_function_count = 0
-   LET m_parameter_count = 0
-   LET m_return_value_count = 0
-   LET m_function_found = FALSE
+    LET m_count = 0
+    LET m_tag_count = 0
+    LET m_function_count = 0
+    LET m_parameter_count = 0
+    LET m_return_value_count = 0
+    LET m_function_found = FALSE
 
-   LET l_token_count = gt_4gl_token_count()
+    LET l_token_count = gt_4gl_token_count()
 
-   WHILE l_pos < l_token_count
-      LET l_pos = l_pos + 1
-      LET l_token = gt_4gl_next_token(l_pos)
+    WHILE l_pos < l_token_count
+        LET l_pos = l_pos + 1
+        LET l_token = gt_4gl_next_token(l_pos)
 
-      IF l_token.touppercase() == "FUNCTION"
-      OR l_token.touppercase() == "MAIN" THEN
-         LET l_pos = gt_4gl_parse_function(l_pos)
+        IF l_token.touppercase() == "FUNCTION"
+        OR l_token.touppercase() == "MAIN" THEN
+            LET l_pos = gt_4gl_parse_function(l_pos)
 
-         FOR i = 1 TO gt_4gl_function_count()
-            LET m_function_count = m_function_count + 1
+            FOR i = 1 TO gt_4gl_function_count()
+                LET m_function_count = m_function_count + 1
 
-            IF i == 1 THEN
-               LET m_documentation[m_documentation_count].method[m_function_count].name = gt_4gl_function_value(i)
-            ELSE
-               LET m_documentation[m_documentation_count].method[m_function_count].parameter[m_parameter_count].name = gt_4gl_function_value(i)
-            END IF
-         END FOR
-      END IF
-   END WHILE
+                IF i == 1 THEN
+                    LET m_documentation[m_documentation_count].method[m_function_count].name = gt_4gl_function_value(i)
+                ELSE
+                    LET m_documentation[m_documentation_count].method[m_function_count].parameter[m_parameter_count].name = gt_4gl_function_value(i)
+                END IF
+            END FOR
+        END IF
+    END WHILE
 
-   LET l_pos = 0
+    LET l_pos = 0
 
-   WHILE l_pos < l_token_count
-      LET l_pos = l_pos + 1
-      LET l_token = gt_4gl_next_token(l_pos)
+    WHILE l_pos < l_token_count
+        LET l_pos = l_pos + 1
+        LET l_token = gt_4gl_next_token(l_pos)
 
-      IF l_token == "\"" THEN
-         LET l_pos = l_pos + 1
-
-         WHILE gt_4gl_next_token(l_pos) != "\""
+        IF l_token == "\"" THEN
             LET l_pos = l_pos + 1
-         END WHILE
 
-         CONTINUE WHILE
-      END IF
+            WHILE gt_4gl_next_token(l_pos) != "\""
+                LET l_pos = l_pos + 1
+            END WHILE
 
-      IF l_token == "'" THEN
-         LET l_pos = l_pos + 1
+            CONTINUE WHILE
+        END IF
 
-         WHILE gt_4gl_next_token(l_pos) != "'"
+        IF l_token == "'" THEN
             LET l_pos = l_pos + 1
-         END WHILE
 
-         CONTINUE WHILE
-      END IF
+            WHILE gt_4gl_next_token(l_pos) != "'"
+                LET l_pos = l_pos + 1
+            END WHILE
 
-      CASE
-         WHEN l_token.subString(1, 2) == "##"
-            LET l_pos = p_gt_parse_documentation(l_pos)
+            CONTINUE WHILE
+        END IF
 
-         WHEN l_token.toUpperCase() == "DEFINE"
-            LET l_pos = p_gt_parse_define(l_pos)
-            LET l_pos = l_pos - 1
+        CASE
+            WHEN l_token.subString(1, 2) == "##"
+                LET l_pos = p_gt_parse_documentation(l_pos)
 
-         WHEN l_token.toUpperCase() == "FUNCTION"
-           OR l_token.toUpperCase() == "MAIN"
-            LET m_function_found = TRUE
+            WHEN l_token.toUpperCase() == "DEFINE"
+                LET l_pos = p_gt_parse_define(l_pos)
+                LET l_pos = l_pos - 1
 
-         WHEN l_token.toUpperCase() == "RETURN"
-            IF gt_4gl_next_token(l_pos - 1) != "@" THEN
-               LET l_pos = p_gt_parse_return(l_pos)
-               LET l_pos = l_pos - 1
-            END IF
+            WHEN l_token.toUpperCase() == "FUNCTION"
+              OR l_token.toUpperCase() == "MAIN"
+                LET m_function_found = TRUE
 
-         OTHERWISE
-      END CASE
-   END WHILE
+            WHEN l_token.toUpperCase() == "RETURN"
+                IF gt_4gl_next_token(l_pos - 1) != "@" THEN
+                    LET l_pos = p_gt_parse_return(l_pos)
+                    LET l_pos = l_pos - 1
+                END IF
+
+            OTHERWISE
+        END CASE
+    END WHILE
 
 END FUNCTION
 
@@ -541,119 +541,119 @@ END FUNCTION
 FUNCTION p_gt_parse_documentation(l_pos)
 
 DEFINE
-   l_pos   INTEGER
+    l_pos   INTEGER
 
 DEFINE
-   i                  INTEGER,
-   l_index            INTEGER,
-   l_function_count   INTEGER,
-   l_line             STRING,
-   l_name             STRING,
-   l_text             STRING,
-   l_token            STRING,
-   l_command          STRING
+    i                  INTEGER,
+    l_index            INTEGER,
+    l_function_count   INTEGER,
+    l_line             STRING,
+    l_name             STRING,
+    l_text             STRING,
+    l_token            STRING,
+    l_command          STRING
 
-   LET l_function_count = 0
-   LET m_count = m_count + 1
-   LET m_tag_count  = 0
-   LET m_parameter_count = 0
-   LET m_return_value_count = 0
-   LET m_current_function = NULL
+    LET l_function_count = 0
+    LET m_count = m_count + 1
+    LET m_tag_count  = 0
+    LET m_parameter_count = 0
+    LET m_return_value_count = 0
+    LET m_current_function = NULL
 
-   IF m_count > 1 THEN
-      LET m_current_function = p_gt_find_next_function(l_pos)
+    IF m_count > 1 THEN
+        LET m_current_function = p_gt_find_next_function(l_pos)
 
-      IF m_current_function IS NOT NULL THEN
-         FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
-            IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
-               LET l_function_count = i
-               EXIT FOR
+        IF m_current_function IS NOT NULL THEN
+            FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
+                IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
+                    LET l_function_count = i
+                    EXIT FOR
+                END IF
+            END FOR
+
+            IF l_function_count == 0 THEN
+                RETURN l_pos + 1
             END IF
-         END FOR
-
-         IF l_function_count == 0 THEN
+        ELSE
             RETURN l_pos + 1
-         END IF
-      ELSE
-         RETURN l_pos + 1
-      END IF
-   ELSE
-      LET l_function_count = 2
-   END IF
+        END IF
+    ELSE
+        LET l_function_count = 2
+    END IF
 
-   WHILE NOT gt_4gl_is_keyword(l_token)
-      #------------------------------------------------------------------------#
-      # Documentation comes through as lines                                   #
-      #------------------------------------------------------------------------#
+    WHILE NOT gt_4gl_is_keyword(l_token)
+        #----------------------------------------------------------------------#
+        # Documentation comes through as lines                                 #
+        #----------------------------------------------------------------------#
 
-      LET l_line = l_token.trim()
+        LET l_line = l_token.trim()
 
-      IF l_line.getCharAt(1) != "#" THEN
-         EXIT WHILE
-      END IF
+        IF l_line.getCharAt(1) != "#" THEN
+            EXIT WHILE
+        END IF
 
-      IF l_line.subString(1, 2) == "##" THEN
-         EXIT WHILE
-      END IF
+        IF l_line.subString(1, 2) == "##" THEN
+            EXIT WHILE
+        END IF
 
-      LET l_line = l_line.subString(2, l_line.getLength() - 1)
-      LET l_line = l_line.trim()
+        LET l_line = l_line.subString(2, l_line.getLength() - 1)
+        LET l_line = l_line.trim()
 
-      IF l_line.getlength() == 0 THEN
-      END IF
+        IF l_line.getlength() == 0 THEN
+        END IF
 
-      #------------------------------------------------------------------------#
-      # Found a doxygen control character                                      #
-      #------------------------------------------------------------------------#
+        #----------------------------------------------------------------------#
+        # Found a doxygen control character                                    #
+        #----------------------------------------------------------------------#
 
-      IF l_line.getCharAt(1) == "@" THEN
-         LET l_index = l_line.getindexof(" ", 1)
-         LET l_command = l_line.subString(1, l_index)
-         LET l_command = l_command.trim()
-         LET l_line = l_line.substring(l_index, l_line.getLength())
-         LET l_line = l_line.trim()
+        IF l_line.getCharAt(1) == "@" THEN
+            LET l_index = l_line.getindexof(" ", 1)
+            LET l_command = l_line.subString(1, l_index)
+            LET l_command = l_command.trim()
+            LET l_line = l_line.substring(l_index, l_line.getLength())
+            LET l_line = l_line.trim()
 
-         CASE
-            WHEN l_command == "@param"
-               LET m_parameter_count = m_parameter_count + 1
-               LET l_index = l_line.getindexof(" ", 1)
-               LET l_name = l_line.subString(1, l_index)
-               LET m_documentation[m_documentation_count].method[l_function_count].parameter[m_parameter_count].name = l_name.trim()
-               LET l_text = l_line.subString(l_index, l_line.getLength())
-               LET m_documentation[m_documentation_count].method[l_function_count].parameter[m_parameter_count].description = l_text.trim()
+            CASE
+                WHEN l_command == "@param"
+                    LET m_parameter_count = m_parameter_count + 1
+                    LET l_index = l_line.getindexof(" ", 1)
+                    LET l_name = l_line.subString(1, l_index)
+                    LET m_documentation[m_documentation_count].method[l_function_count].parameter[m_parameter_count].name = l_name.trim()
+                    LET l_text = l_line.subString(l_index, l_line.getLength())
+                    LET m_documentation[m_documentation_count].method[l_function_count].parameter[m_parameter_count].description = l_text.trim()
 
-            WHEN l_command == "@return"
-               LET m_return_value_count = m_return_value_count + 1
-               LET l_index = l_line.getindexof(" ", 1)
-               LET l_name = l_line.subString(1, l_index)
-               LET m_documentation[m_documentation_count].method[l_function_count].return_value[m_return_value_count].name = l_name.trim()
-               LET l_text = l_line.subString(l_index, l_line.getLength())
-               LET m_documentation[m_documentation_count].method[l_function_count].return_value[m_return_value_count].description = l_text.trim()
+                WHEN l_command == "@return"
+                    LET m_return_value_count = m_return_value_count + 1
+                    LET l_index = l_line.getindexof(" ", 1)
+                    LET l_name = l_line.subString(1, l_index)
+                    LET m_documentation[m_documentation_count].method[l_function_count].return_value[m_return_value_count].name = l_name.trim()
+                    LET l_text = l_line.subString(l_index, l_line.getLength())
+                    LET m_documentation[m_documentation_count].method[l_function_count].return_value[m_return_value_count].description = l_text.trim()
 
-            OTHERWISE
-               IF m_count == 1 THEN
-                  LET m_tag_count = m_tag_count + 1
-                  LET m_documentation[m_documentation_count].tag[m_tag_count].name = l_command.subString(2, l_command.getLength())
-                  LET m_documentation[m_documentation_count].tag[m_tag_count].value = l_line.trim()
-               ELSE
-                  LET m_tag_count = m_tag_count + 1
-                  LET m_documentation[m_documentation_count].method[l_function_count].tag[m_tag_count].name = l_command.subString(2, l_command.getLength())
-                  LET m_documentation[m_documentation_count].method[l_function_count].tag[m_tag_count].value = l_line.trim()
-               END IF
-         END CASE
-      ELSE
-         IF m_count == 1 THEN
-            LET m_documentation[m_documentation_count].text = m_documentation[m_documentation_count].text, " ", l_line.trim()
-         ELSE
-            LET m_documentation[m_documentation_count].method[l_function_count].text = m_documentation[m_documentation_count].method[l_function_count].text, " ", l_line.trim()
-         END IF
-      END IF
+                OTHERWISE
+                    IF m_count == 1 THEN
+                        LET m_tag_count = m_tag_count + 1
+                        LET m_documentation[m_documentation_count].tag[m_tag_count].name = l_command.subString(2, l_command.getLength())
+                        LET m_documentation[m_documentation_count].tag[m_tag_count].value = l_line.trim()
+                    ELSE
+                        LET m_tag_count = m_tag_count + 1
+                        LET m_documentation[m_documentation_count].method[l_function_count].tag[m_tag_count].name = l_command.subString(2, l_command.getLength())
+                        LET m_documentation[m_documentation_count].method[l_function_count].tag[m_tag_count].value = l_line.trim()
+                    END IF
+            END CASE
+        ELSE
+            IF m_count == 1 THEN
+                LET m_documentation[m_documentation_count].text = m_documentation[m_documentation_count].text, " ", l_line.trim()
+            ELSE
+                LET m_documentation[m_documentation_count].method[l_function_count].text = m_documentation[m_documentation_count].method[l_function_count].text, " ", l_line.trim()
+            END IF
+        END IF
 
-      LET l_pos = l_pos + 1
-      LET l_token = gt_4gl_next_token(l_pos)
-   END WHILE
+        LET l_pos = l_pos + 1
+        LET l_token = gt_4gl_next_token(l_pos)
+    END WHILE
 
-   RETURN l_pos
+    RETURN l_pos
 
 END FUNCTION
 
@@ -666,56 +666,56 @@ END FUNCTION
 FUNCTION p_gt_parse_define(l_pos)
 
 DEFINE
-   l_pos   INTEGER
+    l_pos   INTEGER
 
 DEFINE
-   i                  INTEGER,
-   j                  INTEGER,
-   l_function_index   INTEGER,
-   l_name             STRING,
-   l_type             STRING
+    i                  INTEGER,
+    j                  INTEGER,
+    l_function_index   INTEGER,
+    l_name             STRING,
+    l_type             STRING
 
-   # m_function_found is only set to TRUE once the first FUNCTION statement has
-   # been found. So if it is FALSE then we must be looking at the modular
-   # DEFINEs.
+    # m_function_found is only set to TRUE once the first FUNCTION statement has
+    # been found. So if it is FALSE then we must be looking at the modular
+    # DEFINEs.
 
-   IF m_function_found == TRUE THEN
-      FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
-         IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
-            LET l_function_index = i
-            EXIT FOR
-         END IF
-      END FOR
+    IF m_function_found == TRUE THEN
+        FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
+            IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
+                LET l_function_index = i
+                EXIT FOR
+            END IF
+        END FOR
 
-      # We did not find the function which should never happen!
+        # We did not find the function which should never happen!
 
-      IF l_function_index == 0 THEN
-         RETURN l_pos + 1
-      END IF
-   ELSE
-      LET l_function_index = 1
-   END IF
+        IF l_function_index == 0 THEN
+            RETURN l_pos + 1
+        END IF
+    ELSE
+        LET l_function_index = 1
+    END IF
 
-   LET m_function_index = l_function_index
+    LET m_function_index = l_function_index
 
-   CALL gt_4gl_parse_define(l_pos)
-      RETURNING l_pos
+    CALL gt_4gl_parse_define(l_pos)
+        RETURNING l_pos
 
-   FOR i = 1 TO gt_4gl_define_count(l_function_index)
-      CALL gt_4gl_define_value(l_function_index, i)
-         RETURNING l_name, l_type
+    FOR i = 1 TO gt_4gl_define_count(l_function_index)
+        CALL gt_4gl_define_value(l_function_index, i)
+            RETURNING l_name, l_type
 
-      FOR j = 1 TO gt_documentation_function_parameter_count(m_documentation_count, l_function_index)
-         #DISPLAY m_documentation[m_documentation_count].function[l_function_index].parameter[j].name, ":", l_name, ":", l_type
-         IF m_documentation[m_documentation_count].method[l_function_index].parameter[j].name == l_name THEN
-            #DISPLAY "MATCH!", l_function_index
-            LET m_documentation[m_documentation_count].method[l_function_index].parameter[j].type = l_type
-            EXIT FOR
-         END IF
-      END FOR
-   END FOR
+        FOR j = 1 TO gt_documentation_function_parameter_count(m_documentation_count, l_function_index)
+            #DISPLAY m_documentation[m_documentation_count].function[l_function_index].parameter[j].name, ":", l_name, ":", l_type
+            IF m_documentation[m_documentation_count].method[l_function_index].parameter[j].name == l_name THEN
+                #DISPLAY "MATCH!", l_function_index
+                LET m_documentation[m_documentation_count].method[l_function_index].parameter[j].type = l_type
+                EXIT FOR
+            END IF
+        END FOR
+    END FOR
 
-   RETURN l_pos
+    RETURN l_pos
 
 END FUNCTION
 
@@ -728,34 +728,34 @@ END FUNCTION
 FUNCTION p_gt_parse_return(l_pos)
 
 DEFINE
-   l_pos   INTEGER
+    l_pos   INTEGER
 
 DEFINE
-   i                  INTEGER,
-   l_function_index   INTEGER,
-   l_type             STRING
+    i                  INTEGER,
+    l_function_index   INTEGER,
+    l_type             STRING
 
-   FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
-      IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
-         LET l_function_index = i
-         EXIT FOR
-      END IF
-   END FOR
+    FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
+        IF m_documentation[m_documentation_count].method[i].name = m_current_function THEN
+            LET l_function_index = i
+            EXIT FOR
+        END IF
+    END FOR
 
-   IF l_function_index == 0 THEN
-      RETURN l_pos + 1
-   END IF
+    IF l_function_index == 0 THEN
+        RETURN l_pos + 1
+    END IF
 
-   LET l_pos = gt_4gl_parse_return(l_function_index, l_pos)
+    LET l_pos = gt_4gl_parse_return(l_function_index, l_pos)
 
-   FOR i = 1 TO gt_4gl_return_count(l_function_index)
-      CALL gt_4gl_return_value(l_function_index, i)
-         RETURNING l_type
+    FOR i = 1 TO gt_4gl_return_count(l_function_index)
+        CALL gt_4gl_return_value(l_function_index, i)
+            RETURNING l_type
 
-      LET m_documentation[m_documentation_count].method[l_function_index].return_value[i].type = l_type
-   END FOR
+        LET m_documentation[m_documentation_count].method[l_function_index].return_value[i].type = l_type
+    END FOR
 
-   RETURN l_pos
+    RETURN l_pos
 
 END FUNCTION
 
@@ -768,31 +768,31 @@ END FUNCTION
 FUNCTION p_gt_find_next_function(l_pos)
 
 DEFINE
-   l_pos   INTEGER
+    l_pos   INTEGER
 
 DEFINE
-   i            INTEGER,
-   l_token      STRING,
-   l_function   STRING
+    i            INTEGER,
+    l_token      STRING,
+    l_function   STRING
 
-   LET l_function = NULL
+    LET l_function = NULL
 
-   FOR i = l_pos TO gt_4gl_token_count()
-      LET l_token = gt_4gl_next_token(i)
-      LET l_token = l_token.touppercase()
+    FOR i = l_pos TO gt_4gl_token_count()
+        LET l_token = gt_4gl_next_token(i)
+        LET l_token = l_token.touppercase()
 
-      IF l_token == "MAIN" THEN
-         LET l_function = "main"
-         EXIT FOR
-      END IF
+        IF l_token == "MAIN" THEN
+            LET l_function = "main"
+            EXIT FOR
+        END IF
 
-      IF l_token == "FUNCTION" THEN
-         LET l_function = gt_4gl_next_token(i + 1)
-         EXIT FOR
-      END IF
-   END FOR
+        IF l_token == "FUNCTION" THEN
+            LET l_function = gt_4gl_next_token(i + 1)
+            EXIT FOR
+        END IF
+    END FOR
 
-   RETURN l_function
+    RETURN l_function
 
 END FUNCTION
 

@@ -29,10 +29,10 @@
 FUNCTION libgt_xhtml_test_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -46,16 +46,16 @@ FUNCTION test_xhtml_lib()
 DEFINE
 	l_xhtmlhdl   STRING
 
-   #CALL gt_ut_log("Testing MD5 with \"\"...")
+    #CALL gt_ut_log("Testing MD5 with \"\"...")
 
-   #IF gt_xhtmlstring("") == "D41D8CD98F00B204E9800998ECF8427E" THEN
-   # 	CALL gt_ut_log("Passed")
-   #ELSE
-   #	CALL gt_ut_log("FAILED")
-   #   RETURN FALSE
-   #END IF
+    #IF gt_xhtmlstring("") == "D41D8CD98F00B204E9800998ECF8427E" THEN
+    # 	CALL gt_ut_log("Passed")
+    #ELSE
+    #	CALL gt_ut_log("FAILED")
+    #    RETURN FALSE
+    #END IF
 
-   RETURN TRUE
+    RETURN TRUE
 
 END FUNCTION
 
