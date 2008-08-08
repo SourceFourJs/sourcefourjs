@@ -23,10 +23,10 @@
 #------------------------------------------------------------------------------#
 
 #------------------------------------------------------------------------------#
-# Function to set WHENEVER ANY ERROR for this module                                    #
+# Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION libgt_smtp_client_test_id()
+FUNCTION libgt_pop3_client_test_id()
 
 DEFINE
     l_id   STRING
@@ -37,32 +37,34 @@ DEFINE
 END FUNCTION
 
 ##
-# Function to test the SMTP client library.
+# Function to test the pop3 client library.
 # @return l_ok Returns TRUE if successful, FALSE otherwise.
 #
 
-FUNCTION test_smtp_client_lib(l_smtp_server, l_smtp_port, l_from, l_to)
+FUNCTION test_pop3_client_lib(l_pop3_server, l_pop3_port, l_username, l_password)
 
 DEFINE
-    l_smtp_server   STRING,
-    l_smtp_port     INTEGER,
-    l_from          STRING,
-    l_to            STRING
+    l_pop3_server   STRING,
+    l_pop3_port     INTEGER,
+    l_username      STRING,
+    l_password      STRING
 
 DEFINE
     l_ok             SMALLINT,
+    l_size           INTEGER,
+    l_number         INTEGER,
     l_connections    INTEGER,
     l_bytesread      FLOAT,
     l_byteswritten   FLOAT,
-    l_email          STRING,
+    l_message        STRING,
     l_serverhdl      STRING
 
-    CALL gt_ut_log("Testing gt_smtp_client_init...")
-    CALL gt_smtp_client_init()
+    CALL gt_ut_log("Testing gt_pop3_client_init...")
+    CALL gt_pop3_client_init()
 
-    CALL gt_ut_log("Testing gt_connect_to_smtp_server...")
+    CALL gt_ut_log("Testing gt_connect_to_pop3_server...")
 
-    CALL gt_connect_to_smtp_server(l_smtp_server, l_smtp_port)
+    CALL gt_connect_to_pop3_server(l_pop3_server, l_pop3_port)
         RETURNING l_ok, l_serverhdl
 
     IF l_ok THEN
@@ -73,9 +75,9 @@ DEFINE
         RETURN FALSE
     END IF
 
-    CALL gt_ut_log("Testing gt_smtp_helo...")
+    CALL gt_ut_log("Testing gt_pop3_username...")
 
-    CALL gt_smtp_helo(l_serverhdl, l_smtp_server)
+    CALL gt_pop3_username(l_serverhdl, l_username)
         RETURNING l_ok
 
     IF l_ok THEN
@@ -86,9 +88,9 @@ DEFINE
         RETURN FALSE
     END IF
 
-    CALL gt_ut_log("Testing gt_smtp_mail_from...")
+    CALL gt_ut_log("Testing gt_pop3_password...")
 
-    CALL gt_smtp_mail_from(l_serverhdl, l_from)
+    CALL gt_pop3_password(l_serverhdl, l_password)
         RETURNING l_ok
 
     IF l_ok THEN
@@ -99,9 +101,48 @@ DEFINE
         RETURN FALSE
     END IF
 
-    CALL gt_ut_log("Testing gt_smtp_rcpt_to...")
+    CALL gt_ut_log("Testing gt_pop3_status...")
 
-    CALL gt_smtp_rcpt_to(l_serverhdl, l_to)
+    CALL gt_pop3_status(l_serverhdl)
+        RETURNING l_ok, l_number, l_size
+
+    IF l_ok THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
+
+    CALL gt_ut_log("Testing gt_pop3_list...")
+
+    CALL gt_pop3_list(l_serverhdl, l_number)
+        RETURNING l_ok, l_size
+
+    IF l_ok THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
+
+    CALL gt_ut_log("Testing gt_pop3_retrieve...")
+
+    CALL gt_pop3_retrieve(l_serverhdl, l_number)
+        RETURNING l_ok, l_size, l_message
+
+    IF l_ok THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
+
+    CALL gt_ut_log("Testing gt_pop3_quit...")
+
+    CALL gt_pop3_quit(l_serverhdl)
         RETURNING l_ok
 
     IF l_ok THEN
@@ -112,40 +153,12 @@ DEFINE
         RETURN FALSE
     END IF
 
-    CALL gt_ut_log("Testing gt_smtp_data...")
+    CALL gt_ut_log("Testing gt_pop3_client_statistics...")
 
-    LET l_email = "Subject: Test from lib_smtp_client_test\n\nThis is a test message."
-
-    CALL gt_smtp_data(l_serverhdl, l_email)
-        RETURNING l_ok
-
-    IF l_ok THEN
-        CALL gt_ut_log("Passed")
-    ELSE
-        CALL gt_ut_log("FAILED")
-        CALL gt_ut_log(gt_last_error())
-        RETURN FALSE
-    END IF
-
-    CALL gt_ut_log("Testing gt_smtp_quit...")
-
-    CALL gt_smtp_quit(l_serverhdl)
-        RETURNING l_ok
-
-    IF l_ok THEN
-        CALL gt_ut_log("Passed")
-    ELSE
-        CALL gt_ut_log("FAILED")
-        CALL gt_ut_log(gt_last_error())
-        RETURN FALSE
-    END IF
-
-    CALL gt_ut_log("Testing gt_smtp_client_statistics...")
-
-    CALL gt_smtp_client_statistics()
+    CALL gt_pop3_client_statistics()
         RETURNING l_connections, l_bytesread, l_byteswritten
 
-    CALL gt_ut_log("SMTP Client Statistics:")
+    CALL gt_ut_log("POP3 Client Statistics:")
     CALL gt_ut_log("No of Connections    : " || l_connections)
     CALL gt_ut_log("Total Bytes Read     : " || l_bytesread)
     CALL gt_ut_log("Total Bytes Written : " || l_byteswritten)

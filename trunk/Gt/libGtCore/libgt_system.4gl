@@ -31,11 +31,11 @@
 #
 
 DEFINE
-   m_serial_count   INTEGER,
+    m_serial_count   INTEGER,
 
-   m_serial_list   DYNAMIC ARRAY OF RECORD
-      type   STRING,
-      next   INTEGER
+    m_serial_list DYNAMIC ARRAY OF RECORD
+        type   STRING,
+        next   INTEGER
   END RECORD
 
 #------------------------------------------------------------------------------#
@@ -60,17 +60,17 @@ END FUNCTION
 FUNCTION gt_os()
 
 DEFINE
-   l_os   STRING
+    l_os   STRING
 
-   LET l_os = NULL
+    LET l_os = NULL
 
-   IF fgl_getenv("SYSTEMROOT") IS NOT NULL THEN
-      LET l_os = "WINDOWS"
-   ELSE
-      LET l_os = "UNIX"
-   END IF
+    IF fgl_getenv("SYSTEMROOT") IS NOT NULL THEN
+        LET l_os = "WINDOWS"
+    ELSE
+        LET l_os = "UNIX"
+    END IF
 
-   RETURN l_os
+    RETURN l_os
 
 END FUNCTION
 
@@ -82,39 +82,39 @@ END FUNCTION
 FUNCTION gt_os_type()
 
 DEFINE
-   l_ok        SMALLINT,
-   l_os_type   STRING,
-   l_pipehdl   STRING
+    l_ok        SMALLINT,
+    l_os_type   STRING,
+    l_pipehdl   STRING
 
-   LET l_os_type = NULL
+    LET l_os_type = NULL
 
-   IF gt_os() == "WINDOWS" THEN
-      CALL gt_pipe_open("cmd /c ver", "r", "")
-         RETURNING l_ok, l_pipehdl
+    IF gt_os() == "WINDOWS" THEN
+        CALL gt_pipe_open("cmd /c ver", "r", "")
+            RETURNING l_ok, l_pipehdl
 
-      IF l_ok THEN
-         IF gt_pipe_read(l_pipehdl) THEN
-            LET l_os_type = gt_io_buffer(l_pipehdl)
-            CALL gt_pipe_close(l_pipehdl)
-         END IF
-      ELSE
-         CALL gt_set_error("ERROR", %"Unable to read cmd /c ver")
-      END IF
-   ELSE
-      CALL gt_pipe_open("uname -s", "r", "")
-         RETURNING l_ok, l_pipehdl
+        IF l_ok THEN
+            IF gt_pipe_read(l_pipehdl) THEN
+                LET l_os_type = gt_io_buffer(l_pipehdl)
+                CALL gt_pipe_close(l_pipehdl)
+            END IF
+        ELSE
+            CALL gt_set_error("ERROR", %"Unable to read cmd /c ver")
+        END IF
+    ELSE
+        CALL gt_pipe_open("uname -s", "r", "")
+            RETURNING l_ok, l_pipehdl
 
-      IF l_ok THEN
-         IF gt_pipe_read(l_pipehdl) THEN
-            LET l_os_type = gt_io_buffer(l_pipehdl)
-            CALL gt_pipe_close(l_pipehdl)
-         END IF
-      ELSE
-         CALL gt_set_error("ERROR", %"Unable to read uname -s")
-      END IF
-   END IF
+        IF l_ok THEN
+            IF gt_pipe_read(l_pipehdl) THEN
+                LET l_os_type = gt_io_buffer(l_pipehdl)
+                CALL gt_pipe_close(l_pipehdl)
+            END IF
+        ELSE
+            CALL gt_set_error("ERROR", %"Unable to read uname -s")
+        END IF
+    END IF
 
-   RETURN l_os_type
+    RETURN l_os_type
 
 END FUNCTION
 
@@ -133,42 +133,42 @@ DEFINE
 	l_type   STRING
 
 DEFINE
-   i          INTEGER,
-   l_pos      INTEGER,
-   l_serial   STRING
+    i          INTEGER,
+    l_pos      INTEGER,
+    l_serial   STRING
 
-   LET l_pos = 0
-   LET l_serial = NULL
-   LET l_type = l_type.trim()
+    LET l_pos = 0
+    LET l_serial = NULL
+    LET l_type = l_type.trim()
 
-   FOR i = 1 TO m_serial_list.getlength()
-      IF m_serial_list[i].type == l_type THEN
-         LET l_pos = i
-         EXIT FOR
-      END IF
-   END FOR
+    FOR i = 1 TO m_serial_list.getlength()
+        IF m_serial_list[i].type == l_type THEN
+            LET l_pos = i
+            EXIT FOR
+        END IF
+    END FOR
 
-   IF l_pos == 0 THEN
-      LET m_serial_count = m_serial_count + 1
-      LET m_serial_list[m_serial_count].type = l_type.trim()
-      LET m_serial_list[m_serial_count].next = 0
-      LET l_pos = m_serial_count
-   ELSE
-      LET m_serial_list[l_pos].next = m_serial_list[l_pos].next + 1
-   END IF
+    IF l_pos == 0 THEN
+        LET m_serial_count = m_serial_count + 1
+        LET m_serial_list[m_serial_count].type = l_type.trim()
+        LET m_serial_list[m_serial_count].next = 0
+        LET l_pos = m_serial_count
+    ELSE
+        LET m_serial_list[l_pos].next = m_serial_list[l_pos].next + 1
+    END IF
 
-   #---------------------------------------------------------------------------#
-   # Reset the number if it has grown larger than an INTEGER allows            #
-   #---------------------------------------------------------------------------#
+    #--------------------------------------------------------------------------#
+    # Reset the number if it has grown larger than an INTEGER allows           #
+    #--------------------------------------------------------------------------#
 
-   IF m_serial_list[l_pos].next > 2147483647 THEN
-      LET m_serial_list[l_pos].next = 0
-   END IF
+    IF m_serial_list[l_pos].next > 2147483647 THEN
+        LET m_serial_list[l_pos].next = 0
+    END IF
 
-   LET l_serial = l_type, m_serial_list[l_pos].next USING "&&&&&&&&&&",
-                  fgl_getpid() USING "&&&&&"
+    LET l_serial = l_type, m_serial_list[l_pos].next USING "&&&&&&&&&&",
+                        fgl_getpid() USING "&&&&&"
 
-   RETURN l_serial
+    RETURN l_serial
 
 END FUNCTION
 

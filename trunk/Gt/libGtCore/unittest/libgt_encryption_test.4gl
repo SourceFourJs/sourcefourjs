@@ -29,10 +29,10 @@
 FUNCTION libgt_encryption_test_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -44,31 +44,33 @@ END FUNCTION
 FUNCTION test_encryption_lib()
 
 DEFINE
-   l_string   STRING
+    l_string   STRING
 
-   LET l_string = ASCII(42), ASCII(70), ASCII(84), ASCII(84),
-                  ASCII(51), ASCII(93), ASCII(90), ASCII(79),
-                  ASCII(75), ASCII(66)
+    LET l_string = ASCII(42), ASCII(70), ASCII(84), ASCII(84),
+                   ASCII(51), ASCII(93), ASCII(90), ASCII(79),
+                   ASCII(75), ASCII(66)
 
-   CALL gt_ut_log("Testing gt_XORString encryption...")
+    CALL gt_ut_log("Testing gt_XORString encryption...")
 
-   IF gt_xorstring("TestString", "") == l_string THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_xorstring("TestString", "") == l_string THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_XORString decryption...")
+    CALL gt_ut_log("Testing gt_XORString decryption...")
 
-   IF gt_xorstring(l_string, "") == "TestString" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_xorstring(l_string, "") == "TestString" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   RETURN TRUE
+    RETURN TRUE
 
 END FUNCTION
 

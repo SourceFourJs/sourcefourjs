@@ -29,10 +29,10 @@
 FUNCTION libgt_binary_utils_test_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -43,63 +43,69 @@ END FUNCTION
 
 FUNCTION test_binary_utils_lib()
 
-   CALL gt_ut_log("Testing gt_asc...")
+    CALL gt_ut_log("Testing gt_asc...")
 
-   IF gt_asc("G") == 71 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_asc("G") == 71 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_chr...")
+    CALL gt_ut_log("Testing gt_chr...")
 
-   IF gt_chr(71) == "G" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_chr(71) == "G" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing of gt_xorstring function is done with the encryption testing...")
+    CALL gt_ut_log("Testing of gt_xorstring function is done with the encryption testing...")
 
-   CALL gt_ut_log("Testing gt_hex2dec...")
+    CALL gt_ut_log("Testing gt_hex2dec...")
 
-   IF gt_hex2dec("FF") == 255 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_hex2dec("FF") == 255 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_dec2hex...")
+    CALL gt_ut_log("Testing gt_dec2hex...")
 
-   IF gt_dec2hex(255) == "FF" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_dec2hex(255) == "FF" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_num2BCD...")
+    CALL gt_ut_log("Testing gt_num2BCD...")
 
-   IF gt_num2BCD(42) == "*" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_num2BCD(42) == "*" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_BCD2num...")
+    CALL gt_ut_log("Testing gt_BCD2num...")
 
-   IF gt_BCD2num("*") == 42 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_BCD2num("*") == 42 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   RETURN TRUE
+    RETURN TRUE
 
 END FUNCTION
 

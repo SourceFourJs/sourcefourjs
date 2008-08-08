@@ -29,10 +29,10 @@
 FUNCTION lib_exception_test_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -44,97 +44,105 @@ END FUNCTION
 FUNCTION test_exception_lib()
 
 DEFINE
-   l_ok   SMALLINT
+    l_ok   SMALLINT
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   CALL gt_ut_log("Populating exception list...")
+    CALL gt_ut_log("Populating exception list...")
 
-   CALL gt_set_message("INFORMATIONAL", "First Message")
-   CALL gt_set_warning("WARNING", "First Warning")
-   CALL gt_set_error("ERROR", "First Error")
+    CALL gt_set_message("INFORMATIONAL", "First Message")
+    CALL gt_set_warning("WARNING", "First Warning")
+    CALL gt_set_error("ERROR", "First Error")
 
-   CALL gt_set_message("INFORMATIONAL", "Second Message")
-   CALL gt_set_warning("WARNING", "Second Warning")
-   CALL gt_set_error("ERROR", "Second Error")
+    CALL gt_set_message("INFORMATIONAL", "Second Message")
+    CALL gt_set_warning("WARNING", "Second Warning")
+    CALL gt_set_error("ERROR", "Second Error")
 
-   CALL gt_set_message("INFORMATIONAL", "Third Message")
-   CALL gt_set_warning("WARNING", "Third Warning")
-   CALL gt_set_error("ERROR", "Third Error")
+    CALL gt_set_message("INFORMATIONAL", "Third Message")
+    CALL gt_set_warning("WARNING", "Third Warning")
+    CALL gt_set_error("ERROR", "Third Error")
 
-   CALL gt_ut_log("Testing gt_exception_count...")
+    CALL gt_ut_log("Testing gt_exception_count...")
 
-   IF gt_exception_count() == 9 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_exception_count() == 9 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_error_count...")
+    CALL gt_ut_log("Testing gt_error_count...")
 
-   IF gt_error_count() == 3 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_error_count() == 3 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_warning_count...")
+    CALL gt_ut_log("Testing gt_warning_count...")
 
-   IF gt_warning_count() == 3 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_warning_count() == 3 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_message_count...")
+    CALL gt_ut_log("Testing gt_message_count...")
 
-   IF gt_message_count() == 3 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_message_count() == 3 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_last_message...")
+    CALL gt_ut_log("Testing gt_last_message...")
 
-   IF gt_last_message() == "Third Message" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_last_message() == "Third Message" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_last_warning...")
+    CALL gt_ut_log("Testing gt_last_warning...")
 
-   IF gt_last_warning() == "Third Warning" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_last_warning() == "Third Warning" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_last_error...")
+    CALL gt_ut_log("Testing gt_last_error...")
 
-   IF gt_last_error() == "Third Error" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_last_error() == "Third Error" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_exception...")
+    CALL gt_ut_log("Testing gt_exception...")
 
-   IF gt_exception(5) == "Second Warning" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_exception(5) == "Second Warning" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   RETURN TRUE
+    RETURN TRUE
 
 END FUNCTION
 

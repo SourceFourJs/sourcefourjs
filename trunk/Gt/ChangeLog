@@ -1,3 +1,11 @@
+2008-08-08  scottn
+  * Added the libgt_regex library
+  * Added test cases for libgt_pop3_client and libgt_regex
+  * Added gt_string_is_whitespace and gt_string_is_numeric to libgt_string.4gl
+  * Added gt_set_abort to libgt_exception library
+  * Changed tabs to spaces
+  * Improved index generation in GtDocgen
+
 2008-04-08 scottn
   * Added the libgt_pop3_client library
 

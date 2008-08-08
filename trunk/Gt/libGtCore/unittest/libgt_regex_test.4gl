@@ -22,127 +22,92 @@
 # IN THE SOFTWARE.                                                             #
 #------------------------------------------------------------------------------#
 
-##
-# Unit Test Library
-# @category System Library
-# @author Scott Newton
-# @date August 2007
-# @version $Id$
-#
-
-DEFINE
-    m_log_count       INTEGER,
-    m_results_count   INTEGER,
-
-    m_log DYNAMIC ARRAY OF STRING,
-    m_results DYNAMIC ARRAY OF RECORD
-        module   STRING,
-        result   STRING
-    END RECORD
-
 #------------------------------------------------------------------------------#
 # Function to set WHENEVER ANY ERROR for this module                           #
 #------------------------------------------------------------------------------#
 
-FUNCTION libgt_unittest_id()
+FUNCTION libgt_regex_test_id()
 
 DEFINE
-	l_id   STRING
+    l_id   STRING
 
-	WHENEVER ANY ERROR CALL gt_system_error
-	LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
 ##
-# Function to initialise the unit testing system.
+# Function to test the regex library.
+# @return l_ok Returns TRUE if successful, FALSE otherwise.
 #
 
-FUNCTION gt_ut_init()
-
-    LET m_log_count = 0
-    LET m_results_count = 0
-    CALL m_log.clear()
-    CALL m_results.clear()
-    CALL ui.interface.loadstyles("libgt.4st")
-
-    CLOSE WINDOW SCREEN
-
-    OPEN WINDOW unittest_win WITH FORM "libgt_unittest"
-
-    CALL ui.Dialog.setDefaultUnbuffered(TRUE)
-    CALL ui.interface.loadactiondefaults("libgt_unittest.4ad")
-    CALL ui.interface.loadtopmenu("libgt_unittest.4tm")
-    CALL ui.interface.loadtoolbar("libgt_unittest.4tb")
-
-    DIALOG
-
-        DISPLAY ARRAY m_results TO results_scr.*
-
-        END DISPLAY
-
-        DISPLAY ARRAY m_log TO log_scr.*
-
-        END DISPLAY
-
-        ON ACTION run
-            CALL run_tests()
-
-        ON ACTION cancel
-            EXIT DIALOG
-
-        ON ACTION close
-            EXIT DIALOG
-
-        ON ACTION help
-
-        ON ACTION about
-
-    END DIALOG
-
-    CLOSE WINDOW unittest_win
-
-END FUNCTION
-
-##
-# Function to display the unit test results
-# @param l_module The module being tested.
-# @param l_result TRUE if the test was successful, FALSE otherwise.
-#
-
-FUNCTION gt_ut_result(l_module, l_result)
+FUNCTION test_regex_lib()
 
 DEFINE
-    l_module   STRING,
-    l_result   SMALLINT
+    l_ok       SMALLINT,
+    l_regex    STRING,
+    l_string   STRING
 
-    LET m_results_count = m_results_count + 1
-    LET m_results[m_results_count].module = l_module
+    LET l_ok = FALSE
+    LET l_string = "The quick brown fox jumped over the lazy dog"
 
-    IF l_result THEN
-        LET m_results[m_results_count].result = "Passed"
-        #CALL DIALOG.setArrayAttributes("", att)
+    CALL gt_ut_log("Testing gt_validate_regular_expression...")
+
+    LET l_regex = "\\d+\\.\\d+\\.\\d+\\.\\d+"
+    CALL gt_ut_log(l_regex)
+
+    IF gt_validate_regular_expression(l_regex) THEN
+        CALL gt_ut_log("Passed")
     ELSE
-        LET m_results[m_results_count].result = "FAILED"
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
     END IF
 
-    CALL ui.interface.refresh()
+    LET l_regex = "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)"
+    CALL gt_ut_log(l_regex)
 
-END FUNCTION
+    IF gt_validate_regular_expression(l_regex) THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-##
-# Function to display the unit test details.
-# @param l_log The entry to log.
-#
+    LET l_regex = "^(\\w+)$"
+    CALL gt_ut_log(l_regex)
 
-FUNCTION gt_ut_log(l_log)
+    IF gt_validate_regular_expression(l_regex) THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-DEFINE
-    l_log   STRING
+    LET l_regex = "^(\\w+).(\\w*)$"
+    CALL gt_ut_log(l_regex)
 
-    LET m_log_count = m_log_count + 1
-    LET m_log[m_log_count] = l_log
-    CALL ui.interface.refresh()
+    IF gt_validate_regular_expression(l_regex) THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
+
+    CALL gt_ut_log("Testing gt_validate_data_using_regex...")
+
+    #IF gt_validate_data_using_regex(l_regex, l_string) THEN
+    #    CALL gt_ut_log("Passed")
+    #ELSE
+    #    CALL gt_ut_log("FAILED")
+    #    CALL gt_ut_log(gt_last_error())
+    #    RETURN FALSE
+    #END IF
+
+    RETURN TRUE
 
 END FUNCTION
 

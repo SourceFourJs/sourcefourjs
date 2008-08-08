@@ -29,10 +29,10 @@
 FUNCTION libgt_getopt_test_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -43,25 +43,27 @@ END FUNCTION
 
 FUNCTION test_getopt_lib()
 
-   CALL gt_ut_log("Testing gt_find_argument...")
+    CALL gt_ut_log("Testing gt_find_argument...")
 
-   IF gt_find_argument("no-of-arguments") THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_find_argument("no-of-arguments") THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_argument...")
+    CALL gt_ut_log("Testing gt_argument...")
 
-   IF gt_argument("no-of-arguments") == base.application.getargumentcount() THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_argument("no-of-arguments") == base.application.getargumentcount() THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   RETURN TRUE
+    RETURN TRUE
 
 END FUNCTION
 

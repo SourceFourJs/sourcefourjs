@@ -37,32 +37,32 @@
 #
 
 DEFINE
-   m_socket_count   INTEGER,
-   m_connections    FLOAT,
-   m_bytesread      FLOAT,
-   m_byteswritten   FLOAT,
+    m_connections    INTEGER,
+    m_socket_count   INTEGER,
+    m_bytesread      FLOAT,
+    m_byteswritten   FLOAT,
 
-   m_socket_list DYNAMIC ARRAY OF RECORD
-      handle   STRING,
-      socket   base.channel
-   END RECORD,
+    m_socket_list DYNAMIC ARRAY OF RECORD
+        handle   STRING,
+        socket   base.Channel
+    END RECORD,
 
-   m_message_list DYNAMIC ARRAY OF RECORD
-      number   INTEGER,
-      size     INTEGER
-   END RECORD
+    m_message_list DYNAMIC ARRAY OF RECORD
+        number   INTEGER,
+        size     INTEGER
+    END RECORD
 
 #------------------------------------------------------------------------------#
-# Function to set the WHENEVER ANY ERROR function for this module.             #
+# Function to set the WHENEVER ANY ERROR function for this module.                 #
 #------------------------------------------------------------------------------#
 
 FUNCTION libgt_pop3_client_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -72,9 +72,9 @@ END FUNCTION
 
 FUNCTION gt_pop3_client_init()
 
-   LET m_connections = 0
-   LET m_bytesread = 0
-   LET m_byteswritten = 0
+    LET m_connections = 0
+    LET m_bytesread = 0
+    LET m_byteswritten = 0
 
 END FUNCTION
 
@@ -89,9 +89,9 @@ END FUNCTION
 
 FUNCTION gt_pop3_client_statistics()
 
-   RETURN m_connections USING "<<<,<<<,<<<,<<<,<<<,<<<",
-          m_bytesread USING "<<<,<<<,<<<,<<<,<<<,<<<",
-          m_byteswritten USING "<<<,<<<,<<<,<<<,<<<,<<<"
+    RETURN m_connections USING "<<<,<<<,<<<,<<<,<<<,<<<",
+             m_bytesread USING "<<<,<<<,<<<,<<<,<<<,<<<",
+             m_byteswritten USING "<<<,<<<,<<<,<<<,<<<,<<<"
 
 END FUNCTION
 
@@ -106,60 +106,170 @@ END FUNCTION
 FUNCTION gt_connect_to_pop3_server(l_popserver, l_port)
 
 DEFINE
-   l_popserver   STRING,
-   l_port        INTEGER
+    l_popserver   STRING,
+    l_port        INTEGER
 
 DEFINE
-   l_ok              SMALLINT,
-   l_status          INTEGER,
-   l_data            STRING,
-   l_sockethdl       STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel
+    l_ok              SMALLINT,
+    l_status          INTEGER,
+    l_data            STRING,
+    l_sockethdl       STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel
 
-   LET l_ok = FALSE
-   LET l_status = 0
-   LET l_sockethdl = NULL
-   LET l_popserver = l_popserver.trim()
+    LET l_ok = FALSE
+    LET l_status = 0
+    LET l_sockethdl = NULL
+    LET l_popserver = l_popserver.trim()
 
-   LET l_socket = base.Channel.create()
+    LET l_socket = base.Channel.create()
 
-   IF l_socket IS NOT NULL THEN
-      LET m_socket_count = m_socket_count + 1
-      LET l_sockethdl = gt_next_serial("SOCKET")
-      LET m_socket_list[m_socket_count].handle = l_sockethdl
-      LET m_socket_list[m_socket_count].socket = l_socket
-   ELSE
-      RETURN l_ok, l_sockethdl
-   END IF
+    IF l_socket IS NOT NULL THEN
+        LET m_socket_count = m_socket_count + 1
+        LET l_sockethdl = gt_next_serial("SOCKET")
+        LET m_socket_list[m_socket_count].handle = l_sockethdl
+        LET m_socket_list[m_socket_count].socket = l_socket
+    ELSE
+        RETURN l_ok, l_sockethdl
+    END IF
 
-   CALL l_socket.setDelimiter("")
-   CALL l_socket.openClientSocket(l_popserver, l_port, "ub", 10)
+    CALL l_socket.setDelimiter("")
+    CALL l_socket.openClientSocket(l_popserver, l_port, "ub", 10)
 
-   IF STATUS == 0 THEN
-      #------------------------------------------------------------------------#
-      # Read the response from the mail server on connecting                   #
-      #------------------------------------------------------------------------#
-      LET m_connections = m_connections + 1
+    IF STATUS == 0 THEN
+        #----------------------------------------------------------------------#
+        # Read the response from the mail server on connecting                 #
+        #----------------------------------------------------------------------#
+        LET m_connections = m_connections + 1
 
-      CALL l_socket.read(l_data)
-         RETURNING l_ok
+        CALL l_socket.read(l_data)
+            RETURNING l_ok
 
-      LET l_response_code = l_data.subString(1, 3)
-      LET m_bytesread = m_bytesread + l_data.getLength()
+        LET l_response_code = l_data.subString(1, 3)
+        LET m_bytesread = m_bytesread + l_data.getLength()
 
-      CASE
-         WHEN l_response_code == "220"
+        CASE
+            WHEN l_response_code == "220"
+                LET l_ok = TRUE
+
+            OTHERWISE
+                LET l_ok = FALSE
+                LET l_socket = NULL
+        END CASE
+    ELSE
+    END IF
+
+    RETURN l_ok, l_sockethdl
+
+END FUNCTION
+
+##
+# Function to send the USER command to the POP3 server.
+#
+# @note The POP3 server is not required to implement this call.
+# @param l_sockethdl The handle to the open socket.
+# @param l_username The username to send.
+# @return l_ok Returns TRUE if the USER command was successful, FALSE otherwise.
+#
+
+FUNCTION gt_pop3_username(l_sockethdl, l_username)
+
+DEFINE
+    l_sockethdl   STRING,
+    l_username    STRING
+
+DEFINE
+    l_ok              SMALLINT,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
+
+    LET l_ok = FALSE
+    LET l_data = "USER ", l_username
+
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE
+    END IF
+
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
+
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
+
+    LET m_bytesread = m_bytesread + l_data.getLength()
+
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
+
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
             LET l_ok = TRUE
 
-         OTHERWISE
+        OTHERWISE
             LET l_ok = FALSE
-            LET l_socket = NULL
-      END CASE
-   ELSE
-   END IF
+    END CASE
 
-   RETURN l_ok, l_sockethdl
+    RETURN l_ok
+
+END FUNCTION
+
+##
+# Function to send the PASS command to the POP3 server.
+#
+# @note The POP3 server is not required to implement this call.
+# @param l_sockethdl The handle to the open socket.
+# @param l_password The password to send.
+# @return l_ok Returns TRUE if the PASS command was successful, FALSE otherwise.
+#
+
+FUNCTION gt_pop3_password(l_sockethdl, l_password)
+
+DEFINE
+    l_sockethdl   STRING,
+    l_password    STRING
+
+DEFINE
+    l_ok              SMALLINT,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
+
+    LET l_ok = FALSE
+    LET l_data = "PASS ", l_password
+
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE
+    END IF
+
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
+
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
+
+    LET m_bytesread = m_bytesread + l_data.getLength()
+
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
+
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
+            LET l_ok = TRUE
+
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
+
+    RETURN l_ok
 
 END FUNCTION
 
@@ -174,51 +284,51 @@ END FUNCTION
 FUNCTION gt_pop3_status(l_sockethdl)
 
 DEFINE
-   l_sockethdl   STRING
+    l_sockethdl   STRING
 
 DEFINE
-   l_ok              SMALLINT,
-   l_size            INTEGER,
-   l_number          INTEGER,
-   l_data            STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel,
-   l_tokenizer       base.StringTokenizer
+    l_ok              SMALLINT,
+    l_size            INTEGER,
+    l_number          INTEGER,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
 
-   LET l_size = 0
-   LET l_number = 0
-   LET l_ok = FALSE
-   LET l_data = "STAT"
+    LET l_size = 0
+    LET l_number = 0
+    LET l_ok = FALSE
+    LET l_data = "STAT"
 
-   LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
 
-   IF l_socket IS NULL THEN
-      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
-      RETURN FALSE, l_number, l_size
-   END IF
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE, l_number, l_size
+    END IF
 
-   CALL l_socket.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_socket.read(l_data)
-      RETURNING l_ok
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
 
-   LET m_bytesread = m_bytesread + l_data.getLength()
+    LET m_bytesread = m_bytesread + l_data.getLength()
 
-   LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-   LET l_response_code = l_tokenizer.nextToken()
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
 
-   CASE
-      WHEN l_response_code.toUpperCase() == "+OK"
-         LET l_ok = TRUE
-         LET l_number = l_tokenizer.nextToken()
-         LET l_size = l_tokenizer.nextToken()
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
+            LET l_ok = TRUE
+            LET l_number = l_tokenizer.nextToken()
+            LET l_size = l_tokenizer.nextToken()
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
 
-   RETURN l_ok, l_number, l_size
+    RETURN l_ok, l_number, l_size
 
 END FUNCTION
 
@@ -234,70 +344,70 @@ END FUNCTION
 FUNCTION gt_pop3_list(l_sockethdl, l_number)
 
 DEFINE
-   l_sockethdl   STRING,
-   l_number      INTEGER
+    l_sockethdl   STRING,
+    l_number      INTEGER
 
 DEFINE
-   l_ok              SMALLINT,
-   i                 INTEGER,
-   l_data            STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel,
-   l_tokenizer       base.StringTokenizer
+    l_ok              SMALLINT,
+    i                 INTEGER,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
 
-   LET l_ok = FALSE
-   LET l_data = "LIST"
-   CALL m_message_list.clear()
+    LET l_ok = FALSE
+    LET l_data = "LIST"
+    CALL m_message_list.clear()
 
-   IF l_number > 0 THEN
-      LET l_data = l_data, " ", l_number
-   END IF
+    IF l_number > 0 THEN
+        LET l_data = l_data, " ", l_number
+    END IF
 
-   LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
 
-   IF l_socket IS NULL THEN
-      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
-      RETURN FALSE, m_message_list.getLength()
-   END IF
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE, m_message_list.getLength()
+    END IF
 
-   CALL l_socket.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_socket.read(l_data)
-      RETURNING l_ok
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
 
-   LET m_bytesread = m_bytesread + l_data.getLength()
+    LET m_bytesread = m_bytesread + l_data.getLength()
 
-   LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-   LET l_response_code = l_tokenizer.nextToken()
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
 
-   CASE
-      WHEN l_response_code.toUpperCase() == "+OK"
-         LET l_ok = TRUE
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
+            LET l_ok = TRUE
 
-         IF l_number == 0 THEN
-            LET l_number = l_tokenizer.nextToken()
+            IF l_number == 0 THEN
+                LET l_number = l_tokenizer.nextToken()
 
-            FOR i = 1 TO l_number
-               CALL l_socket.read(l_data)
-                  RETURNING l_ok
+                FOR i = 1 TO l_number
+                    CALL l_socket.read(l_data)
+                        RETURNING l_ok
 
-               LET m_bytesread = m_bytesread + l_data.getLength()
+                    LET m_bytesread = m_bytesread + l_data.getLength()
 
-               LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-               LET m_message_list[i].number = l_tokenizer.nextToken()
-               LET m_message_list[i].size = l_tokenizer.nextToken()
-            END FOR
-         ELSE
-            LET m_message_list[1].number = l_tokenizer.nextToken()
-            LET m_message_list[1].size = l_tokenizer.nextToken()
-         END IF
+                    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+                    LET m_message_list[i].number = l_tokenizer.nextToken()
+                    LET m_message_list[i].size = l_tokenizer.nextToken()
+                END FOR
+            ELSE
+                LET m_message_list[1].number = l_tokenizer.nextToken()
+                LET m_message_list[1].size = l_tokenizer.nextToken()
+            END IF
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
 
-   RETURN l_ok, m_message_list.getLength()
+    RETURN l_ok, m_message_list.getLength()
 
 END FUNCTION
 
@@ -313,56 +423,56 @@ END FUNCTION
 FUNCTION gt_pop3_retrieve(l_sockethdl, l_number)
 
 DEFINE
-   l_sockethdl   STRING,
-   l_number      INTEGER
+    l_sockethdl   STRING,
+    l_number      INTEGER
 
 DEFINE
-   l_ok              SMALLINT,
-   l_size            INTEGER,
-   l_data            STRING,
-   l_message         STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel,
-   l_tokenizer       base.StringTokenizer
+    l_ok              SMALLINT,
+    l_size            INTEGER,
+    l_data            STRING,
+    l_message         STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
 
-   LET l_size = 0
-   LET l_message = ""
-   LET l_ok = FALSE
-   LET l_data = "RETR ", l_number
+    LET l_size = 0
+    LET l_message = ""
+    LET l_ok = FALSE
+    LET l_data = "RETR ", l_number
 
-   LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
 
-   IF l_socket IS NULL THEN
-      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
-      RETURN FALSE, l_number, l_size
-   END IF
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE, l_number, l_size
+    END IF
 
-   CALL l_socket.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_socket.read(l_data)
-      RETURNING l_ok
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
 
-   LET m_bytesread = m_bytesread + l_data.getLength()
+    LET m_bytesread = m_bytesread + l_data.getLength()
 
-   LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-   LET l_response_code = l_tokenizer.nextToken()
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
 
-   CASE
-      WHEN l_response_code.toUpperCase() == "+OK"
-         LET l_ok = TRUE
-         LET l_size = l_tokenizer.nextToken()
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
+            LET l_ok = TRUE
+            LET l_size = l_tokenizer.nextToken()
 
-         CALL l_socket.read(l_message)
-            RETURNING l_ok
+            CALL l_socket.read(l_message)
+                RETURNING l_ok
 
-         LET m_bytesread = m_bytesread + l_message.getLength()
+            LET m_bytesread = m_bytesread + l_message.getLength()
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
 
-   RETURN l_ok, l_size, l_message
+    RETURN l_ok, l_size, l_message
 
 END FUNCTION
 
@@ -376,46 +486,111 @@ END FUNCTION
 FUNCTION gt_pop3_delete(l_sockethdl, l_number)
 
 DEFINE
-   l_sockethdl   STRING,
-   l_number      INTEGER
+    l_sockethdl   STRING,
+    l_number      INTEGER
 
 DEFINE
-   l_ok              SMALLINT,
-   l_data            STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel,
-   l_tokenizer       base.StringTokenizer
+    l_ok              SMALLINT,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
 
-   LET l_ok = FALSE
-   LET l_data = "DELE ", l_number
+    LET l_ok = FALSE
+    LET l_data = "DELE ", l_number
 
-   LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
 
-   IF l_socket IS NULL THEN
-      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
-      RETURN FALSE
-   END IF
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE
+    END IF
 
-   CALL l_socket.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_socket.read(l_data)
-      RETURNING l_ok
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
 
-   LET m_bytesread = m_bytesread + l_data.getLength()
+    LET m_bytesread = m_bytesread + l_data.getLength()
 
-   LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-   LET l_response_code = l_tokenizer.nextToken()
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
 
-   CASE
-      WHEN l_response_code.toUpperCase() == "+OK"
-         LET l_ok = TRUE
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
+            LET l_ok = TRUE
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
 
-   RETURN l_ok
+    RETURN l_ok
+
+END FUNCTION
+
+##
+# Function to send the TOP command to the POP3 server which returns the headers
+# and the top n lines of the message to the client.
+#
+# @note The POP3 server is not required to implement this call.
+# @param l_sockethdl The handle to the open socket.
+# @param l_number The number of the message to retrieve.
+# @param l_lines The number of lines of the message to retieve.
+# @return l_ok Returns TRUE if the TOP was successful, FALSE otherwise.
+# @return l_headers The headers for the given message number.
+#
+
+FUNCTION gt_pop3_top(l_sockethdl, l_number, l_lines)
+
+DEFINE
+    l_sockethdl   STRING,
+    l_number      INTEGER,
+    l_lines       INTEGER
+
+DEFINE
+    l_ok              SMALLINT,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
+
+    LET l_ok = FALSE
+    LET l_data = "TOP ", l_number, " ", l_lines
+
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE, ""
+    END IF
+
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
+
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
+
+    LET m_bytesread = m_bytesread + l_data.getLength()
+
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
+
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
+            LET l_ok = TRUE
+            LET l_data = ""
+
+            CALL l_socket.read(l_data)
+                RETURNING l_ok
+
+            LET m_bytesread = m_bytesread + l_data.getLength()
+
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
+
+    RETURN l_ok, l_data
 
 END FUNCTION
 
@@ -429,54 +604,54 @@ END FUNCTION
 FUNCTION gt_pop3_quit(l_sockethdl)
 
 DEFINE
-   l_sockethdl   STRING
+    l_sockethdl   STRING
 
 DEFINE
-   l_ok              SMALLINT,
-   i                 INTEGER,
-   l_data            STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel,
-   l_tokenizer       base.StringTokenizer
+    l_ok              SMALLINT,
+    i                 INTEGER,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
 
-   LET l_ok = FALSE
-   LET l_data = "QUIT"
+    LET l_ok = FALSE
+    LET l_data = "QUIT"
 
-   LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
 
-   IF l_socket IS NULL THEN
-      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
-      RETURN FALSE
-   END IF
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE
+    END IF
 
-   CALL l_socket.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_socket.read(l_data)
-      RETURNING l_ok
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
 
-   LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-   LET l_response_code = l_tokenizer.nextToken()
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
 
-   CASE
-      WHEN l_response_code == "+OK"
-         LET l_ok = TRUE
+    CASE
+        WHEN l_response_code == "+OK"
+            LET l_ok = TRUE
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
 
-   CALL l_socket.close()
+    CALL l_socket.close()
 
-   FOR i = 1 TO m_socket_list.getlength()
-      IF m_socket_list[i].handle = l_sockethdl THEN
-         CALL m_socket_list.deleteelement(i)
-         LET m_socket_count = m_socket_count - 1
-         EXIT FOR
-      END IF
-   END FOR
+    FOR i = 1 TO m_socket_list.getlength()
+        IF m_socket_list[i].handle = l_sockethdl THEN
+            CALL m_socket_list.deleteelement(i)
+            LET m_socket_count = m_socket_count - 1
+            EXIT FOR
+        END IF
+    END FOR
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -490,43 +665,43 @@ END FUNCTION
 FUNCTION gt_pop3_reset(l_sockethdl)
 
 DEFINE
-   l_sockethdl   STRING
+    l_sockethdl   STRING
 
 DEFINE
-   l_ok              SMALLINT,
-   l_data            STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel,
-   l_tokenizer       base.StringTokenizer
+    l_ok              SMALLINT,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
 
-   LET l_ok = FALSE
-   LET l_data = "RSET"
+    LET l_ok = FALSE
+    LET l_data = "RSET"
 
-   LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
 
-   IF l_socket IS NULL THEN
-      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
-      RETURN FALSE
-   END IF
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE
+    END IF
 
-   CALL l_socket.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_socket.read(l_data)
-      RETURNING l_ok
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
 
-   LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-   LET l_response_code = l_tokenizer.nextToken()
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
 
-   CASE
-      WHEN l_response_code == "+OK"
-         LET l_ok = TRUE
+    CASE
+        WHEN l_response_code == "+OK"
+            LET l_ok = TRUE
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -539,43 +714,43 @@ END FUNCTION
 FUNCTION gt_pop3_noop(l_sockethdl)
 
 DEFINE
-   l_sockethdl   STRING
+    l_sockethdl   STRING
 
 DEFINE
-   l_ok              SMALLINT,
-   l_data            STRING,
-   l_response_code   STRING,
-   l_socket          base.Channel,
-   l_tokenizer       base.StringTokenizer
+    l_ok              SMALLINT,
+    l_data            STRING,
+    l_response_code   STRING,
+    l_socket          base.Channel,
+    l_tokenizer       base.StringTokenizer
 
-   LET l_ok = FALSE
-   LET l_data = "NOOP"
+    LET l_ok = FALSE
+    LET l_data = "NOOP"
 
-   LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
 
-   IF l_socket IS NULL THEN
-      CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
-      RETURN FALSE
-   END IF
+    IF l_socket IS NULL THEN
+        CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
+        RETURN FALSE
+    END IF
 
-   CALL l_socket.write(l_data)
-   LET m_byteswritten = m_byteswritten + l_data.getLength()
+    CALL l_socket.write(l_data)
+    LET m_byteswritten = m_byteswritten + l_data.getLength()
 
-   CALL l_socket.read(l_data)
-      RETURNING l_ok
+    CALL l_socket.read(l_data)
+        RETURNING l_ok
 
-   LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
-   LET l_response_code = l_tokenizer.nextToken()
+    LET l_tokenizer = base.StringTokenizer.create(l_data, " ")
+    LET l_response_code = l_tokenizer.nextToken()
 
-   CASE
-      WHEN l_response_code.toUpperCase() == "+OK"
-         LET l_ok = TRUE
+    CASE
+        WHEN l_response_code.toUpperCase() == "+OK"
+            LET l_ok = TRUE
 
-      OTHERWISE
-         LET l_ok = FALSE
-   END CASE
+        OTHERWISE
+            LET l_ok = FALSE
+    END CASE
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -592,22 +767,22 @@ END FUNCTION
 FUNCTION p_gt_find_pop3_client_socket(l_sockethdl)
 
 DEFINE
-   l_sockethdl   STRING
+    l_sockethdl   STRING
 
 DEFINE
-   i          INTEGER,
-   l_socket   base.channel
+    i          INTEGER,
+    l_socket   base.Channel
 
-   LET l_socket = NULL
+    LET l_socket = NULL
 
-   FOR i = 1 TO m_socket_list.getlength()
-      IF m_socket_list[i].handle = l_sockethdl THEN
-         LET l_socket = m_socket_list[i].socket
-         EXIT FOR
-      END IF
-   END FOR
+    FOR i = 1 TO m_socket_list.getlength()
+        IF m_socket_list[i].handle = l_sockethdl THEN
+            LET l_socket = m_socket_list[i].socket
+            EXIT FOR
+        END IF
+    END FOR
 
-   RETURN l_socket
+    RETURN l_socket
 
 END FUNCTION
 

@@ -29,10 +29,10 @@
 FUNCTION libgt_string_test_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -44,132 +44,145 @@ END FUNCTION
 FUNCTION test_string_lib()
 
 DEFINE
-   l_string   STRING
+    l_string   STRING
 
-   LET l_string = ""
+    LET l_string = ""
 
-   CALL gt_ut_log("Testing gt_string_is_empty with empty value...")
+    CALL gt_ut_log("Testing gt_string_is_empty with empty value...")
 
-   IF gt_string_is_empty(l_string) == TRUE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_empty(l_string) == TRUE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   LET l_string = NULL
+    LET l_string = NULL
 
-   CALL gt_ut_log("Testing gt_string_is_empty with NULL value...")
+    CALL gt_ut_log("Testing gt_string_is_empty with NULL value...")
 
-   IF gt_string_is_empty(l_string) == TRUE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_empty(l_string) == TRUE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_is_integer with integer value...")
+    CALL gt_ut_log("Testing gt_string_is_integer with integer value...")
 
-   IF gt_string_is_integer("-0123456789") == TRUE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_integer("-0123456789") == TRUE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_is_integer with non integer value...")
+    CALL gt_ut_log("Testing gt_string_is_integer with non integer value...")
 
-   IF gt_string_is_integer("012345.6789") == FALSE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_integer("012345.6789") == FALSE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_is_alphabetic with alphabetic value...")
+    CALL gt_ut_log("Testing gt_string_is_alphabetic with alphabetic value...")
 
-   IF gt_string_is_alphabetic("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == TRUE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_alphabetic("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == TRUE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_is_alphabetic with non alphabetic value...")
+    CALL gt_ut_log("Testing gt_string_is_alphabetic with non alphabetic value...")
 
-   IF gt_string_is_alphabetic("012345.6789") == FALSE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_alphabetic("012345.6789") == FALSE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_is_alphanumeric with alphanumeric value...")
+    CALL gt_ut_log("Testing gt_string_is_alphanumeric with alphanumeric value...")
 
-   IF gt_string_is_alphanumeric("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == TRUE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_alphanumeric("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == TRUE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_is_alphanumeric with non alphanumeric value...")
+    CALL gt_ut_log("Testing gt_string_is_alphanumeric with non alphanumeric value...")
 
-   IF gt_string_is_alphanumeric("012345.6789") == FALSE THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_is_alphanumeric("012345.6789") == FALSE THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   LET l_string = "These older old bones"
+    LET l_string = "These older old bones"
 
-   CALL gt_ut_log("Testing gt_string_find...")
+    CALL gt_ut_log("Testing gt_string_find...")
 
-   IF gt_string_find(l_string, "old") == 7 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_find(l_string, "old") == 7 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_rfind...")
+    CALL gt_ut_log("Testing gt_string_rfind...")
 
-   IF gt_string_rfind(l_string, "old") == 13 THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_rfind(l_string, "old") == 13 THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_replace with global TRUE...")
+    CALL gt_ut_log("Testing gt_string_replace with global TRUE...")
 
-   IF gt_string_replace(l_string, "old", "new", TRUE) == "These newer new bones" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_replace(l_string, "old", "new", TRUE) == "These newer new bones" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_replace with global FALSE...")
+    CALL gt_ut_log("Testing gt_string_replace with global FALSE...")
 
-   IF gt_string_replace(l_string, "old", "new", FALSE) == "These newer old bones" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_replace(l_string, "old", "new", FALSE) == "These newer old bones" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   CALL gt_ut_log("Testing gt_string_reverse...")
+    CALL gt_ut_log("Testing gt_string_reverse...")
 
-   IF gt_string_reverse("string") == "gnirts" THEN
-      CALL gt_ut_log("Passed")
-   ELSE
-      CALL gt_ut_log("FAILED")
-      RETURN FALSE
-   END IF
+    IF gt_string_reverse("string") == "gnirts" THEN
+        CALL gt_ut_log("Passed")
+    ELSE
+        CALL gt_ut_log("FAILED")
+        CALL gt_ut_log(gt_last_error())
+        RETURN FALSE
+    END IF
 
-   RETURN TRUE
+    RETURN TRUE
 
 END FUNCTION
 

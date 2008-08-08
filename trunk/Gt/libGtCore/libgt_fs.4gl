@@ -25,7 +25,7 @@
 ##
 # File System Interface Library
 #
-# This is mostly just a wrapper around base.channel and the file extension
+# This is mostly just a wrapper around base.Channel and the file extension
 # library though some functions have added functionality.
 #
 # @category System Program
@@ -62,13 +62,13 @@ CONSTANT Gt_IO_ASCII = 0
 CONSTANT Gt_IO_BINARY = 1
 
 DEFINE
-   m_io_count   INTEGER,
+    m_io_count   INTEGER,
 
-   m_io_list   DYNAMIC ARRAY OF RECORD
-      iohdl    STRING,
-      handle   base.channel,
-      buffer   STRING
-   END RECORD
+    m_io_list   DYNAMIC ARRAY OF RECORD
+        iohdl    STRING,
+        handle   base.Channel,
+        buffer   STRING
+    END RECORD
 
 #------------------------------------------------------------------------------#
 # Function to set WHENEVER ANY ERROR for this module                           #
@@ -77,10 +77,10 @@ DEFINE
 FUNCTION libgt_fs_id()
 
 DEFINE
-	l_id   STRING
+    l_id   STRING
 
-	WHENEVER ANY ERROR CALL gt_system_error
-	LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -92,7 +92,7 @@ END FUNCTION
 
 FUNCTION gt_path_separator()
 
-   RETURN os.path.pathseparator()
+    RETURN os.path.pathseparator()
 
 END FUNCTION
 
@@ -105,9 +105,9 @@ END FUNCTION
 FUNCTION gt_exists(l_path)
 
 DEFINE
-   l_path   STRING
+    l_path   STRING
 
-   RETURN os.path.exists(l_path.trim())
+    RETURN os.path.exists(l_path.trim())
 
 END FUNCTION
 
@@ -120,9 +120,9 @@ END FUNCTION
 FUNCTION gt_is_root_path(l_path)
 
 DEFINE
-   l_path   STRING
+    l_path   STRING
 
-   RETURN os.path.isroot(l_path.trim())
+    RETURN os.path.isroot(l_path.trim())
 
 END FUNCTION
 
@@ -133,7 +133,7 @@ END FUNCTION
 
 FUNCTION gt_pwd()
 
-   RETURN os.path.pwd()
+    RETURN os.path.pwd()
 
 END FUNCTION
 
@@ -144,7 +144,7 @@ END FUNCTION
 
 FUNCTION gt_home_directory()
 
-   RETURN os.path.homedir()
+    RETURN os.path.homedir()
 
 END FUNCTION
 
@@ -155,7 +155,7 @@ END FUNCTION
 
 FUNCTION gt_root_directory()
 
-   RETURN os.path.rootdir()
+    RETURN os.path.rootdir()
 
 END FUNCTION
 
@@ -166,7 +166,7 @@ END FUNCTION
 
 FUNCTION gt_volumes()
 
-   RETURN os.path.volumes()
+    RETURN os.path.volumes()
 
 END FUNCTION
 
@@ -179,9 +179,9 @@ END FUNCTION
 FUNCTION gt_change_volume()
 
 DEFINE
-   l_volume   STRING
+    l_volume   STRING
 
-   RETURN os.path.chvolume(l_volume.trim())
+    RETURN os.path.chvolume(l_volume.trim())
 
 END FUNCTION
 
@@ -194,9 +194,9 @@ END FUNCTION
 FUNCTION gt_change_directory(l_directory)
 
 DEFINE
-   l_directory   STRING
+    l_directory   STRING
 
-   RETURN os.path.chdir(l_directory.trim())
+    RETURN os.path.chdir(l_directory.trim())
 
 END FUNCTION
 
@@ -207,7 +207,7 @@ END FUNCTION
 
 FUNCTION gt_filesystem_separator()
 
-   RETURN os.path.separator()
+    RETURN os.path.separator()
 
 END FUNCTION
 
@@ -220,9 +220,9 @@ END FUNCTION
 FUNCTION gt_dirname(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.dirname(l_filename.trim())
+    RETURN os.path.dirname(l_filename.trim())
 
 END FUNCTION
 
@@ -235,9 +235,9 @@ END FUNCTION
 FUNCTION gt_pathtype(l_path)
 
 DEFINE
-   l_path   STRING
+    l_path   STRING
 
-   RETURN os.path.pathtype(l_path.trim())
+    RETURN os.path.pathtype(l_path.trim())
 
 END FUNCTION
 
@@ -250,9 +250,9 @@ END FUNCTION
 FUNCTION gt_basename(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.basename(l_filename.trim())
+    RETURN os.path.basename(l_filename.trim())
 
 END FUNCTION
 
@@ -265,9 +265,9 @@ END FUNCTION
 FUNCTION gt_rootname(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.rootname(l_filename.trim())
+    RETURN os.path.rootname(l_filename.trim())
 
 END FUNCTION
 
@@ -282,10 +282,10 @@ END FUNCTION
 FUNCTION gt_fs_join(l_first, l_second)
 
 DEFINE
-   l_first    STRING,
-   l_second   STRING
+    l_first    STRING,
+    l_second   STRING
 
-   RETURN os.path.join(l_first.trim(), l_second.trim())
+    RETURN os.path.join(l_first.trim(), l_second.trim())
 
 END FUNCTION
 
@@ -298,9 +298,9 @@ END FUNCTION
 FUNCTION gt_is_file(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.isfile(l_filename.trim())
+    RETURN os.path.isfile(l_filename.trim())
 
 END FUNCTION
 
@@ -314,9 +314,9 @@ END FUNCTION
 FUNCTION gt_is_directory(l_directory)
 
 DEFINE
-   l_directory   STRING
+    l_directory   STRING
 
-   RETURN os.path.isdirectory(l_directory.trim())
+    RETURN os.path.isdirectory(l_directory.trim())
 
 END FUNCTION
 
@@ -329,9 +329,9 @@ END FUNCTION
 FUNCTION gt_is_hidden(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.ishidden(l_filename.trim())
+    RETURN os.path.ishidden(l_filename.trim())
 
 END FUNCTION
 
@@ -345,9 +345,9 @@ END FUNCTION
 FUNCTION gt_is_link(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.islink(l_filename.trim())
+    RETURN os.path.islink(l_filename.trim())
 
 END FUNCTION
 
@@ -360,9 +360,9 @@ END FUNCTION
 FUNCTION gt_is_readable(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.readable(l_filename.trim())
+    RETURN os.path.readable(l_filename.trim())
 
 END FUNCTION
 
@@ -375,9 +375,9 @@ END FUNCTION
 FUNCTION gt_is_writable(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.writable(l_filename.trim())
+    RETURN os.path.writable(l_filename.trim())
 
 END FUNCTION
 
@@ -390,9 +390,9 @@ END FUNCTION
 FUNCTION gt_is_executable(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.executable(l_filename.trim())
+    RETURN os.path.executable(l_filename.trim())
 
 END FUNCTION
 
@@ -406,9 +406,9 @@ END FUNCTION
 FUNCTION gt_uid(l_user)
 
 DEFINE
-   l_user   STRING
+    l_user   STRING
 
-   RETURN os.path.uid(l_user.trim())
+    RETURN os.path.uid(l_user.trim())
 
 END FUNCTION
 
@@ -422,9 +422,9 @@ END FUNCTION
 FUNCTION gt_gid(l_group)
 
 DEFINE
-   l_group   STRING
+    l_group   STRING
 
-   RETURN os.path.gid(l_group.trim())
+    RETURN os.path.gid(l_group.trim())
 
 END FUNCTION
 
@@ -438,26 +438,26 @@ END FUNCTION
 FUNCTION gt_rwx(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
 DEFINE
-   l_tmp     INTEGER,
-   l_value   INTEGER,
-   l_mode    STRING
+    l_tmp      INTEGER,
+    l_value      INTEGER,
+    l_mode      STRING
 
-   LET l_value = os.path.rwx(l_filename.trim())
+    LET l_value = os.path.rwx(l_filename.trim())
 
-   LET l_tmp = l_value / 64
-   LET l_mode = l_tmp
-   LET l_value = l_value - (l_tmp * 64)
+    LET l_tmp = l_value / 64
+    LET l_mode = l_tmp
+    LET l_value = l_value - (l_tmp * 64)
 
-   LET l_tmp = l_value / 8
-   LET l_mode = l_mode, l_tmp
-   LET l_value = l_value - (l_tmp * 8)
+    LET l_tmp = l_value / 8
+    LET l_mode = l_mode, l_tmp
+    LET l_value = l_value - (l_tmp * 8)
 
-   LET l_mode = l_mode, l_value
+    LET l_mode = l_mode, l_value
 
-   RETURN l_mode
+    RETURN l_mode
 
 END FUNCTION
 
@@ -470,31 +470,31 @@ END FUNCTION
 FUNCTION gt_chmod(l_filename, l_mode)
 
 DEFINE
-   l_filename   STRING,
-   l_mode       STRING
+    l_filename   STRING,
+    l_mode       STRING
 
 DEFINE
-   l_value   INTEGER
+    l_value   INTEGER
 
-   #---------------------------------------------------------------------------#
-   # Allow modes to be entered as either 666 or 0666                           #
-   #---------------------------------------------------------------------------#
+    #--------------------------------------------------------------------------#
+    # Allow modes to be entered as either 666 or 0666                          #
+    #--------------------------------------------------------------------------#
 
-   IF l_mode.getlength() == 3
-   OR l_mode.getlength() == 4 THEN
-      IF l_mode.getlength() == 4 THEN
-         LET l_mode = l_mode.substring(2, 3)
-      END IF
+    IF l_mode.getlength() == 3
+    OR l_mode.getlength() == 4 THEN
+        IF l_mode.getlength() == 4 THEN
+            LET l_mode = l_mode.substring(2, 3)
+        END IF
 
-      LET l_value = ((l_mode.getcharat(1) * 64) +
-                     (l_mode.getcharat(2) * 8) +
-                     (l_mode.getcharat(3)))
-   ELSE
-      CALL gt_set_error("ERROR", SFMT(%"The mode value %1 given to gt_chmod is invalid", l_mode))
-      RETURN FALSE
-   END IF
+        LET l_value = ((l_mode.getcharat(1) * 64) +
+                       (l_mode.getcharat(2) * 8) +
+                       (l_mode.getcharat(3)))
+    ELSE
+        CALL gt_set_error("ERROR", SFMT(%"The mode value %1 given to gt_chmod is invalid", l_mode))
+        RETURN FALSE
+    END IF
 
-   RETURN os.path.chrwx(l_filename, l_value)
+    RETURN os.path.chrwx(l_filename, l_value)
 
 END FUNCTION
 
@@ -508,18 +508,18 @@ END FUNCTION
 FUNCTION gt_chown(l_filename, l_user, l_group)
 
 DEFINE
-   l_filename   STRING,
-   l_user       STRING,
-   l_group      STRING
+    l_filename   STRING,
+    l_user       STRING,
+    l_group      STRING
 
 DEFINE
-   l_uid        INTEGER,
-   l_gid        INTEGER
+    l_uid   INTEGER,
+    l_gid   INTEGER
 
-   LET l_uid = gt_uid(l_user)
-   LET l_gid = gt_gid(l_group)
+    LET l_uid = gt_uid(l_user)
+    LET l_gid = gt_gid(l_group)
 
-   RETURN os.path.chown(l_filename, l_uid, l_gid)
+    RETURN os.path.chown(l_filename, l_uid, l_gid)
 
 END FUNCTION
 
@@ -532,9 +532,9 @@ END FUNCTION
 FUNCTION gt_file_exists(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.isfile(l_filename.trim())
+    RETURN os.path.isfile(l_filename.trim())
 
 END FUNCTION
 
@@ -547,9 +547,9 @@ END FUNCTION
 FUNCTION gt_file_extension(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.extension(l_filename.trim())
+    RETURN os.path.extension(l_filename.trim())
 
 END FUNCTION
 
@@ -565,9 +565,9 @@ END FUNCTION
 FUNCTION gt_file_type(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.type(l_filename.trim())
+    RETURN os.path.type(l_filename.trim())
 
 END FUNCTION
 
@@ -575,19 +575,19 @@ END FUNCTION
 # This function tries to guess the file content based on contents of the file.
 # @param l_filename The file to guess the contents of.
 # @return l_extension The extension of the file contents. If the contents are
-#                     cannot be determined NULL is returned.
+#                      cannot be determined NULL is returned.
 #
 
 # TODO Implement gt_guess_file_content
 FUNCTION gt_guess_file_content(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
 DEFINE
-   l_type      STRING
+    l_type   STRING
 
-   RETURN l_type
+    RETURN l_type
 
 END FUNCTION
 
@@ -600,9 +600,9 @@ END FUNCTION
 FUNCTION gt_file_size(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.size(l_filename.trim())
+    RETURN os.path.size(l_filename.trim())
 
 END FUNCTION
 
@@ -615,9 +615,9 @@ END FUNCTION
 FUNCTION gt_file_access_time(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.atime(l_filename.trim())
+    RETURN os.path.atime(l_filename.trim())
 
 END FUNCTION
 
@@ -630,9 +630,9 @@ END FUNCTION
 FUNCTION gt_file_modification_time(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename   STRING
 
-   RETURN os.path.mtime(l_filename.trim())
+    RETURN os.path.mtime(l_filename.trim())
 
 END FUNCTION
 
@@ -649,27 +649,27 @@ END FUNCTION
 FUNCTION gt_copy(l_source, l_destination, l_overwrite)
 
 DEFINE
-   l_source        STRING,
-   l_destination   STRING,
-   l_overwrite     SMALLINT
+    l_source        STRING,
+    l_destination   STRING,
+    l_overwrite     SMALLINT
 
 DEFINE
-   l_ok   SMALLINT
+    l_ok   SMALLINT
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   IF l_overwrite THEN
-      LET l_ok = os.path.copy(l_source.trim(), l_destination.trim())
-   ELSE
-      IF gt_file_exists(l_destination.trim()) THEN
-         CALL gt_set_warning("WARNING", SFMT(%"Warning: Copying of %1 to %2 denied because %3 already exists", l_source, l_destination, l_destination))
-         LET l_ok = FALSE
-      ELSE
-         LET l_ok = os.path.copy(l_source.trim(), l_destination.trim())
-      END IF
-   END IF
+    IF l_overwrite THEN
+        LET l_ok = os.path.copy(l_source.trim(), l_destination.trim())
+    ELSE
+        IF gt_file_exists(l_destination.trim()) THEN
+            CALL gt_set_warning("WARNING", SFMT(%"Warning: Copying of %1 to %2 denied because %3 already exists", l_source, l_destination, l_destination))
+            LET l_ok = FALSE
+        ELSE
+            LET l_ok = os.path.copy(l_source.trim(), l_destination.trim())
+        END IF
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -686,25 +686,25 @@ END FUNCTION
 FUNCTION gt_rename(l_old_name, l_new_name, l_overwrite)
 
 DEFINE
-   l_old_name    STRING,
-   l_new_name    STRING,
-   l_overwrite   STRING
+    l_old_name    STRING,
+    l_new_name    STRING,
+    l_overwrite   STRING
 
 DEFINE
-   l_ok   SMALLINT
+    l_ok   SMALLINT
 
-   IF l_overwrite THEN
-      LET l_ok = os.path.rename(l_old_name.trim(), l_new_name.trim())
+    IF l_overwrite THEN
+        LET l_ok = os.path.rename(l_old_name.trim(), l_new_name.trim())
   ELSE
-      IF gt_exists(l_new_name) THEN
-         CALL gt_set_warning("WARNING", SFMT(%"Warning: Path rename of %1 to %2 failed because %3 already exists", l_old_name, l_new_name, l_new_name))
-         LET l_ok = FALSE
-      ELSE
-         LET l_ok = os.path.rename(l_old_name.trim(), l_new_name.trim())
-      END IF
-   END IF
+        IF gt_exists(l_new_name) THEN
+            CALL gt_set_warning("WARNING", SFMT(%"Warning: Path rename of %1 to %2 failed because %3 already exists", l_old_name, l_new_name, l_new_name))
+            LET l_ok = FALSE
+        ELSE
+            LET l_ok = os.path.rename(l_old_name.trim(), l_new_name.trim())
+        END IF
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -718,9 +718,9 @@ END FUNCTION
 FUNCTION gt_delete(l_filename)
 
 DEFINE
-   l_filename    STRING
+    l_filename   STRING
 
-   RETURN os.path.delete(l_filename.trim())
+    RETURN os.path.delete(l_filename.trim())
 
 END FUNCTION
 
@@ -733,10 +733,10 @@ END FUNCTION
 FUNCTION gt_set_delimiter(l_handle, l_delimiter)
 
 DEFINE
-   l_handle      base.channel,
-   l_delimiter   STRING
+    l_handle      base.Channel,
+    l_delimiter   STRING
 
-   CALL l_handle.setdelimiter(l_delimiter)
+    CALL l_handle.setdelimiter(l_delimiter)
 
 END FUNCTION
 
@@ -749,25 +749,25 @@ END FUNCTION
 FUNCTION gt_io_buffer(l_iohdl)
 
 DEFINE
-   l_iohdl   STRING
+    l_iohdl   STRING
 
 DEFINE
-   l_pos      INTEGER,
-   l_buffer   STRING,
-   l_io       base.channel
+    l_pos      INTEGER,
+    l_buffer   STRING,
+    l_io       base.Channel
 
-   LET l_buffer = NULL
+    LET l_buffer = NULL
 
-   CALL p_gt_find_io(l_iohdl)
-      RETURNING l_pos, l_io
+    CALL p_gt_find_io(l_iohdl)
+        RETURNING l_pos, l_io
 
-   IF l_io IS NOT NULL THEN
-      LET l_buffer = m_io_list[l_pos].buffer
-   ELSE
-      CALL gt_set_error("ERROR", SFMT(%"The given iohdl %1 is invalid", l_iohdl))
-   END IF
+    IF l_io IS NOT NULL THEN
+        LET l_buffer = m_io_list[l_pos].buffer
+    ELSE
+        CALL gt_set_error("ERROR", SFMT(%"The given iohdl %1 is invalid", l_iohdl))
+    END IF
 
-   RETURN l_buffer
+    RETURN l_buffer
 
 END FUNCTION
 
@@ -784,43 +784,43 @@ END FUNCTION
 FUNCTION gt_file_open(l_filename, l_mode, l_delimiter)
 
 DEFINE
-   l_filename    STRING,
-   l_mode        STRING,
-   l_delimiter   STRING
+    l_filename    STRING,
+    l_mode        STRING,
+    l_delimiter   STRING
 
 DEFINE
-   l_ok        SMALLINT,
-   l_status    INTEGER,
-   l_filehdl   STRING,
-   l_file      base.channel
+    l_ok        SMALLINT,
+    l_status    INTEGER,
+    l_filehdl   STRING,
+    l_file      base.Channel
 
-   LET l_ok = FALSE
-   LET l_file = base.channel.create()
+    LET l_ok = FALSE
+    LET l_file = base.Channel.create()
 
-   IF l_file IS NOT NULL THEN
-      LET m_io_count = m_io_count + 1
-      LET l_filehdl = gt_next_serial("FILE")
-      LET m_io_list[m_io_count].iohdl = l_filehdl
-      LET m_io_list[m_io_count].handle = l_file
-      LET m_io_list[m_io_count].buffer = NULL
+    IF l_file IS NOT NULL THEN
+        LET m_io_count = m_io_count + 1
+        LET l_filehdl = gt_next_serial("FILE")
+        LET m_io_list[m_io_count].iohdl = l_filehdl
+        LET m_io_list[m_io_count].handle = l_file
+        LET m_io_list[m_io_count].buffer = NULL
 
-      CALL l_file.setdelimiter(l_delimiter)
+        CALL l_file.setdelimiter(l_delimiter)
 
-      CALL l_file.openFile(l_filename, l_mode)
+        CALL l_file.openFile(l_filename, l_mode)
 
-      LET l_status = STATUS
+        LET l_status = STATUS
 
-      CASE
-         WHEN l_status == 0
-            LET l_ok = TRUE
+        CASE
+            WHEN l_status == 0
+                LET l_ok = TRUE
 
-         OTHERWISE
-            LET l_ok = FALSE
-            CALL gt_set_error("ERROR", SFMT(%"The attempt to open the file %1 resulted in an unknown status being returned", l_filename, l_status))
-      END CASE
-   END IF
+            OTHERWISE
+                LET l_ok = FALSE
+                CALL gt_set_error("ERROR", SFMT(%"The attempt to open the file %1 resulted in an unknown status being returned", l_filename, l_status))
+        END CASE
+    END IF
 
-   RETURN l_ok, l_filehdl
+    RETURN l_ok, l_filehdl
 
 END FUNCTION
 
@@ -833,38 +833,38 @@ END FUNCTION
 FUNCTION gt_file_read(l_filehdl)
 
 DEFINE
-   l_filehdl   STRING
+    l_filehdl   STRING
 
 DEFINE
-   l_ok       SMALLINT,
-   l_pos      INTEGER,
-   l_status   INTEGER,
-   l_buffer   STRING,
-   l_file     base.channel
+    l_ok       SMALLINT,
+    l_pos      INTEGER,
+    l_status   INTEGER,
+    l_buffer   STRING,
+    l_file     base.Channel
 
-   LET l_ok = FALSE
-   CALL p_gt_find_io(l_filehdl)
-      RETURNING l_pos, l_file
+    LET l_ok = FALSE
+    CALL p_gt_find_io(l_filehdl)
+        RETURNING l_pos, l_file
 
-   IF l_file IS NOT NULL THEN
-      LET l_ok = l_file.read(l_buffer)
-      LET l_status = STATUS
+    IF l_file IS NOT NULL THEN
+        LET l_ok = l_file.read(l_buffer)
+        LET l_status = STATUS
 
-      IF l_ok THEN
-         LET m_io_list[l_pos].buffer = l_buffer
-      ELSE
-         CASE
-            WHEN l_status == 0
+        IF l_ok THEN
+            LET m_io_list[l_pos].buffer = l_buffer
+        ELSE
+            CASE
+                WHEN l_status == 0
 
-            OTHERWISE
-         END CASE
-      END IF
-   ELSE
-      CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_filehdl))
-      LET l_ok = FALSE
-   END IF
+                OTHERWISE
+            END CASE
+        END IF
+    ELSE
+        CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_filehdl))
+        LET l_ok = FALSE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -877,45 +877,45 @@ END FUNCTION
 FUNCTION gt_file_write(l_filehdl, l_buffer)
 
 DEFINE
-   l_filehdl   STRING,
-   l_buffer    STRING
+    l_filehdl   STRING,
+    l_buffer    STRING
 
 DEFINE
-   l_ok       SMALLINT,
-   l_pos      INTEGER,
-   l_mode     INTEGER,
-   l_status   INTEGER,
-   l_file     base.channel
+    l_ok       SMALLINT,
+    l_pos      INTEGER,
+    l_mode     INTEGER,
+    l_status   INTEGER,
+    l_file     base.Channel
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   CALL p_gt_find_io(l_filehdl)
-      RETURNING l_pos, l_file
+    CALL p_gt_find_io(l_filehdl)
+        RETURNING l_pos, l_file
 
-   IF l_file IS NOT NULL THEN
-      #LET l_mode = m_io_list[l_pos].mode
+    IF l_file IS NOT NULL THEN
+        #LET l_mode = m_io_list[l_pos].mode
 
-      CASE
-         WHEN l_mode == Gt_IO_ASCII
-            CALL l_file.writeline(l_buffer)
+        CASE
+            WHEN l_mode == Gt_IO_ASCII
+                CALL l_file.writeline(l_buffer)
 
-         WHEN l_mode == Gt_IO_BINARY
-            CALL l_file.write(l_buffer)
+            WHEN l_mode == Gt_IO_BINARY
+                CALL l_file.write(l_buffer)
 
-         OTHERWISE
-            CALL l_file.write(l_buffer)
-      END CASE
+            OTHERWISE
+                CALL l_file.write(l_buffer)
+        END CASE
 
-      LET l_status = STATUS
+        LET l_status = STATUS
 
-      CASE
-         WHEN l_status == 0
-         OTHERWISE
-      END CASE
-   ELSE
-   END IF
+        CASE
+            WHEN l_status == 0
+            OTHERWISE
+        END CASE
+    ELSE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -927,21 +927,21 @@ END FUNCTION
 FUNCTION gt_file_close(l_filehdl)
 
 DEFINE
-   l_filehdl   STRING
+    l_filehdl   STRING
 
 DEFINE
-   l_pos    INTEGER,
-   l_file   base.channel
+    l_pos    INTEGER,
+    l_file   base.Channel
 
-   CALL p_gt_find_io(l_filehdl)
-      RETURNING l_pos, l_file
+    CALL p_gt_find_io(l_filehdl)
+        RETURNING l_pos, l_file
 
-   IF l_file IS NOT NULL THEN
-      CALL l_file.close()
-      CALL m_io_list.deleteelement(l_pos)
-   ELSE
-      CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_filehdl))
-   END IF
+    IF l_file IS NOT NULL THEN
+        CALL l_file.close()
+        CALL m_io_list.deleteelement(l_pos)
+    ELSE
+        CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_filehdl))
+    END IF
 
 END FUNCTION
 
@@ -957,43 +957,43 @@ END FUNCTION
 FUNCTION gt_pipe_open(l_command, l_mode, l_delimiter)
 
 DEFINE
-   l_command     STRING,
-   l_mode        STRING,
-   l_delimiter   STRING
+    l_command     STRING,
+    l_mode        STRING,
+    l_delimiter   STRING
 
 DEFINE
-   l_ok        SMALLINT,
-   l_status    INTEGER,
-   l_pipehdl   STRING,
-   l_pipe      base.channel
+    l_ok        SMALLINT,
+    l_status    INTEGER,
+    l_pipehdl   STRING,
+    l_pipe      base.Channel
 
-   LET l_ok = FALSE
-   LET l_pipe = base.channel.create()
+    LET l_ok = FALSE
+    LET l_pipe = base.Channel.create()
 
-   IF l_pipe IS NOT NULL THEN
-      LET m_io_count = m_io_count + 1
-      LET l_pipehdl = gt_next_serial("PIPE")
-      LET m_io_list[m_io_count].iohdl = l_pipehdl
-      LET m_io_list[m_io_count].handle = l_pipe
-      LET m_io_list[m_io_count].buffer = NULL
+    IF l_pipe IS NOT NULL THEN
+        LET m_io_count = m_io_count + 1
+        LET l_pipehdl = gt_next_serial("PIPE")
+        LET m_io_list[m_io_count].iohdl = l_pipehdl
+        LET m_io_list[m_io_count].handle = l_pipe
+        LET m_io_list[m_io_count].buffer = NULL
 
-      CALL l_pipe.setdelimiter(l_delimiter)
+        CALL l_pipe.setdelimiter(l_delimiter)
 
-      CALL l_pipe.openpipe(l_command, l_mode)
+        CALL l_pipe.openpipe(l_command, l_mode)
 
-      LET l_status = STATUS
+        LET l_status = STATUS
 
-      CASE
-         WHEN l_status == 0
-            LET l_ok = TRUE
+        CASE
+            WHEN l_status == 0
+                LET l_ok = TRUE
 
-         OTHERWISE
-            LET l_ok = FALSE
-            CALL gt_set_error("ERROR", SFMT(%"The attempt to open the pipe with command %1 resulted in an unknown status %2 being returned", l_command, l_status))
-      END CASE
-   END IF
+            OTHERWISE
+                LET l_ok = FALSE
+                CALL gt_set_error("ERROR", SFMT(%"The attempt to open the pipe with command %1 resulted in an unknown status %2 being returned", l_command, l_status))
+        END CASE
+    END IF
 
-   RETURN l_ok, l_pipehdl
+    RETURN l_ok, l_pipehdl
 
 END FUNCTION
 
@@ -1006,28 +1006,28 @@ END FUNCTION
 FUNCTION gt_pipe_read(l_pipehdl)
 
 DEFINE
-   l_pipehdl   STRING
+    l_pipehdl   STRING
 
 DEFINE
-   l_ok       SMALLINT,
-   l_pos      INTEGER,
-   l_buffer   STRING,
-   l_pipe     base.channel
+    l_ok       SMALLINT,
+    l_pos      INTEGER,
+    l_buffer   STRING,
+    l_pipe     base.Channel
 
-   LET l_ok = FALSE
-   CALL p_gt_find_io(l_pipehdl)
-      RETURNING l_pos, l_pipe
+    LET l_ok = FALSE
+    CALL p_gt_find_io(l_pipehdl)
+        RETURNING l_pos, l_pipe
 
-   IF l_pipe IS NOT NULL THEN
-      IF l_pipe.read(l_buffer) THEN
-         LET m_io_list[l_pos].buffer = l_buffer
-      END IF
-   ELSE
-      CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_pipehdl))
-      LET l_ok = FALSE
-   END IF
+    IF l_pipe IS NOT NULL THEN
+        IF l_pipe.read(l_buffer) THEN
+            LET m_io_list[l_pos].buffer = l_buffer
+        END IF
+    ELSE
+        CALL gt_set_error("ERROR", SFMT(%"The given filehdl %1 is invalid", l_pipehdl))
+        LET l_ok = FALSE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -1040,45 +1040,45 @@ END FUNCTION
 FUNCTION gt_pipe_write(l_pipehdl, l_buffer)
 
 DEFINE
-   l_pipehdl   STRING,
-   l_buffer    STRING
+    l_pipehdl   STRING,
+    l_buffer    STRING
 
 DEFINE
-   l_ok       SMALLINT,
-   l_pos      INTEGER,
-   l_mode     INTEGER,
-   l_status   INTEGER,
-   l_pipe     base.channel
+    l_ok       SMALLINT,
+    l_pos      INTEGER,
+    l_mode     INTEGER,
+    l_status   INTEGER,
+    l_pipe     base.Channel
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   CALL p_gt_find_io(l_pipehdl)
-      RETURNING l_pos, l_pipe
+    CALL p_gt_find_io(l_pipehdl)
+        RETURNING l_pos, l_pipe
 
-   IF l_pipe IS NOT NULL THEN
-      #LET l_mode = m_io_list[l_pos].mode
+    IF l_pipe IS NOT NULL THEN
+        #LET l_mode = m_io_list[l_pos].mode
 
-      CASE
-         WHEN l_mode == Gt_IO_ASCII
-            CALL l_pipe.writeline(l_buffer)
+        CASE
+            WHEN l_mode == Gt_IO_ASCII
+                CALL l_pipe.writeline(l_buffer)
 
-         WHEN l_mode == Gt_IO_BINARY
-            CALL l_pipe.write(l_buffer)
+            WHEN l_mode == Gt_IO_BINARY
+                CALL l_pipe.write(l_buffer)
 
-         OTHERWISE
-            CALL l_pipe.write(l_buffer)
-      END CASE
+            OTHERWISE
+                CALL l_pipe.write(l_buffer)
+        END CASE
 
-      LET l_status = STATUS
+        LET l_status = STATUS
 
-      CASE
-         WHEN l_status == 0
-         OTHERWISE
-      END CASE
-   ELSE
-   END IF
+        CASE
+            WHEN l_status == 0
+            OTHERWISE
+        END CASE
+    ELSE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 
@@ -1090,21 +1090,21 @@ END FUNCTION
 FUNCTION gt_pipe_close(l_pipehdl)
 
 DEFINE
-   l_pipehdl   STRING
+    l_pipehdl   STRING
 
 DEFINE
-   l_pos    INTEGER,
-   l_pipe   base.channel
+    l_pos    INTEGER,
+    l_pipe   base.Channel
 
-   CALL p_gt_find_io(l_pipehdl)
-      RETURNING l_pos, l_pipe
+    CALL p_gt_find_io(l_pipehdl)
+        RETURNING l_pos, l_pipe
 
-   IF l_pipe IS NOT NULL THEN
-      CALL l_pipe.close()
-      CALL m_io_list.deleteelement(l_pos)
-   ELSE
-      CALL gt_set_error("ERROR", SFMT(%"The given pipehdl %1 is invalid", l_pipehdl))
-   END IF
+    IF l_pipe IS NOT NULL THEN
+        CALL l_pipe.close()
+        CALL m_io_list.deleteelement(l_pos)
+    ELSE
+        CALL gt_set_error("ERROR", SFMT(%"The given pipehdl %1 is invalid", l_pipehdl))
+    END IF
 
 END FUNCTION
 
@@ -1117,9 +1117,9 @@ END FUNCTION
 FUNCTION gt_directory_exists()
 
 DEFINE
-   l_directory   STRING
+    l_directory   STRING
 
-   RETURN os.path.isdirectory(l_directory.trim())
+    RETURN os.path.isdirectory(l_directory.trim())
 
 END FUNCTION
 
@@ -1132,55 +1132,55 @@ END FUNCTION
 FUNCTION gt_mkdir(l_directory, l_recursive)
 
 DEFINE
-   l_directory   STRING,
-   l_recursive   SMALLINT
+    l_directory   STRING,
+    l_recursive   SMALLINT
 
 DEFINE
-   l_ok          SMALLINT,
-   l_path        STRING,
-   l_tokenizer   base.stringtokenizer
+    l_ok          SMALLINT,
+    l_path        STRING,
+    l_tokenizer   base.stringtokenizer
 
-   LET l_ok = FALSE
-   LET l_directory = l_directory.trim()
+    LET l_ok = FALSE
+    LET l_directory = l_directory.trim()
 
-   IF l_recursive THEN
-      LET l_path = NULL
-      LET l_tokenizer = base.stringtokenizer.create(l_directory, gt_filesystem_separator())
+    IF l_recursive THEN
+        LET l_path = NULL
+        LET l_tokenizer = base.stringtokenizer.create(l_directory, gt_filesystem_separator())
 
-      WHILE l_tokenizer.hasmoretokens()
-         IF l_path IS NULL THEN
-            LET l_path = l_tokenizer.nexttoken()
-         ELSE
-            LET l_path = l_path, gt_filesystem_separator(), l_tokenizer.nexttoken()
-         END IF
-
-         IF gt_is_directory(l_path) THEN
-            LET l_ok = TRUE
-         ELSE
-            IF gt_mkdir(l_path, FALSE) == TRUE THEN
-               LET l_ok = TRUE
+        WHILE l_tokenizer.hasmoretokens()
+            IF l_path IS NULL THEN
+                LET l_path = l_tokenizer.nexttoken()
             ELSE
-               LET l_ok = FALSE
-               CALL gt_set_error("ERROR", SFMT(%"Unable to create directory %1", l_path))
-               EXIT WHILE
+                LET l_path = l_path, gt_filesystem_separator(), l_tokenizer.nexttoken()
             END IF
-         END IF
-      END WHILE
-   ELSE
-      LET l_path = gt_dirname(l_directory)
 
-      IF gt_is_directory(l_path) THEN
-         IF gt_is_directory(l_directory) THEN
-            LET l_ok = TRUE
-         ELSE
-            LET l_ok = os.path.mkdir(l_directory)
-         END IF
-      ELSE
-         LET l_ok = FALSE
-      END IF
-   END IF
+            IF gt_is_directory(l_path) THEN
+                LET l_ok = TRUE
+            ELSE
+                IF gt_mkdir(l_path, FALSE) == TRUE THEN
+                    LET l_ok = TRUE
+                ELSE
+                    LET l_ok = FALSE
+                    CALL gt_set_error("ERROR", SFMT(%"Unable to create directory %1", l_path))
+                    EXIT WHILE
+                END IF
+            END IF
+        END WHILE
+    ELSE
+        LET l_path = gt_dirname(l_directory)
 
-   RETURN l_ok
+        IF gt_is_directory(l_path) THEN
+            IF gt_is_directory(l_directory) THEN
+                LET l_ok = TRUE
+            ELSE
+                LET l_ok = os.path.mkdir(l_directory)
+            END IF
+        ELSE
+            LET l_ok = FALSE
+        END IF
+    END IF
+
+    RETURN l_ok
 
 END FUNCTION
 
@@ -1193,68 +1193,68 @@ END FUNCTION
 FUNCTION gt_rmdir(l_directory, l_recursive)
 
 DEFINE
-   l_directory   STRING,
-   l_recursive   SMALLINT
+    l_directory   STRING,
+    l_recursive   SMALLINT
 
 DEFINE
-   l_ok          SMALLINT,
-   l_path        STRING,
-   l_dirhdl      STRING
+    l_ok       SMALLINT,
+    l_path     STRING,
+    l_dirhdl   STRING
 
-   LET l_ok = FALSE
-   LET l_dirhdl = NULL
-   LET l_directory = l_directory.trim()
+    LET l_ok = FALSE
+    LET l_dirhdl = NULL
+    LET l_directory = l_directory.trim()
 
-   IF l_recursive THEN
-      CALL gt_set_directory_filter(13)
+    IF l_recursive THEN
+        CALL gt_set_directory_filter(13)
 
-      LET l_dirhdl = gt_directory_open(l_directory)
+        LET l_dirhdl = gt_directory_open(l_directory)
 
-      IF l_dirhdl IS NOT NULL THEN
-         CALL gt_set_directory_sorting("name", 1)
-         LET l_path = gt_directory_next(l_dirhdl)
-
-         WHILE l_path IS NOT NULL
-            LET l_path = l_directory, gt_filesystem_separator(), l_path
-
-            IF NOT gt_rmdir(l_path, TRUE) THEN
-               RETURN FALSE
-            END IF
-
+        IF l_dirhdl IS NOT NULL THEN
+            CALL gt_set_directory_sorting("name", 1)
             LET l_path = gt_directory_next(l_dirhdl)
-         END WHILE
 
-         CALL gt_directory_close(l_dirhdl)
-      ELSE
-         RETURN FALSE
-      END IF
+            WHILE l_path IS NOT NULL
+                LET l_path = l_directory, gt_filesystem_separator(), l_path
 
-      CALL gt_set_directory_filter(2)
+                IF NOT gt_rmdir(l_path, TRUE) THEN
+                    RETURN FALSE
+                END IF
 
-      LET l_dirhdl = gt_directory_open(l_directory)
+                LET l_path = gt_directory_next(l_dirhdl)
+            END WHILE
 
-      IF l_dirhdl IS NOT NULL THEN
-         LET l_path = gt_directory_next(l_dirhdl)
+            CALL gt_directory_close(l_dirhdl)
+        ELSE
+            RETURN FALSE
+        END IF
 
-         WHILE l_path IS NOT NULL
-            IF NOT gt_delete(l_path) THEN
-               RETURN FALSE
-            END IF
+        CALL gt_set_directory_filter(2)
 
+        LET l_dirhdl = gt_directory_open(l_directory)
+
+        IF l_dirhdl IS NOT NULL THEN
             LET l_path = gt_directory_next(l_dirhdl)
-         END WHILE
 
-         LET l_ok = gt_rmdir(l_directory, FALSE)
-      ELSE
-         RETURN FALSE
-      END IF
-   ELSE
-      IF gt_is_directory(l_directory) THEN
-         LET l_ok = os.path.delete(l_directory)
-      END IF
-   END IF
+            WHILE l_path IS NOT NULL
+                IF NOT gt_delete(l_path) THEN
+                    RETURN FALSE
+                END IF
 
-   RETURN l_ok
+                LET l_path = gt_directory_next(l_dirhdl)
+            END WHILE
+
+            LET l_ok = gt_rmdir(l_directory, FALSE)
+        ELSE
+            RETURN FALSE
+        END IF
+    ELSE
+        IF gt_is_directory(l_directory) THEN
+            LET l_ok = os.path.delete(l_directory)
+        END IF
+    END IF
+
+    RETURN l_ok
 
 END FUNCTION
 
@@ -1266,9 +1266,9 @@ END FUNCTION
 FUNCTION gt_set_directory_filter(l_filter)
 
 DEFINE
-   l_filter   INTEGER
+    l_filter   INTEGER
 
-   CALL os.path.dirfmask(l_filter)
+    CALL os.path.dirfmask(l_filter)
 
 END FUNCTION
 
@@ -1281,10 +1281,10 @@ END FUNCTION
 FUNCTION gt_set_directory_sorting(l_criteria, l_order)
 
 DEFINE
-   l_criteria   STRING,
-   l_order      INTEGER
+    l_criteria   STRING,
+    l_order      INTEGER
 
-   CALL os.path.dirsort(l_criteria, l_order)
+    CALL os.path.dirsort(l_criteria, l_order)
 
 END FUNCTION
 
@@ -1297,9 +1297,9 @@ END FUNCTION
 FUNCTION gt_directory_open(l_directory)
 
 DEFINE
-   l_directory   STRING
+    l_directory   STRING
 
-   RETURN os.path.diropen(l_directory.trim())
+    RETURN os.path.diropen(l_directory.trim())
 
 END FUNCTION
 
@@ -1311,9 +1311,9 @@ END FUNCTION
 FUNCTION gt_directory_next(l_dirhdl)
 
 DEFINE
-   l_dirhdl   INTEGER
+    l_dirhdl   INTEGER
 
-   RETURN os.path.dirnext(l_dirhdl)
+    RETURN os.path.dirnext(l_dirhdl)
 
 END FUNCTION
 
@@ -1325,9 +1325,9 @@ END FUNCTION
 FUNCTION gt_directory_close(l_dirhdl)
 
 DEFINE
-   l_dirhdl   INTEGER
+    l_dirhdl   INTEGER
 
-   CALL os.path.dirclose(l_dirhdl)
+    CALL os.path.dirclose(l_dirhdl)
 
 END FUNCTION
 
@@ -1346,25 +1346,25 @@ END FUNCTION
 FUNCTION p_gt_find_io(l_iohdl)
 
 DEFINE
-   l_iohdl   STRING
+    l_iohdl    STRING
 
 DEFINE
-   i       INTEGER,
-   l_pos   INTEGER,
-   l_io    base.channel
+    i       INTEGER,
+    l_pos   INTEGER,
+    l_io    base.Channel
 
-   LET l_pos = 0
-   LET l_io = NULL
+    LET l_pos = 0
+    LET l_io = NULL
 
-   FOR i = 1 TO m_io_list.getlength()
-      IF m_io_list[i].iohdl = l_iohdl THEN
-         LET l_pos = i
-         LET l_io = m_io_list[i].handle
-         EXIT FOR
-      END IF
-   END FOR
+    FOR i = 1 TO m_io_list.getlength()
+        IF m_io_list[i].iohdl = l_iohdl THEN
+            LET l_pos = i
+            LET l_io = m_io_list[i].handle
+            EXIT FOR
+        END IF
+    END FOR
 
-   RETURN l_pos, l_io
+    RETURN l_pos, l_io
 
 END FUNCTION
 

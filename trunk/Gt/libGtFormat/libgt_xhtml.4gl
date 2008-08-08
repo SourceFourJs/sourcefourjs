@@ -31,15 +31,15 @@
 #
 
 DEFINE
-   m_document_count   INTEGER,
+    m_document_count   INTEGER,
 
-   m_document_list   DYNAMIC ARRAY OF RECORD
-      xhtmlhdl     STRING,
-      filename     STRING,
-      stylesheet   STRING,
-      class        STRING,
-      xhtml        om.saxdocumenthandler
-   END RECORD
+    m_document_list DYNAMIC ARRAY OF RECORD
+        xhtmlhdl     STRING,
+        filename     STRING,
+        stylesheet   STRING,
+        class        STRING,
+        xhtml        om.saxdocumenthandler
+    END RECORD
 
 ##
 # Function to set WHENEVER ANY ERROR for this module
@@ -63,9 +63,9 @@ END FUNCTION
 FUNCTION gt_read_xhtml_document(l_filename)
 
 DEFINE
-   l_filename   STRING
+    l_filename    STRING
 
-   # TODO Read XHTML document
+    # TODO Read XHTML document
 
 END FUNCTION
 
@@ -77,18 +77,18 @@ END FUNCTION
 FUNCTION gt_write_xhtml_document(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos    INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("body")
-      CALL m_document_list[l_pos].xhtml.endelement("html")
-      CALL m_document_list[l_pos].xhtml.enddocument()
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("body")
+        CALL m_document_list[l_pos].xhtml.endelement("html")
+        CALL m_document_list[l_pos].xhtml.enddocument()
+    END IF
 
 END FUNCTION
 
@@ -103,31 +103,31 @@ END FUNCTION
 FUNCTION gt_create_xhtml_document(l_filename, l_stylesheet, l_class)
 
 DEFINE
-   l_filename     STRING,
-   l_stylesheet   STRING,
-   l_class        STRING
+    l_filename     STRING,
+    l_stylesheet   STRING,
+    l_class        STRING
 
 DEFINE
-   l_ok   SMALLINT
+    l_ok   SMALLINT
 
-   LET l_ok = FALSE
+    LET l_ok = FALSE
 
-   LET m_document_count = m_document_count + 1
-   LET m_document_list[m_document_count].xhtmlhdl = "XHTML", m_document_count USING "&&&&&&&&&&", fgl_getpid() USING "&&&&&"
-   LET m_document_list[m_document_count].filename = l_filename.trim()
-   LET m_document_list[m_document_count].stylesheet = l_stylesheet.trim()
-   LET m_document_list[m_document_count].class = l_class.trim()
-   LET m_document_list[m_document_count].xhtml = om.xmlwriter.createfilewriter(l_filename)
+    LET m_document_count = m_document_count + 1
+    LET m_document_list[m_document_count].xhtmlhdl = "XHTML", m_document_count USING "&&&&&&&&&&", fgl_getpid() USING "&&&&&"
+    LET m_document_list[m_document_count].filename = l_filename.trim()
+    LET m_document_list[m_document_count].stylesheet = l_stylesheet.trim()
+    LET m_document_list[m_document_count].class = l_class.trim()
+    LET m_document_list[m_document_count].xhtml = om.xmlwriter.createfilewriter(l_filename)
 
-   IF m_document_list[m_document_count].xhtml IS NOT NULL THEN
-      CALL m_document_list[m_document_count].xhtml.startdocument()
-      CALL m_document_list[m_document_count].xhtml.setindent(TRUE)
-      # Is this correct?
-      CALL m_document_list[m_document_count].xhtml.processinginstruction("DOCTYPE", "html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\"")
-      LET l_ok = TRUE
-   END IF
+    IF m_document_list[m_document_count].xhtml IS NOT NULL THEN
+        CALL m_document_list[m_document_count].xhtml.startdocument()
+        CALL m_document_list[m_document_count].xhtml.setindent(TRUE)
+        # Is this correct?
+        CALL m_document_list[m_document_count].xhtml.processinginstruction("DOCTYPE", "html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\"")
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok, m_document_list[m_document_count].xhtmlhdl
+    RETURN l_ok, m_document_list[m_document_count].xhtmlhdl
 
 END FUNCTION
 
@@ -144,48 +144,48 @@ END FUNCTION
 FUNCTION gt_xhtml_header(l_xhtmlhdl, l_title)
 
 DEFINE
-   l_xhtmlhdl     STRING,
-   l_title        STRING
+    l_xhtmlhdl     STRING,
+    l_title        STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("xmlns", "http://www.w3.org/1999/xhtml")
-      CALL m_document_list[l_pos].xhtml.startelement("html", l_attributes)
-      CALL l_attributes.clear()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
+        CALL l_attributes.addattribute("xmlns", "http://www.w3.org/1999/xhtml")
+        CALL m_document_list[l_pos].xhtml.startelement("html", l_attributes)
+        CALL l_attributes.clear()
 
-      CALL m_document_list[l_pos].xhtml.startelement("head", l_attributes)
+        CALL m_document_list[l_pos].xhtml.startelement("head", l_attributes)
 
-      #<LINK href="special.css" rel="stylesheet" type="text/css">
-      LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("href", m_document_list[m_document_count].stylesheet)
-      CALL l_attributes.addattribute("rel", "stylesheet")
-      CALL l_attributes.addattribute("type", "text/css")
-      CALL m_document_list[l_pos].xhtml.startelement("link", l_attributes)
-      CALL m_document_list[l_pos].xhtml.endelement("link")
-      CALL l_attributes.clear()
+        #<LINK href="special.css" rel="stylesheet" type="text/css">
+        LET l_attributes = om.saxattributes.create()
+        CALL l_attributes.addattribute("href", m_document_list[m_document_count].stylesheet)
+        CALL l_attributes.addattribute("rel", "stylesheet")
+        CALL l_attributes.addattribute("type", "text/css")
+        CALL m_document_list[l_pos].xhtml.startelement("link", l_attributes)
+        CALL m_document_list[l_pos].xhtml.endelement("link")
+        CALL l_attributes.clear()
 
-      CALL m_document_list[l_pos].xhtml.startelement("title", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_title.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("title")
-      CALL m_document_list[l_pos].xhtml.endelement("head")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("title", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_title.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("title")
+        CALL m_document_list[l_pos].xhtml.endelement("head")
+        CALL l_attributes.clear()
+    END IF
 
-   #<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-   #<html xmlns="http://www.w3.org/1999/xhtml">
-   #<head>
-   #   <title>XHTML Reference</title>
-   #</head>
-   #<body>
-   #...
-   #</body>
-   #</html>
+    #<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+    #<html xmlns="http://www.w3.org/1999/xhtml">
+    #<head>
+    #    <title>XHTML Reference</title>
+    #</head>
+    #<body>
+    #...
+    #</body>
+    #</html>
 
 END FUNCTION
 
@@ -198,27 +198,27 @@ END FUNCTION
 FUNCTION gt_xhtml_body(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("body", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("body", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -231,17 +231,17 @@ END FUNCTION
 FUNCTION gt_xhtml_text(l_xhtmlhdl, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.characters(l_text)
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.characters(l_text)
+    END IF
 
 END FUNCTION
 
@@ -259,30 +259,30 @@ END FUNCTION
 FUNCTION gt_xhtml_address(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("address", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("address")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("address", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("address")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -296,30 +296,30 @@ END FUNCTION
 FUNCTION gt_xhtml_blockquote(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("blockquote", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("blockquote")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("blockquote", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("blockquote")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -333,30 +333,30 @@ END FUNCTION
 FUNCTION gt_xhtml_dd(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("dd", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("dd")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("dd", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("dd")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -369,27 +369,27 @@ END FUNCTION
 FUNCTION gt_xhtml_div(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("div", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("div", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -401,16 +401,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_div(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("div")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("div")
+    END IF
 
 END FUNCTION
 
@@ -423,27 +423,27 @@ END FUNCTION
 FUNCTION gt_xhtml_dl(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("dl", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("dl", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -455,16 +455,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_dl(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("dl")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("dl")
+    END IF
 
 END FUNCTION
 
@@ -477,27 +477,27 @@ END FUNCTION
 FUNCTION gt_xhtml_dt(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("dt", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("dt", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -509,16 +509,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_dt(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("dt")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("dt")
+    END IF
 
 END FUNCTION
 
@@ -533,74 +533,74 @@ END FUNCTION
 FUNCTION gt_xhtml_heading(l_xhtmlhdl, l_class, l_level, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_level      INTEGER,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_level      INTEGER,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CASE
-         WHEN l_level = 1
-            CALL m_document_list[l_pos].xhtml.startelement("h1", l_attributes)
+        CASE
+            WHEN l_level = 1
+                CALL m_document_list[l_pos].xhtml.startelement("h1", l_attributes)
 
-         WHEN l_level = 2
-            CALL m_document_list[l_pos].xhtml.startelement("h2", l_attributes)
+            WHEN l_level = 2
+                CALL m_document_list[l_pos].xhtml.startelement("h2", l_attributes)
 
-         WHEN l_level = 3
-            CALL m_document_list[l_pos].xhtml.startelement("h3", l_attributes)
+            WHEN l_level = 3
+                CALL m_document_list[l_pos].xhtml.startelement("h3", l_attributes)
 
-         WHEN l_level = 4
-            CALL m_document_list[l_pos].xhtml.startelement("h4", l_attributes)
+            WHEN l_level = 4
+                CALL m_document_list[l_pos].xhtml.startelement("h4", l_attributes)
 
-         WHEN l_level = 5
-            CALL m_document_list[l_pos].xhtml.startelement("h5", l_attributes)
+            WHEN l_level = 5
+                CALL m_document_list[l_pos].xhtml.startelement("h5", l_attributes)
 
-         WHEN l_level = 6
-            CALL m_document_list[l_pos].xhtml.startelement("h6", l_attributes)
+            WHEN l_level = 6
+                CALL m_document_list[l_pos].xhtml.startelement("h6", l_attributes)
 
-         OTHERWISE
-      END CASE
+            OTHERWISE
+        END CASE
 
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
 
-      CASE
-         WHEN l_level = 1
-            CALL m_document_list[l_pos].xhtml.endelement("h1")
+        CASE
+            WHEN l_level = 1
+                CALL m_document_list[l_pos].xhtml.endelement("h1")
 
-         WHEN l_level = 2
-            CALL m_document_list[l_pos].xhtml.endelement("h2")
+            WHEN l_level = 2
+                CALL m_document_list[l_pos].xhtml.endelement("h2")
 
-         WHEN l_level = 3
-            CALL m_document_list[l_pos].xhtml.endelement("h3")
+            WHEN l_level = 3
+                CALL m_document_list[l_pos].xhtml.endelement("h3")
 
-         WHEN l_level = 4
-            CALL m_document_list[l_pos].xhtml.endelement("h4")
+            WHEN l_level = 4
+                CALL m_document_list[l_pos].xhtml.endelement("h4")
 
-         WHEN l_level = 5
-            CALL m_document_list[l_pos].xhtml.endelement("h5")
+            WHEN l_level = 5
+                CALL m_document_list[l_pos].xhtml.endelement("h5")
 
-         WHEN l_level = 6
-            CALL m_document_list[l_pos].xhtml.endelement("h6")
+            WHEN l_level = 6
+                CALL m_document_list[l_pos].xhtml.endelement("h6")
 
-         OTHERWISE
-      END CASE
+            OTHERWISE
+        END CASE
 
-      CALL l_attributes.clear()
-   END IF
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -613,28 +613,28 @@ END FUNCTION
 FUNCTION gt_xhtml_hr(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("hr", l_attributes)
-      CALL m_document_list[l_pos].xhtml.endelement("hr")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("hr", l_attributes)
+        CALL m_document_list[l_pos].xhtml.endelement("hr")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -647,27 +647,27 @@ END FUNCTION
 FUNCTION gt_xhtml_li(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("li", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("li", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -679,16 +679,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_li(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("li")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("li")
+    END IF
 
 END FUNCTION
 
@@ -701,27 +701,27 @@ END FUNCTION
 FUNCTION gt_xhtml_ol(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("ol", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("ol", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -733,16 +733,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_ol(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("ol")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("ol")
+    END IF
 
 END FUNCTION
 
@@ -755,27 +755,27 @@ END FUNCTION
 FUNCTION gt_xhtml_p(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("p", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("p", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -787,16 +787,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_p(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("p")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("p")
+    END IF
 
 END FUNCTION
 
@@ -809,27 +809,27 @@ END FUNCTION
 FUNCTION gt_xhtml_ul(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("ul", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("ul", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -841,16 +841,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_ul(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("ul")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("ul")
+    END IF
 
 END FUNCTION
 
@@ -867,27 +867,27 @@ END FUNCTION
 FUNCTION gt_xhtml_b(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("b", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("b", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -899,16 +899,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_b(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("b")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("b")
+    END IF
 
 END FUNCTION
 
@@ -921,27 +921,27 @@ END FUNCTION
 FUNCTION gt_xhtml_big(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("big", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("big", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -953,16 +953,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_big(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("big")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("big")
+    END IF
 
 END FUNCTION
 
@@ -976,30 +976,30 @@ END FUNCTION
 FUNCTION gt_xhtml_cite(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("cite", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("cite")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("cite", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("cite")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1013,30 +1013,30 @@ END FUNCTION
 FUNCTION gt_xhtml_code(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("code", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("code")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("code", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("code")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1049,27 +1049,27 @@ END FUNCTION
 FUNCTION gt_xhtml_em(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("em", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("em", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1081,16 +1081,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_em(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("em")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("em")
+    END IF
 
 END FUNCTION
 
@@ -1103,27 +1103,27 @@ END FUNCTION
 FUNCTION gt_xhtml_i(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("i", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("i", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1135,16 +1135,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_i(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("i")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("i")
+    END IF
 
 END FUNCTION
 
@@ -1158,30 +1158,30 @@ END FUNCTION
 FUNCTION gt_xhtml_kdb(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("kbd", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("kbd")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("kbd", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("kbd")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1195,30 +1195,30 @@ END FUNCTION
 FUNCTION gt_xhtml_pre(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("pre", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("pre")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("pre", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("pre")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1232,30 +1232,30 @@ END FUNCTION
 FUNCTION gt_xhtml_samp(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("samp", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("samp")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("samp", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("samp")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1268,27 +1268,27 @@ END FUNCTION
 FUNCTION gt_xhtml_small(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("small", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("small", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1300,16 +1300,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_small(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("small")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("small")
+    END IF
 
 END FUNCTION
 
@@ -1322,27 +1322,27 @@ END FUNCTION
 FUNCTION gt_xhtml_span(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("span", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("span", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1354,16 +1354,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_span(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("span")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("span")
+    END IF
 
 END FUNCTION
 
@@ -1376,27 +1376,27 @@ END FUNCTION
 FUNCTION gt_xhtml_strong(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("strong", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("strong", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1408,16 +1408,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_strong(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("strong")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("strong")
+    END IF
 
 END FUNCTION
 
@@ -1431,30 +1431,30 @@ END FUNCTION
 FUNCTION gt_xhtml_sub(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("sub", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("sub")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("sub", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("sub")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1468,30 +1468,30 @@ END FUNCTION
 FUNCTION gt_xhtml_sup(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("sup", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("sup")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("sup", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("sup")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1505,30 +1505,30 @@ END FUNCTION
 FUNCTION gt_xhtml_tt(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("tt", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("tt")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("tt", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("tt")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1542,30 +1542,30 @@ END FUNCTION
 FUNCTION gt_xhtml_var(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("var", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("var")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("var", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("var")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1583,30 +1583,30 @@ END FUNCTION
 FUNCTION gt_xhtml_abbr(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("abbr", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("abbr")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("abbr", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("abbr")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1620,30 +1620,30 @@ END FUNCTION
 FUNCTION gt_xhtml_acronym(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("acronym", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("acronym")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("acronym", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("acronym")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1658,37 +1658,37 @@ END FUNCTION
 FUNCTION gt_xhtml_del(l_xhtmlhdl, l_class, l_cite, l_datetime)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_cite       STRING,
-   l_datetime   STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_cite       STRING,
+    l_datetime   STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos             INTEGER,
+    l_attributes    om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      IF l_cite.getlength() > 0 THEN
-         CALL l_attributes.addattribute("cite", l_cite.trim())
-      END IF
+        IF l_cite.getlength() > 0 THEN
+            CALL l_attributes.addattribute("cite", l_cite.trim())
+        END IF
 
-      IF l_datetime.getlength() > 0 THEN
-         CALL l_attributes.addattribute("datetime", l_datetime.trim())
-      END IF
+        IF l_datetime.getlength() > 0 THEN
+            CALL l_attributes.addattribute("datetime", l_datetime.trim())
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("del", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("del", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1700,16 +1700,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_del(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("del")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("del")
+    END IF
 
 END FUNCTION
 
@@ -1724,37 +1724,37 @@ END FUNCTION
 FUNCTION gt_xhtml_ins(l_xhtmlhdl, l_class, l_cite, l_datetime)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_cite       STRING,
-   l_datetime   STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_cite       STRING,
+    l_datetime   STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      IF l_cite.getlength() > 0 THEN
-         CALL l_attributes.addattribute("cite", l_cite.trim())
-      END IF
+        IF l_cite.getlength() > 0 THEN
+            CALL l_attributes.addattribute("cite", l_cite.trim())
+        END IF
 
-      IF l_datetime.getlength() > 0 THEN
-         CALL l_attributes.addattribute("datetime", l_datetime.trim())
-      END IF
+        IF l_datetime.getlength() > 0 THEN
+            CALL l_attributes.addattribute("datetime", l_datetime.trim())
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("ins", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("ins", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1766,16 +1766,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_ins(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("ins")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("ins")
+    END IF
 
 END FUNCTION
 
@@ -1790,35 +1790,35 @@ END FUNCTION
 FUNCTION gt_xhtml_q(l_xhtmlhdl, l_class, l_text, l_cite)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING,
-   l_cite       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING,
+    l_cite       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      IF l_cite.getLength() > 0 THEN
-         CALL l_attributes.addattribute("cite", l_cite.trim())
-      END IF
+        IF l_cite.getLength() > 0 THEN
+            CALL l_attributes.addattribute("cite", l_cite.trim())
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("q", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("q")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("q", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("q")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1843,28 +1843,28 @@ END FUNCTION
 FUNCTION gt_xhtml_br(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("br", l_attributes)
-      CALL m_document_list[l_pos].xhtml.endelement("br")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("br", l_attributes)
+        CALL m_document_list[l_pos].xhtml.endelement("br")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1884,38 +1884,38 @@ END FUNCTION
 FUNCTION gt_xhtml_a(l_xhtmlhdl, l_class, l_text, l_href, l_name)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING,
-   l_href       STRING,
-   l_name       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING,
+    l_href       STRING,
+    l_name       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL l_attributes.addattribute("href", l_href.trim())
+        CALL l_attributes.addattribute("href", l_href.trim())
 
-      IF l_name.getlength() > 0 THEN
-         CALL l_attributes.addattribute("name", l_name.trim())
-      END IF
+        IF l_name.getlength() > 0 THEN
+            CALL l_attributes.addattribute("name", l_name.trim())
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("a", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("a")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("a", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("a")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1933,30 +1933,30 @@ END FUNCTION
 FUNCTION gt_xhtml_caption(l_xhtmlhdl, l_class, l_text)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING,
-   l_text       STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING,
+    l_text       STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("caption", l_attributes)
-      CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
-      CALL m_document_list[l_pos].xhtml.endelement("caption")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("caption", l_attributes)
+        CALL m_document_list[l_pos].xhtml.characters(l_text.trim())
+        CALL m_document_list[l_pos].xhtml.endelement("caption")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -1969,27 +1969,27 @@ END FUNCTION
 FUNCTION gt_xhtml_table(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("table", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("table", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2001,16 +2001,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_table(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("table")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("table")
+    END IF
 
 END FUNCTION
 
@@ -2023,27 +2023,27 @@ END FUNCTION
 FUNCTION gt_xhtml_colgroup(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("colgroup", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("colgroup", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2055,16 +2055,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_colgroup(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("colgroup")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("colgroup")
+    END IF
 
 END FUNCTION
 
@@ -2077,27 +2077,27 @@ END FUNCTION
 FUNCTION gt_xhtml_col(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("col", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("col", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2109,16 +2109,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_col(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("col")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("col")
+    END IF
 
 END FUNCTION
 
@@ -2131,27 +2131,27 @@ END FUNCTION
 FUNCTION gt_xhtml_tr(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("tr", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("tr", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2163,16 +2163,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_tr(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("tr")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("tr")
+    END IF
 
 END FUNCTION
 
@@ -2185,27 +2185,27 @@ END FUNCTION
 FUNCTION gt_xhtml_th(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("th", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("th", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2217,16 +2217,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_th(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("th")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("th")
+    END IF
 
 END FUNCTION
 
@@ -2239,27 +2239,27 @@ END FUNCTION
 FUNCTION gt_xhtml_td(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("td", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("td", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2271,16 +2271,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_td(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("td")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("td")
+    END IF
 
 END FUNCTION
 
@@ -2293,27 +2293,27 @@ END FUNCTION
 FUNCTION gt_xhtml_thead(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("thead", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("thead", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2325,16 +2325,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_thead(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("thead")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("thead")
+    END IF
 
 END FUNCTION
 
@@ -2347,27 +2347,27 @@ END FUNCTION
 FUNCTION gt_xhtml_tbody(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("tbody", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("tbody", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2379,16 +2379,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_tbody(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("tbody")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("tbody")
+    END IF
 
 END FUNCTION
 
@@ -2401,27 +2401,27 @@ END FUNCTION
 FUNCTION gt_xhtml_tfoot(l_xhtmlhdl, l_class)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_class      STRING
+    l_xhtmlhdl   STRING,
+    l_class      STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
 
-      IF gt_string_is_empty(l_class) THEN
-         CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
-      ELSE
-         CALL l_attributes.addattribute("class", l_class)
-      END IF
+        IF gt_string_is_empty(l_class) THEN
+            CALL l_attributes.addattribute("class", m_document_list[l_pos].class)
+        ELSE
+            CALL l_attributes.addattribute("class", l_class)
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("tfoot", l_attributes)
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("tfoot", l_attributes)
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2433,16 +2433,16 @@ END FUNCTION
 FUNCTION gt_xhtml_end_tfoot(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   l_pos          INTEGER
+    l_pos   INTEGER
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      CALL m_document_list[l_pos].xhtml.endelement("tfoot")
-   END IF
+    IF l_pos IS NOT NULL THEN
+        CALL m_document_list[l_pos].xhtml.endelement("tfoot")
+    END IF
 
 END FUNCTION
 
@@ -2464,28 +2464,28 @@ END FUNCTION
 FUNCTION gt_xhtml_script(l_xhtmlhdl, l_language, l_script)
 
 DEFINE
-   l_xhtmlhdl   STRING,
-   l_language   STRING,
-   l_script     STRING
+    l_xhtmlhdl   STRING,
+    l_language   STRING,
+    l_script     STRING
 
 DEFINE
-   l_pos          INTEGER,
-   l_attributes   om.saxattributes
+    l_pos          INTEGER,
+    l_attributes   om.saxattributes
 
-   LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
 
-   IF l_pos IS NOT NULL THEN
-      LET l_attributes = om.saxattributes.create()
-      CALL l_attributes.addattribute("type", l_language.trim())
+    IF l_pos IS NOT NULL THEN
+        LET l_attributes = om.saxattributes.create()
+        CALL l_attributes.addattribute("type", l_language.trim())
 
-      IF l_script.getlength() > 0 THEN
-         CALL m_document_list[l_pos].xhtml.characters(l_script.trim())
-      END IF
+        IF l_script.getlength() > 0 THEN
+            CALL m_document_list[l_pos].xhtml.characters(l_script.trim())
+        END IF
 
-      CALL m_document_list[l_pos].xhtml.startelement("script", l_attributes)
-      CALL m_document_list[l_pos].xhtml.endelement("script")
-      CALL l_attributes.clear()
-   END IF
+        CALL m_document_list[l_pos].xhtml.startelement("script", l_attributes)
+        CALL m_document_list[l_pos].xhtml.endelement("script")
+        CALL l_attributes.clear()
+    END IF
 
 END FUNCTION
 
@@ -2502,19 +2502,19 @@ END FUNCTION
 FUNCTION p_gt_find_xhtml_document(l_xhtmlhdl)
 
 DEFINE
-   l_xhtmlhdl   STRING
+    l_xhtmlhdl   STRING
 
 DEFINE
-   i       INTEGER,
-   l_pos   INTEGER
+    i       INTEGER,
+    l_pos   INTEGER
 
-   LET l_pos = NULL
+    LET l_pos = NULL
 
-   FOR i = 1 TO m_document_count
-      IF m_document_list[i].xhtmlhdl == l_xhtmlhdl THEN
-         LET l_pos = i
-         EXIT FOR
-      END IF
+    FOR i = 1 TO m_document_count
+        IF m_document_list[i].xhtmlhdl == l_xhtmlhdl THEN
+            LET l_pos = i
+            EXIT FOR
+        END IF
   END FOR
 
   RETURN l_pos

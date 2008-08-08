@@ -34,12 +34,12 @@ IMPORT os
 
 DEFINE
 	m_configuration   RECORD
-      source_directory   STRING,
-      recursive          SMALLINT,
-      output_directory   STRING,
-      output_format      STRING,
-      stylesheet         STRING,
-      class_id           STRING
+        source_directory   STRING,
+        recursive          SMALLINT,
+        output_directory   STRING,
+        output_format      STRING,
+        stylesheet         STRING,
+        class_id           STRING
 	END RECORD
 
 #------------------------------------------------------------------------------#
@@ -63,7 +63,7 @@ END FUNCTION
 
 FUNCTION gt_source_directory()
 
-   RETURN m_configuration.source_directory
+    RETURN m_configuration.source_directory
 
 END FUNCTION
 
@@ -76,7 +76,7 @@ END FUNCTION
 
 FUNCTION gt_recursive()
 
-   RETURN m_configuration.recursive
+    RETURN m_configuration.recursive
 
 END FUNCTION
 
@@ -87,7 +87,7 @@ END FUNCTION
 
 FUNCTION gt_output_directory()
 
-   RETURN m_configuration.output_directory
+    RETURN m_configuration.output_directory
 
 END FUNCTION
 
@@ -98,7 +98,7 @@ END FUNCTION
 
 FUNCTION gt_output_format()
 
-   RETURN m_configuration.output_format
+    RETURN m_configuration.output_format
 
 END FUNCTION
 
@@ -109,7 +109,7 @@ END FUNCTION
 
 FUNCTION gt_stylesheet()
 
-   RETURN m_configuration.stylesheet
+    RETURN m_configuration.stylesheet
 
 END FUNCTION
 
@@ -120,7 +120,7 @@ END FUNCTION
 
 FUNCTION gt_class_id()
 
-   RETURN m_configuration.class_id
+    RETURN m_configuration.class_id
 
 END FUNCTION
 
@@ -128,7 +128,7 @@ END FUNCTION
 # This function reads the given configuration file.
 # @param l_configuration_file The configuraton file to read.
 # @return l_ok TRUE if the configuration file was successfully parsed, FALSE
-#              otherwise.
+#                  otherwise.
 #
 
 FUNCTION gt_read_configuration_file(l_configuration_file)
@@ -137,85 +137,85 @@ DEFINE
 	l_configuration_file   STRING
 
 DEFINE
-   l_ok          SMALLINT,
-   l_value       STRING,
-   l_buffer      STRING,
-   l_variable    STRING,
-   l_filehdl     base.Channel,
-   l_tokenizer   base.StringTokenizer
+    l_ok          SMALLINT,
+    l_value       STRING,
+    l_buffer      STRING,
+    l_variable    STRING,
+    l_filehdl     base.Channel,
+    l_tokenizer   base.StringTokenizer
 
-   LET l_ok = FALSE
-   LET m_configuration.source_directory = NULL
-   LET m_configuration.recursive = NULL
-   LET m_configuration.output_directory = NULL
-   LET m_configuration.output_format = NULL
-   LET m_configuration.stylesheet = NULL
-   LET m_configuration.class_id = NULL
+    LET l_ok = FALSE
+    LET m_configuration.source_directory = NULL
+    LET m_configuration.recursive = NULL
+    LET m_configuration.output_directory = NULL
+    LET m_configuration.output_format = NULL
+    LET m_configuration.stylesheet = NULL
+    LET m_configuration.class_id = NULL
 
-   IF os.path.isfile(l_configuration_file) THEN
-      LET l_filehdl = base.channel.create()
+    IF os.path.isfile(l_configuration_file) THEN
+        LET l_filehdl = base.channel.create()
 
-      CALL l_filehdl.openfile(l_configuration_file, "r")
+        CALL l_filehdl.openfile(l_configuration_file, "r")
 
-      IF STATUS == 0 THEN
-         WHILE NOT l_filehdl.iseof()
-            LET l_buffer = l_filehdl.readline()
+        IF STATUS == 0 THEN
+            WHILE NOT l_filehdl.iseof()
+                LET l_buffer = l_filehdl.readline()
 
-            IF l_buffer.getCharAt(1) == "#" THEN
-               CONTINUE WHILE
-            END IF
+                IF l_buffer.getCharAt(1) == "#" THEN
+                    CONTINUE WHILE
+                END IF
 
-            LET l_tokenizer = base.stringtokenizer.create(l_buffer, "=")
-            LET l_variable = l_tokenizer.nexttoken()
-            LET l_value = l_tokenizer.nexttoken()
+                LET l_tokenizer = base.stringtokenizer.create(l_buffer, "=")
+                LET l_variable = l_tokenizer.nexttoken()
+                LET l_value = l_tokenizer.nexttoken()
 
-            LET l_variable = l_variable.trim()
-            LET l_value = l_value.trim()
+                LET l_variable = l_variable.trim()
+                LET l_value = l_value.trim()
 
-            CASE
-               WHEN l_variable == "source_directory"
-                  LET m_configuration.source_directory = l_value
+                CASE
+                    WHEN l_variable == "source_directory"
+                        LET m_configuration.source_directory = l_value
 
-               WHEN l_variable == "recursive"
-                  IF l_value.touppercase() == "TRUE"
-                  OR l_value.touppercase() == "YES"
-                  OR l_value.touppercase() == "Y" THEN
-                     LET m_configuration.recursive = TRUE
-                  ELSE
-                     LET m_configuration.recursive = FALSE
-                  END IF
+                    WHEN l_variable == "recursive"
+                        IF l_value.touppercase() == "TRUE"
+                        OR l_value.touppercase() == "YES"
+                        OR l_value.touppercase() == "Y" THEN
+                            LET m_configuration.recursive = TRUE
+                        ELSE
+                            LET m_configuration.recursive = FALSE
+                        END IF
 
-               WHEN l_variable == "output_directory"
-                  LET m_configuration.output_directory = l_value
+                    WHEN l_variable == "output_directory"
+                        LET m_configuration.output_directory = l_value
 
-               WHEN l_variable == "output_format"
-                  LET m_configuration.output_format = l_value
+                    WHEN l_variable == "output_format"
+                        LET m_configuration.output_format = l_value
 
-               WHEN l_variable == "stylesheet"
-                  LET m_configuration.stylesheet = l_value
+                    WHEN l_variable == "stylesheet"
+                        LET m_configuration.stylesheet = l_value
 
-               WHEN l_variable == "class_id"
-                  LET m_configuration.class_id = l_value
+                    WHEN l_variable == "class_id"
+                        LET m_configuration.class_id = l_value
 
-               OTHERWISE
-            END CASE
-         END WHILE
+                    OTHERWISE
+                END CASE
+            END WHILE
 
-         CALL l_filehdl.close()
-      END IF
-   ELSE
-   END IF
+            CALL l_filehdl.close()
+        END IF
+    ELSE
+    END IF
 
-   IF m_configuration.source_directory IS NOT NULL
-   AND m_configuration.recursive IS NOT NULL
-   AND m_configuration.output_directory IS NOT NULL
-   AND m_configuration.output_format IS NOT NULL
-   AND m_configuration.stylesheet IS NOT NULL
-   AND m_configuration.class_id IS NOT NULL THEN
-      LET l_ok = TRUE
-   END IF
+    IF m_configuration.source_directory IS NOT NULL
+    AND m_configuration.recursive IS NOT NULL
+    AND m_configuration.output_directory IS NOT NULL
+    AND m_configuration.output_format IS NOT NULL
+    AND m_configuration.stylesheet IS NOT NULL
+    AND m_configuration.class_id IS NOT NULL THEN
+        LET l_ok = TRUE
+    END IF
 
-   RETURN l_ok
+    RETURN l_ok
 
 END FUNCTION
 

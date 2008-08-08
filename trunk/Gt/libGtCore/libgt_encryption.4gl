@@ -36,19 +36,19 @@
 IMPORT util
 
 DEFINE
-   m_initialized   SMALLINT
+    m_initialized   SMALLINT
 
 #------------------------------------------------------------------------------#
-# Function to set the WHENEVER ANY ERROR function for this module              #
+# Function to set the WHENEVER ANY ERROR function for this module               #
 #------------------------------------------------------------------------------#
 
 FUNCTION libgt_encryption_id()
 
 DEFINE
-   l_id   STRING
+    l_id   STRING
 
-   WHENEVER ANY ERROR CALL gt_system_error
-   LET l_id = "$Id$"
+    WHENEVER ANY ERROR CALL gt_system_error
+    LET l_id = "$Id$"
 
 END FUNCTION
 
@@ -61,14 +61,14 @@ END FUNCTION
 FUNCTION generate_random_number(l_range)
 
 DEFINE
-   l_range   INTEGER
+    l_range   INTEGER
 
-   IF m_initialized != TRUE THEN
-      CALL util.Math.srand()
-      LET m_initialized = TRUE
-   END IF
+    IF m_initialized != TRUE THEN
+        CALL util.Math.srand()
+        LET m_initialized = TRUE
+    END IF
 
-   RETURN util.Math.rand(l_range)
+    RETURN util.Math.rand(l_range)
 
 END FUNCTION
 
@@ -82,27 +82,27 @@ END FUNCTION
 FUNCTION gt_encrypt(l_input, l_type)
 
 DEFINE
-   l_input   STRING,
-   l_type    STRING
+    l_input   STRING,
+    l_type    STRING
 
 DEFINE
-   l_encrypted_string   STRING
+    l_encrypted_string   STRING
 
-   CASE
-      WHEN l_type == "MD5"
-         LET l_encrypted_string = md5string(l_input)
+    CASE
+        WHEN l_type == "MD5"
+            LET l_encrypted_string = md5string(l_input)
 
-      WHEN l_type == "XORString"
-         LET l_encrypted_string = xorstring(l_input, "")
+        WHEN l_type == "XORString"
+            LET l_encrypted_string = xorstring(l_input, "")
 
-      WHEN l_type == "NONE"
-         LET l_encrypted_string = l_input
+        WHEN l_type == "NONE"
+            LET l_encrypted_string = l_input
 
-      OTHERWISE
-         CALL gt_set_error("ERROR", SFMT(%"Invalid encryption type %1 specified", l_type))
-   END CASE
+        OTHERWISE
+            CALL gt_set_error("ERROR", SFMT(%"Invalid encryption type %1 specified", l_type))
+    END CASE
 
-   RETURN l_encrypted_string
+    RETURN l_encrypted_string
 
 END FUNCTION
 
@@ -116,28 +116,28 @@ END FUNCTION
 FUNCTION gt_decrypt(l_input, l_type)
 
 DEFINE
-   l_input   STRING,
-   l_type    STRING
+    l_input   STRING,
+    l_type    STRING
 
 DEFINE
-   l_decrypted_string   STRING
+    l_decrypted_string   STRING
 
-   CASE
-      WHEN l_type == "MD5"
-         CALL assert(FALSE, %"MD5 encrypted strings cannot be decrypted!")
+    CASE
+        WHEN l_type == "MD5"
+            CALL assert(FALSE, %"MD5 encrypted strings cannot be decrypted!")
 
-      WHEN l_type == "XORString"
-         LET l_decrypted_string = xorstring(l_input, "")
+        WHEN l_type == "XORString"
+            LET l_decrypted_string = xorstring(l_input, "")
 
-      WHEN l_type == "NONE"
-         LET l_decrypted_string = l_input
+        WHEN l_type == "NONE"
+            LET l_decrypted_string = l_input
 
-      OTHERWISE
-         DISPLAY "Invalid type"
-         # Raise error
-   END CASE
+        OTHERWISE
+            DISPLAY "Invalid type"
+            # Raise error
+    END CASE
 
-   RETURN l_decrypted_string
+    RETURN l_decrypted_string
 
 END FUNCTION
 
