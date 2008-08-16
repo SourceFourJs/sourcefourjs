@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf8" ?>
-<Workspace id="0" version="2.0">
+<Workspace defaultApplication="95" id="0" version="2.0">
   <Project id="81" label="Gt" targetDirectory="$(WorkspaceDir)/build">
-    <Application id="10" label="gt_viewvc_client">
-      <File filePath="Utilities/gt_viewvc_client.4gl" id="9"/>
-    </Application>
     <Project id="8" label="GtDocgen">
-      <Application commandLineArguments="--configuration-file /home/work/projects/genero/sourcefourjs/trunk/Gt/build/gtdocgen.conf " dependencies="67||60||50" id="3" label="gtdocgen">
+      <Application commandLineArguments="--configuration-file /home/work/projects/genero/sourcefourjs/trunk/Gt/build/gtdocgen.conf " dependencies="67||60||50" id="3" label="GtDocgen">
         <File filePath="GtDocgen/gtdocgen.4gl" id="2"/>
         <File filePath="GtDocgen/gtdocgen_config.4gl" id="4"/>
         <File filePath="GtDocgen/gtdocgen_parser.4gl" id="5"/>
@@ -35,7 +32,7 @@
         <File filePath="libGtCore/libgt_unittest.4tm" id="47"/>
         <File filePath="libGtCore/libgt_validators.4gl" id="49"/>
       </Library>
-      <Application dependencies="50" id="25" label="libgtcore_test">
+      <Application dependencies="50" id="25" label="libGtCore_test">
         <File filePath="libGtCore/unittest/libgt_binary_test.4gl" id="11"/>
         <File filePath="libGtCore/unittest/libgt_binary_utils_test.4gl" id="12"/>
         <File filePath="libGtCore/unittest/libgt_email_test.4gl" id="13"/>
@@ -57,11 +54,23 @@
         <File filePath="libGtFormat/libgt_pdf.4gl" id="58"/>
         <File filePath="libGtFormat/libgt_xhtml.4gl" id="59"/>
       </Library>
-      <Application dependencies="50||60" id="55" label="libgtformat_test">
+      <Application dependencies="50||60" id="55" label="libGtFormat_test">
         <File filePath="libGtFormat/unittest/libgt_pdf_test.4gl" id="52"/>
         <File filePath="libGtFormat/unittest/libgt_xhtml_test.4gl" id="53"/>
         <File filePath="libGtFormat/unittest/libgtformat_test.4gl" id="54"/>
       </Application>
+    </Project>
+    <Project id="87" label="libGtGraphics">
+      <Library dependencies="50" id="88" label="libGtGraphics">
+        <File filePath="libGtGraphics/libgt_graph.4gl" id="90"/>
+        <File filePath="libGtGraphics/libgt_graph_colors.4gl" id="99"/>
+      </Library>
+      <Application dependencies="50||88" id="95" label="libGtGraphics_demo">
+        <File filePath="libGtGraphics/demo/libgt_graph_demo.4fd" id="96"/>
+        <File filePath="libGtGraphics/demo/libgt_graph_demo.4gl" id="97"/>
+        <File filePath="libGtGraphics/demo/libgtgraphics_demo.4gl" id="98"/>
+      </Application>
+      <Application dependencies="50||88" id="89" label="libGtGraphics_test"/>
     </Project>
     <Project id="82" label="libGtNetwork">
       <Library id="64" label="libGtNetwork">
@@ -80,6 +89,11 @@
         <File filePath="libGtUI/lib_cui_exception.4gl" id="68"/>
         <File filePath="libGtUI/lib_exception.per" id="69"/>
       </Library>
+    </Project>
+    <Project id="86" label="Utilities">
+      <Application id="10" label="GtViewvcClient">
+        <File filePath="Utilities/gt_viewvc_client.4gl" id="9"/>
+      </Application>
     </Project>
   </Project>
 </Workspace>

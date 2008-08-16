@@ -1,4 +1,7 @@
-2008-08-08  scottn
+2008-08-16 scottn
+  * Added libGtGraphics and demo program
+
+2008-08-08 scottn
   * Added the libgt_regex library
   * Added test cases for libgt_pop3_client and libgt_regex
   * Added gt_string_is_whitespace and gt_string_is_numeric to libgt_string.4gl
