@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Form build="2.11.03-1169.8" database_name="formonly" defaultspacing="true" delimiters=" " fourSTFile="" gstVersion="15a01" height="30" lstrtoallcomment="false" lstrtoallitem="false" lstrtoalltext="false" lstrtoalltitle="false" name="libgt_graph_demo" percommentattribute="" percommentheader="$Id$
+------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+ Copyright (c) 2007 Scott Newton &lt;scottn@ihug.co.nz&gt;                          #
+                                                                              #
+ MIT License (http://www.opensource.org/licenses/mit-license.php)             #
+                                                                              #
+ Permission is hereby granted, free of charge, to any person obtaining a copy #
+ of this software and associated documentation files (the &quot;Software&quot;), to     #
+ deal in the Software without restriction, including without limitation the   #
+ rights to use, copy, modify, merge, publish, distribute, sublicense, and/or  #
+ sell copies of the Software, and to permit persons to whom the Software is   #
+ furnished to do so, subject to the following conditions:                     #
+ The above copyright notice and this permission notice shall be included in   #
+ all copies or substantial portions of the Software.                          #
+                                                                              #
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR   #
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,     #
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE  #
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER       #
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      #
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS #
+ IN THE SOFTWARE.                                                             #
+------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+#
+ Form for x.
+ @category Library Form
+ @author Scott Newton
+ @date September 2007
+ @version $Id$
+" percommentinstruction="" percommentlayout="------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+ END OF FORM                                                                  #
+------------------------------------------------------------------------------#
+----------------------------------------------------------------------------#
+" percommentschema="ATTRIBUTES
+END #ATTRIBUTES
+" posX="0" posY="0" spacing="normal" text="" version="$Id$" width="74">
+  <PageControl height="28" hidden="--------" lstrcomment="false" name="container" posX="2" posY="1" width="69">
+    <Page browserStatus="true" fontPitch="default" hidden="--------" imagetype="Image as URL" lstrtext="true" name="scatterpage" text="ScatterPage">
+      <Grid fontPitch="default" height="27" hidden="--------" hrecindex="-1" lstrcomment="false" name="ScatterGrid" posX="1" posY="0" scroll="false" width="68">
+        <Canvas commentgroup="" geometry="" height="12" hidden="" hrecindex="-1" lstrcomment="false" name="scatter4" posX="35" posY="14" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" hrecindex="-1" lstrcomment="false" name="scatter3" posX="2" posY="14" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" hrecindex="-1" lstrcomment="false" name="scatter1" posX="2" posY="1" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" hrecindex="-1" lstrcomment="false" name="scatter2" posX="35" posY="1" repeatDetails="" tag="" width="30"/>
+      </Grid>
+    </Page>
+    <Page fontPitch="default" hidden="--------" imagetype="Image as URL" lstrtext="true" name="linepage" text="LinePage">
+      <Grid fontPitch="default" height="27" hidden="--------" lstrcomment="false" name="LineGrid" posX="0" posY="0" scroll="false" width="69">
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="line1" posX="2" posY="1" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="line2" posX="36" posY="1" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="line3" posX="2" posY="14" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="line4" posX="36" posY="14" repeatDetails="" tag="" width="30"/>
+      </Grid>
+    </Page>
+    <Page fontPitch="default" hidden="--------" imagetype="Image as URL" lstrtext="true" name="barpage" text="BarPage">
+      <Grid fontPitch="default" height="27" hidden="--------" lstrcomment="false" name="BarGrid" posX="0" posY="0" scroll="false" width="69">
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="bar1" posX="2" posY="1" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="bar2" posX="35" posY="1" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="bar3" posX="2" posY="14" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="bar4" posX="35" posY="14" repeatDetails="" tag="" width="30"/>
+      </Grid>
+    </Page>
+    <Page fontPitch="default" hidden="--------" imagetype="Image as URL" lstrtext="true" name="piepage" text="PiePage">
+      <Grid fontPitch="default" height="27" hidden="--------" lstrcomment="false" name="PieGrid" posX="0" posY="0" scroll="false" width="69">
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="pie1" posX="2" posY="1" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="pie2" posX="36" posY="1" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="pie3" posX="2" posY="14" repeatDetails="" tag="" width="30"/>
+        <Canvas commentgroup="" geometry="" height="12" hidden="" lstrcomment="false" name="pie4" posX="36" posY="14" repeatDetails="" tag="" width="30"/>
+      </Grid>
+    </Page>
+  </PageControl>
+</Form>
