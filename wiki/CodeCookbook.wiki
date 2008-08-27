@@ -29,6 +29,8 @@ If there isn't already an appropriate section, then add your link to Misc or cre
 
   * [FetchingAWebPage Fetch a web page using openClientSocket.]
   * [ABasicSMTPClient A basic SMTP client using openClientSocket.]
+  * [GoogleMaps Using the Google Maps API.]
+  * [GoogleCharts Using the Google Charts API.]
 
 ==Testing/Debugging==
 
