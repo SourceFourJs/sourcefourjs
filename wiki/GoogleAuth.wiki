@@ -18,10 +18,12 @@ MAIN
         qrybuf      base.StringBuffer,
         statcode    INTEGER,
         login       STRING,
-        passwd      STRING
+        passwd      STRING,
+        googlesvc   STRING   # Google service id
 
     LET login = "your-google-account-id@gmail.com"
     LET passwd = "your-google-password"
+    LET googlesvc = "xapi"  # Google generic service id
 
     TRY
         LET req = com.HTTPRequest.create("https://www.google.com/accounts/ClientLogin")
@@ -30,7 +32,7 @@ MAIN
         CALL qrybuf.append("accountType=HOSTED_OR_GOOGLE")
         CALL qrybuf.append(SFMT("&Email=%1", login))
         CALL qrybuf.append(SFMT("&Passwd=%1", passwd))
-        CALL qrybuf.append(SFMT("&service=%1", "xapi"))
+        CALL qrybuf.append(SFMT("&service=%1", googlesvc))
         CALL qrybuf.append("&source=genero-agent-1")
         DISPLAY qrybuf.toString()
         LET resp = req.getXFormsResponse(qrybuf.tostring(), FALSE)
