@@ -1,7 +1,7 @@
 #summary Authenticating using the Google Client Login
 = Introduction =
 
-Some of the Google GData API's require the application accessing them to be authenticated to perform operations. This snippet shows how you can perform the authentication with Genero BDL 2.10+. (It is still a work in progress but have put the code here as someone requested to see it)
+Some of the Google Service API's require the application accessing them to be authenticated to perform operations. Google provides a specific method of authentication for installed applications (which in Google's definition is none web applications) and it is documented [http://code.google.com/apis/accounts/docs/AuthForInstalledApps.html here]. This snippet shows how you can perform this type of authentication with Genero BDL 2.10+. (It is still a work in progress but have put the code here as someone requested to see it)
 
 = Details =
 
