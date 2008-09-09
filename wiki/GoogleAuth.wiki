@@ -1,7 +1,7 @@
 #summary Authenticating using the Google Client Login
 = Introduction =
 
-Some of the Google GData API's require the application accessing them to be authenticated to perform operations. This snippet show how you can perform the authentication with Genero BDL 2.10+. (It is still a work in progress but have put the code here as someone requested to see it)
+Some of the Google GData API's require the application accessing them to be authenticated to perform operations. This snippet shows how you can perform the authentication with Genero BDL 2.10+. (It is still a work in progress but have put the code here as someone requested to see it)
 
 = Details =
 
@@ -24,7 +24,7 @@ MAIN
     LET passwd = "your-google-password"
 
     TRY
-LET req = com.HTTPRequest.create("https://www.google.com/accounts/ClientLogin")
+        LET req = com.HTTPRequest.create("https://www.google.com/accounts/ClientLogin")
         CALL req.setMethod("POST")
         LET qrybuf = base.StringBuffer.create()
         CALL qrybuf.append("accountType=HOSTED_OR_GOOGLE")
