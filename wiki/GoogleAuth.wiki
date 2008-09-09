@@ -1,0 +1,53 @@
+#summary Authenticating using the Google Client Login
+= Introduction =
+
+Some of the Google GData API's require the application accessing them to be authenticated to perform operations. This snippet show how you can perform the authentication with Genero BDL 2.10+. (It is still a work in progress but have put the code here as someone requested to see it)
+
+= Details =
+
+{{{
+IMPORT com
+IMPORT xml
+
+MAIN
+
+    DEFINE
+        req         com.HTTPRequest,
+        resp        com.HTTPResponse,
+        doc         STRING,
+        qrybuf      base.StringBuffer,
+        statcode    INTEGER,
+        login       STRING,
+        passwd      STRING
+
+    LET login = "your-google-account-id@gmail.com"
+    LET passwd = "your-google-password"
+
+    TRY
+LET req = com.HTTPRequest.create("https://www.google.com/accounts/ClientLogin")
+        CALL req.setMethod("POST")
+        LET qrybuf = base.StringBuffer.create()
+        CALL qrybuf.append("accountType=HOSTED_OR_GOOGLE")
+        CALL qrybuf.append(SFMT("&Email=%1", login))
+        CALL qrybuf.append(SFMT("&Passwd=%1", passwd))
+        CALL qrybuf.append(SFMT("&service=%1", "xapi"))
+        CALL qrybuf.append("&source=genero-agent-1")
+        DISPLAY qrybuf.toString()
+        LET resp = req.getXFormsResponse(qrybuf.tostring(), FALSE)
+        LET statcode = resp.getStatusCode()
+        CASE statcode
+            WHEN 200
+                LET  doc = resp.getTextResponse()
+                DISPLAY  "HTTP 200 Text Response is : ",doc
+            WHEN 403
+                LET  doc = resp.getTextResponse()
+                DISPLAY  "HTTP 403 Text Response is : ",doc
+            OTHERWISE
+                DISPLAY  "HTTP Error ("||resp.getStatusCode()||") ",resp.getStatusDescription()
+        END CASE
+    CATCH
+        DISPLAY "ERROR :",STATUS||" ("||SQLCA.SQLERRM||")"
+    END TRY
+
+END MAIN
+}}}
