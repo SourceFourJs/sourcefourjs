@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Some notes on the AUI Tree reading and writing example I recently added.
+Some notes on the AUI Tree reading and writing example I recently [http://sourcefourjs.googlecode.com/files/auitree_1_0.zip added]
 
 
 = Details =
