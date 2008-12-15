@@ -19,11 +19,11 @@ I'm a believer that sometimes the best way to learn is by example so download an
 
 Finally if you want do any AUI tree mods yourself, some useful hints...
 
-  * Start the  GDC option with the -D option and use control right+click to see the current strucuture of the AUI tree.
-  * 4Js may change the strucuture of the AUI tree between versions.  Every new release, get a copy of the new version and test your functions still read and write to the AUI tree as expected.  In practise it hasn't changed much, even multi-dialog only had a small impact.
-  * note how some attributes are properties of the FormField node whilst some attributes are properties of the widget node.
-  * start small e.g. change field comment or action text, and work your way up
-  * experiment changing attributes in the .per to see the effect in the AUI tree. 
-  * When 4Js introduce a function to do what your function is doing, switch your code to use that function.
+  # Start the  GDC option with the -D option and use control right+click to see the current strucuture of the AUI tree.
+  # 4Js may change the strucuture of the AUI tree between versions.  Every new release, get a copy of the new version and test your functions still read and write to the AUI tree as expected.  In practise it hasn't changed much, even multi-dialog only had a small impact.
+  # note how some attributes are properties of the FormField node whilst some attributes are properties of the widget node.
+  # start small e.g. change field comment or action text, and work your way up
+  # experiment changing attributes in the .per to see the effect in the AUI tree. 
+  # When 4Js introduce a function to do what your function is doing, switch your code to use that function.
 
 If you do something yourself that you think will be useful let me know and I'll add it to the example.
