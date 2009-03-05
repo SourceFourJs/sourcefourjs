@@ -180,7 +180,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "HELO ", l_domainname
 
-    LET l_socket = p_gt_find_smtp_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_smtp_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -231,7 +231,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "MAIL FROM: <", l_from, ">"
 
-    LET l_socket = p_gt_find_smtp_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_smtp_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -286,7 +286,7 @@ DEFINE
     WHILE l_tokenizer.hasmoretokens()
         LET l_data = "RCPT TO: <", l_tokenizer.nexttoken(), ">"
 
-        LET l_socket = p_gt_find_smtp_client_socket(l_sockethdl)
+        LET l_socket = gtp_find_smtp_client_socket(l_sockethdl)
 
         IF l_socket IS NULL THEN
             CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -338,7 +338,7 @@ DEFINE
     LET l_data = "DATA"
     LET l_email = l_email
 
-    LET l_socket = p_gt_find_smtp_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_smtp_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -411,7 +411,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "QUIT"
 
-    LET l_socket = p_gt_find_smtp_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_smtp_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -470,7 +470,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "RSET"
 
-    LET l_socket = p_gt_find_smtp_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_smtp_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -518,7 +518,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "NOOP"
 
-    LET l_socket = p_gt_find_smtp_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_smtp_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -556,7 +556,7 @@ END FUNCTION
 # @return l_socket The actual socket to use.
 #
 
-FUNCTION p_gt_find_smtp_client_socket(l_sockethdl)
+FUNCTION gtp_find_smtp_client_socket(l_sockethdl)
 
 DEFINE
     l_sockethdl   STRING

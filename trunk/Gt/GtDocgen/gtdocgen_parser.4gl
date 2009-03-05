@@ -505,10 +505,10 @@ DEFINE
 
         CASE
             WHEN l_token.subString(1, 2) == "##"
-                LET l_pos = p_gt_parse_documentation(l_pos)
+                LET l_pos = gtp_parse_documentation(l_pos)
 
             WHEN l_token.toUpperCase() == "DEFINE"
-                LET l_pos = p_gt_parse_define(l_pos)
+                LET l_pos = gtp_parse_define(l_pos)
                 LET l_pos = l_pos - 1
 
             WHEN l_token.toUpperCase() == "FUNCTION"
@@ -517,7 +517,7 @@ DEFINE
 
             WHEN l_token.toUpperCase() == "RETURN"
                 IF gt_4gl_next_token(l_pos - 1) != "@" THEN
-                    LET l_pos = p_gt_parse_return(l_pos)
+                    LET l_pos = gtp_parse_return(l_pos)
                     LET l_pos = l_pos - 1
                 END IF
 
@@ -538,7 +538,7 @@ END FUNCTION
 # @return l_pos The end position of the documentation block.
 #
 
-FUNCTION p_gt_parse_documentation(l_pos)
+FUNCTION gtp_parse_documentation(l_pos)
 
 DEFINE
     l_pos   INTEGER
@@ -561,7 +561,7 @@ DEFINE
     LET m_current_function = NULL
 
     IF m_count > 1 THEN
-        LET m_current_function = p_gt_find_next_function(l_pos)
+        LET m_current_function = gtp_find_next_function(l_pos)
 
         IF m_current_function IS NOT NULL THEN
             FOR i = 1 TO m_documentation[m_documentation_count].method.getlength()
@@ -663,7 +663,7 @@ END FUNCTION
 # @return l_pos The end position of the DEFINEs.
 #
 
-FUNCTION p_gt_parse_define(l_pos)
+FUNCTION gtp_parse_define(l_pos)
 
 DEFINE
     l_pos   INTEGER
@@ -725,7 +725,7 @@ END FUNCTION
 # @return l_pos The end position of the RETURNs.
 #
 
-FUNCTION p_gt_parse_return(l_pos)
+FUNCTION gtp_parse_return(l_pos)
 
 DEFINE
     l_pos   INTEGER
@@ -765,7 +765,7 @@ END FUNCTION
 # @return l_function The next function.
 #
 
-FUNCTION p_gt_find_next_function(l_pos)
+FUNCTION gtp_find_next_function(l_pos)
 
 DEFINE
     l_pos   INTEGER

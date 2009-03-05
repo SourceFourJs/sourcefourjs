@@ -638,7 +638,7 @@ DEFINE
                 END IF
 
                 #DISPLAY "DATATYPE : ", l_token
-                CALL p_gt_4gl_parse_simple_datatype(l_pos, l_variable)
+                CALL gtp_4gl_parse_simple_datatype(l_pos, l_variable)
                     RETURNING l_pos, l_variable, l_type
 
                 LET i = i + 1
@@ -889,7 +889,7 @@ END FUNCTION
 # PRIVATE FUNCTIONS                                                            #
 #------------------------------------------------------------------------------#
 
-FUNCTION p_gt_4gl_parse_simple_datatype(l_pos, l_name)
+FUNCTION gtp_4gl_parse_simple_datatype(l_pos, l_name)
 
 DEFINE
     l_pos    INTEGER,

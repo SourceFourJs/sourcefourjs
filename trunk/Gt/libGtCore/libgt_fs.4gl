@@ -758,7 +758,7 @@ DEFINE
 
     LET l_buffer = NULL
 
-    CALL p_gt_find_io(l_iohdl)
+    CALL gtp_find_io(l_iohdl)
         RETURNING l_pos, l_io
 
     IF l_io IS NOT NULL THEN
@@ -843,7 +843,7 @@ DEFINE
     l_file     base.Channel
 
     LET l_ok = FALSE
-    CALL p_gt_find_io(l_filehdl)
+    CALL gtp_find_io(l_filehdl)
         RETURNING l_pos, l_file
 
     IF l_file IS NOT NULL THEN
@@ -889,7 +889,7 @@ DEFINE
 
     LET l_ok = FALSE
 
-    CALL p_gt_find_io(l_filehdl)
+    CALL gtp_find_io(l_filehdl)
         RETURNING l_pos, l_file
 
     IF l_file IS NOT NULL THEN
@@ -933,7 +933,7 @@ DEFINE
     l_pos    INTEGER,
     l_file   base.Channel
 
-    CALL p_gt_find_io(l_filehdl)
+    CALL gtp_find_io(l_filehdl)
         RETURNING l_pos, l_file
 
     IF l_file IS NOT NULL THEN
@@ -1015,7 +1015,7 @@ DEFINE
     l_pipe     base.Channel
 
     LET l_ok = FALSE
-    CALL p_gt_find_io(l_pipehdl)
+    CALL gtp_find_io(l_pipehdl)
         RETURNING l_pos, l_pipe
 
     IF l_pipe IS NOT NULL THEN
@@ -1052,7 +1052,7 @@ DEFINE
 
     LET l_ok = FALSE
 
-    CALL p_gt_find_io(l_pipehdl)
+    CALL gtp_find_io(l_pipehdl)
         RETURNING l_pos, l_pipe
 
     IF l_pipe IS NOT NULL THEN
@@ -1096,7 +1096,7 @@ DEFINE
     l_pos    INTEGER,
     l_pipe   base.Channel
 
-    CALL p_gt_find_io(l_pipehdl)
+    CALL gtp_find_io(l_pipehdl)
         RETURNING l_pos, l_pipe
 
     IF l_pipe IS NOT NULL THEN
@@ -1343,7 +1343,7 @@ END FUNCTION
 # @return l_io The underlying handle to the io channel, NULL if not found.
 #
 
-FUNCTION p_gt_find_io(l_iohdl)
+FUNCTION gtp_find_io(l_iohdl)
 
 DEFINE
     l_iohdl    STRING

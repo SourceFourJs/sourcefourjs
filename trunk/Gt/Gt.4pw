@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf8" ?>
-<Workspace defaultApplication="95" id="0" version="2.0">
+<Workspace defaultApplication="101" id="0" version="2.0">
   <Project id="81" label="Gt" targetDirectory="$(WorkspaceDir)/build">
     <Project id="8" label="GtDocgen">
       <Application commandLineArguments="--configuration-file /home/work/projects/genero/sourcefourjs/trunk/Gt/build/gtdocgen.conf " dependencies="67||60||50" id="3" label="GtDocgen">
@@ -9,11 +9,22 @@
         <File filePath="GtDocgen/gtdocgen_xhtml_generator.4gl" id="6"/>
       </Application>
     </Project>
+    <Project id="100" label="GtMisql">
+      <Application dependencies="50||114" id="101" label="GtMisql">
+        <File filePath="GtMisql/gtmisql.4ad" id="110"/>
+        <File filePath="GtMisql/gtmisql.4fd" id="105"/>
+        <File filePath="GtMisql/gtmisql.4gl" id="102"/>
+        <File filePath="GtMisql/gtmisql.4st" id="109"/>
+        <File filePath="GtMisql/gtmisql.4tb" id="111"/>
+        <File filePath="GtMisql/gtmisql.4tm" id="112"/>
+      </Application>
+    </Project>
     <Project id="51" label="libGtCore">
       <Library id="50" label="libGtCore">
         <File filePath="libGtCore/libgt.4st" id="29"/>
         <File filePath="libGtCore/libgt_binary.4gl" id="30"/>
         <File filePath="libGtCore/libgt_binary_utils.4gl" id="31"/>
+        <File filePath="libGtCore/libgt_database.4gl" id="108"/>
         <File filePath="libGtCore/libgt_email.4gl" id="32"/>
         <File filePath="libGtCore/libgt_encryption.4gl" id="33"/>
         <File filePath="libGtCore/libgt_exception.4gl" id="34"/>
@@ -32,7 +43,7 @@
         <File filePath="libGtCore/libgt_unittest.4tm" id="47"/>
         <File filePath="libGtCore/libgt_validators.4gl" id="49"/>
       </Library>
-      <Application dependencies="50" id="25" label="libGtCore_test">
+      <Application commandLineArguments="--validators" dependencies="50" id="25" label="libGtCore_test">
         <File filePath="libGtCore/unittest/libgt_binary_test.4gl" id="11"/>
         <File filePath="libGtCore/unittest/libgt_binary_utils_test.4gl" id="12"/>
         <File filePath="libGtCore/unittest/libgt_email_test.4gl" id="13"/>
@@ -84,10 +95,27 @@
         <File filePath="libGtParser/libgt_4gl_parser.4gl" id="66"/>
       </Library>
     </Project>
+    <Project id="113" label="libGtSQL">
+      <Library id="114" label="libGtSQL">
+        <File filePath="libGtSQL/libgt_sql_database.4gl" id="115"/>
+        <File filePath="libGtSQL/libgt_sql_index.4gl" id="116"/>
+        <File filePath="libGtSQL/libgt_sql_stored_procedures.4gl" id="117"/>
+        <File filePath="libGtSQL/libgt_sql_table.4gl" id="118"/>
+        <File filePath="libGtSQL/libgt_sql_triggers.4gl" id="119"/>
+      </Library>
+    </Project>
+    <Project id="106" label="libGtSQLSchema">
+      <Library id="107" label="libGtSQLSchema">
+        <File filePath="libGtSQLSchema/libgt_sql_data_schema.4gl" id="121"/>
+        <File filePath="libGtSQLSchema/libgt_sql_db_schema.4gl" id="122"/>
+        <File filePath="libGtSQLSchema/libgt_sql_table_schema.4gl" id="123"/>
+        <File filePath="libGtSQLSchema/libgt_sql_type_mapping.4gl" id="124"/>
+      </Library>
+    </Project>
     <Project id="85" label="libGtUI">
       <Library id="70" label="libGtUI">
         <File filePath="libGtUI/lib_cui_exception.4gl" id="68"/>
-        <File filePath="libGtUI/lib_exception.per" id="69"/>
+        <File filePath="libGtUI/lib_exception.4fd" id="120"/>
       </Library>
     </Project>
     <Project id="86" label="Utilities">

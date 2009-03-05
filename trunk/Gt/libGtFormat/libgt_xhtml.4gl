@@ -82,7 +82,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("body")
@@ -151,7 +151,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -205,7 +205,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -237,7 +237,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.characters(l_text)
@@ -267,7 +267,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -304,7 +304,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -341,7 +341,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -376,7 +376,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -406,7 +406,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("div")
@@ -430,7 +430,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -460,7 +460,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("dl")
@@ -484,7 +484,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -514,7 +514,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("dt")
@@ -542,7 +542,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -620,7 +620,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -654,7 +654,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -684,7 +684,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("li")
@@ -708,7 +708,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -738,7 +738,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("ol")
@@ -762,7 +762,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -792,7 +792,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("p")
@@ -816,7 +816,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -846,7 +846,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("ul")
@@ -874,7 +874,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -904,7 +904,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("b")
@@ -928,7 +928,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -958,7 +958,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("big")
@@ -984,7 +984,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1021,7 +1021,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1056,7 +1056,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1086,7 +1086,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("em")
@@ -1110,7 +1110,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1140,7 +1140,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("i")
@@ -1166,7 +1166,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1203,7 +1203,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1240,7 +1240,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1275,7 +1275,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1305,7 +1305,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("small")
@@ -1329,7 +1329,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1359,7 +1359,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("span")
@@ -1383,7 +1383,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1413,7 +1413,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("strong")
@@ -1439,7 +1439,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1476,7 +1476,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1513,7 +1513,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1550,7 +1550,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1591,7 +1591,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1628,7 +1628,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1667,7 +1667,7 @@ DEFINE
     l_pos             INTEGER,
     l_attributes    om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1705,7 +1705,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("del")
@@ -1733,7 +1733,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1771,7 +1771,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("ins")
@@ -1799,7 +1799,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1850,7 +1850,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1894,7 +1894,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1941,7 +1941,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -1976,7 +1976,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2006,7 +2006,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("table")
@@ -2030,7 +2030,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2060,7 +2060,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("colgroup")
@@ -2084,7 +2084,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2114,7 +2114,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("col")
@@ -2138,7 +2138,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2168,7 +2168,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("tr")
@@ -2192,7 +2192,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2222,7 +2222,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("th")
@@ -2246,7 +2246,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2276,7 +2276,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("td")
@@ -2300,7 +2300,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2330,7 +2330,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("thead")
@@ -2354,7 +2354,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2384,7 +2384,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("tbody")
@@ -2408,7 +2408,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2438,7 +2438,7 @@ DEFINE
 DEFINE
     l_pos   INTEGER
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         CALL m_document_list[l_pos].xhtml.endelement("tfoot")
@@ -2472,7 +2472,7 @@ DEFINE
     l_pos          INTEGER,
     l_attributes   om.saxattributes
 
-    LET l_pos = p_gt_find_xhtml_document(l_xhtmlhdl)
+    LET l_pos = gtp_find_xhtml_document(l_xhtmlhdl)
 
     IF l_pos IS NOT NULL THEN
         LET l_attributes = om.saxattributes.create()
@@ -2499,7 +2499,7 @@ END FUNCTION
 # @return l_pos The position in the list of the document, NULL otherwise.
 #
 
-FUNCTION p_gt_find_xhtml_document(l_xhtmlhdl)
+FUNCTION gtp_find_xhtml_document(l_xhtmlhdl)
 
 DEFINE
     l_xhtmlhdl   STRING

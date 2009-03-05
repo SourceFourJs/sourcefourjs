@@ -7,4 +7,5 @@ Version 0.2
 - Start of documentation generator
 
 Version 0.3
-- ? 
+- Most of documentation generator complete, i.e. It can generate the complete
+  documentation for the Genero Toolkit

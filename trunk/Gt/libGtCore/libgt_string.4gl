@@ -126,6 +126,10 @@ DEFINE
 
     LET l_ok = FALSE
     LET l_status = 0
+    
+    IF gt_string_is_empty(l_string) THEN
+        RETURN l_ok
+    END IF
 
     WHENEVER ANY ERROR CONTINUE
     LET STATUS = 0
@@ -163,6 +167,10 @@ DEFINE
 
     LET l_ok = FALSE
     LET l_status = 0
+    
+    IF gt_string_is_empty(l_string) THEN
+        RETURN l_ok
+    END IF
 
     WHENEVER ANY ERROR CONTINUE
     LET STATUS = 0
@@ -209,6 +217,10 @@ DEFINE
     i      INTEGER
 
     LET l_ok = FALSE
+    
+    IF gt_string_is_empty(l_string) THEN
+        RETURN l_ok
+    END IF
 
     FOR i = 1 TO l_string.getLength()
         IF (l_string.getCharAt(i) >= "a"
@@ -243,6 +255,10 @@ DEFINE
     i      INTEGER
 
     LET l_ok = FALSE
+    
+    IF gt_string_is_empty(l_string) THEN
+        RETURN l_ok
+    END IF
 
     FOR i = 1 TO l_string.getLength()
         IF (l_string.getCharAt(i) >= "0"

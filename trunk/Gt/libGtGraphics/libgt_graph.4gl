@@ -75,7 +75,8 @@ DEFINE
                 x         DECIMAL(32,16),
                 x_label   STRING,
                 y         DECIMAL(32,16),
-                y_label   STRING
+                y_label   STRING,
+                explode   SMALLINT
             END RECORD
         END RECORD
     END RECORD
@@ -137,7 +138,7 @@ DEFINE
     l_plotid    INTEGER,
     l_graphid   INTEGER
 
-    LET l_graphid = p_gt_find_graph(l_graphhdl)
+    LET l_graphid = gtp_find_graph(l_graphhdl)
 
     IF l_graphid > 0 THEN
         CALL m_graph_list[l_graphid].plot.appendElement()
@@ -160,7 +161,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].title = l_title.trim()
@@ -182,7 +183,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         IF gt_string_is_empty(l_x_label_color) THEN
@@ -208,7 +209,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         IF gt_string_is_empty(l_y_label_color) THEN
@@ -233,7 +234,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].x_minimum = l_x_min
@@ -253,7 +254,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].y_minimum = l_y_min
@@ -273,7 +274,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].x_maximum = l_x_max
@@ -293,7 +294,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].y_maximum = l_y_max
@@ -314,7 +315,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].x_no_of_ticks = l_no_of_ticks
@@ -336,7 +337,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].y_no_of_ticks = l_no_of_ticks
@@ -357,7 +358,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         LET m_graph_list[l_pos].bar_spacing = l_distance
@@ -378,7 +379,7 @@ DEFINE
     l_pos      INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         IF gt_string_is_empty(l_color) THEN
@@ -404,7 +405,7 @@ DEFINE
     l_pos      INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_graph(l_graphhdl)
+    LET l_pos = gtp_find_graph(l_graphhdl)
 
     IF l_pos > 0 THEN
         IF gt_string_is_empty(l_shadow_color) THEN
@@ -436,14 +437,14 @@ DEFINE
     l_graphid   INTEGER
 
     LET l_ok = FALSE
-    LET l_graphid = p_gt_find_graph(l_graphhdl)
+    LET l_graphid = gtp_find_graph(l_graphhdl)
 
     IF l_graphid > 0 THEN
-        LET l_plotid = p_gt_find_plot(l_graphid, l_name)
+        LET l_plotid = gtp_find_plot(l_graphid, l_name)
 
         IF l_plotid == 0 THEN
             CALL add_new_plot(l_graphhdl, l_name, m_graph_list[l_graphid].type)
-            LET l_plotid = p_gt_find_plot(l_graphid, l_name)
+            LET l_plotid = gtp_find_plot(l_graphid, l_name)
         END IF
 
         IF l_plotid > 0 THEN
@@ -504,7 +505,7 @@ DEFINE
 
     LET l_ok = FALSE
     LET l_x_count = 0
-    LET l_graphid = p_gt_find_graph(l_graphhdl)
+    LET l_graphid = gtp_find_graph(l_graphhdl)
 
     IF l_graphid > 0 THEN
         LET l_canvas = m_graph_list[l_graphid].canvas
@@ -1156,7 +1157,7 @@ DEFINE
     l_graphid   INTEGER
 
     LET l_ok = FALSE
-    LET l_graphid = p_gt_find_graph(l_graphhdl)
+    LET l_graphid = gtp_find_graph(l_graphhdl)
 
     IF l_graphid > 0 THEN
         LET l_window = ui.Window.getCurrent()
@@ -1187,7 +1188,7 @@ END FUNCTION
 # @return l_graphid The position of the graph in the list, 0 if not found.
 #
 
-FUNCTION p_gt_find_graph(l_graphhdl)
+FUNCTION gtp_find_graph(l_graphhdl)
 
 DEFINE
     l_graphhdl   STRING
@@ -1216,7 +1217,7 @@ END FUNCTION
 # @return l_graphid The position of the graph in the list, 0 if not found.
 #
 
-FUNCTION p_gt_find_plot(l_graphid, l_name)
+FUNCTION gtp_find_plot(l_graphid, l_name)
 
 DEFINE
     l_graphid    INTEGER,

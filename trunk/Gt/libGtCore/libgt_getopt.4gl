@@ -71,7 +71,7 @@ DEFINE
     LET l_exists = FALSE
 
     IF NOT m_parsed THEN
-        CALL p_gt_parse_arguments()
+        CALL gtp_parse_arguments()
     END IF
 
     IF l_argument.substring(1,2) == "--" THEN
@@ -111,7 +111,7 @@ DEFINE
     LET l_value = NULL
 
     IF NOT m_parsed THEN
-        CALL p_gt_parse_arguments()
+        CALL gtp_parse_arguments()
     END IF
 
     IF l_argument.substring(1,2) == "--" THEN
@@ -142,7 +142,7 @@ END FUNCTION
 # @private
 #
 
-FUNCTION p_gt_parse_arguments()
+FUNCTION gtp_parse_arguments()
 
 DEFINE
     i            INTEGER,

@@ -4,7 +4,7 @@
  END OF FORM                                                                  #
 ------------------------------------------------------------------------------#
 ----------------------------------------------------------------------------#
-" percommentheader="$Id: libgt_unittest.per 26 2007-09-06 22:04:47Z quantumchaos451 $
+" percommentheader="$Id$
 ------------------------------------------------------------------------------#
 ----------------------------------------------------------------------------#
  Copyright (c) 2007 Scott Newton &lt;scottn@ihug.co.nz&gt;                          #
@@ -34,8 +34,8 @@
  @category Library Form
  @author Scott Newton
  @date August 2007
- @version $Id: libgt_unittest.per 26 2007-09-06 22:04:47Z quantumchaos451 $
-" percommentinstruction="" percommentlayout="" percommentschema="" posX="0" posY="0" spacing="normal" text="" version="$Id: libgt_unittest.per 26 2007-09-06 22:04:47Z quantumchaos451 $" width="80">
+ @version $Id$
+" percommentinstruction="" percommentlayout="" percommentschema="" posX="0" posY="0" spacing="normal" text="" version="$Id$" width="80">
   <HBox height="23" hidden="" name="hb1" posX="2" posY="1" style="" tag="" width="76">
     <Group fontPitch="default" gridChildrenInParent="--------" height="23" hidden="--------" lstrcomment="false" lstrtext="true" name="g1" posX="2" posY="1" text="Results" width="38">
       <Table fontPitch="default" height="21" hidden="--------" lstrcomment="false" name="results_scr" posX="1" posY="1" tabName="results_scr" totalRows="19" unhidableColumns="--------" unitHeight="10 LINES" unmovableColumns="--------" unsizableColumns="--------" unsortableColumns="--------" wantFixedPageSize="--------" width="36">

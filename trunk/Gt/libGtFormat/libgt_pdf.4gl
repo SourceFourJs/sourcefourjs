@@ -30,6 +30,17 @@
 # @version $Id$
 #
 
+DEFINE
+    m_document_count   INTEGER,
+
+    m_document_list DYNAMIC ARRAY OF RECORD
+        pdfhdl       STRING,
+        filename     STRING,
+        stylesheet   STRING,
+        class        STRING,
+        pdf          om.saxdocumenthandler
+    END RECORD
+
 ##
 # Function to set WHENEVER ANY ERROR for this module
 #
@@ -48,7 +59,7 @@ END FUNCTION
 # Function_description
 # @param param Parameter_description.
 # @return returning Return_description.
-# 
+#
 
 FUNCTION gt_create_pdf_document()
 END FUNCTION
@@ -56,6 +67,34 @@ END FUNCTION
 #------------------------------------------------------------------------------#
 # PRIVATE FUNCTIONS                                                            #
 #------------------------------------------------------------------------------#
+
+##
+# This function finds the relevant pdf document in the list.
+# @param l_pdfhdl The document to find.
+# @return l_pos The position in the list of the document, NULL otherwise.
+#
+
+FUNCTION gtp_find_pdf_document(l_pdfhdl)
+
+DEFINE
+    l_pdfhdl   STRING
+
+DEFINE
+    i       INTEGER,
+    l_pos   INTEGER
+
+    LET l_pos = NULL
+
+    FOR i = 1 TO m_document_count
+        IF m_document_list[i].pdfhdl == l_pdfhdl THEN
+            LET l_pos = i
+            EXIT FOR
+        END IF
+  END FOR
+
+  RETURN l_pos
+
+END FUNCTION
 
 #------------------------------------------------------------------------------#
 # END OF MODULE                                                                #

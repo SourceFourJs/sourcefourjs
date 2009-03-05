@@ -188,7 +188,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "USER ", l_username
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -243,7 +243,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "PASS ", l_password
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -300,7 +300,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "STAT"
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -363,7 +363,7 @@ DEFINE
         LET l_data = l_data, " ", l_number
     END IF
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -440,7 +440,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "RETR ", l_number
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -499,7 +499,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "DELE ", l_number
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -558,7 +558,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "TOP ", l_number, " ", l_lines
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -617,7 +617,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "QUIT"
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -677,7 +677,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "RSET"
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -726,7 +726,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_data = "NOOP"
 
-    LET l_socket = p_gt_find_pop3_client_socket(l_sockethdl)
+    LET l_socket = gtp_find_pop3_client_socket(l_sockethdl)
 
     IF l_socket IS NULL THEN
         CALL gt_set_error("ERROR", SFMT(%"The given sockethdl %1 is not valid", l_sockethdl))
@@ -764,7 +764,7 @@ END FUNCTION
 # @return l_socket The actual socket to use.
 #
 
-FUNCTION p_gt_find_pop3_client_socket(l_sockethdl)
+FUNCTION gtp_find_pop3_client_socket(l_sockethdl)
 
 DEFINE
     l_sockethdl   STRING
