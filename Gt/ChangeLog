@@ -1,3 +1,8 @@
+2009-03-05 scottn
+  * Added libgt_regex.4gl, libgt_validators.4gl and libgt_validators_test.4gl
+  * Added explode flag to libgt_graph. To be used later to make the pie graph explodable.
+  * Various other tidy ups, mostly to do with function names.
+
 2008-08-16 scottn
   * Added libGtGraphics and demo program
 

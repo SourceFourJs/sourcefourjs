@@ -138,7 +138,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         LET m_email_list[l_pos].from = l_from.trim()
@@ -166,7 +166,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         IF m_email_list[l_pos].to.getLength() == 0 THEN
@@ -199,7 +199,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         IF m_email_list[l_pos].cc.getLength() == 0 THEN
@@ -232,7 +232,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         IF m_email_list[l_pos].bcc.getLength() == 0 THEN
@@ -265,7 +265,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         LET m_email_list[l_pos].subject = l_subject.trim()
@@ -293,7 +293,7 @@ DEFINE
     l_pos   INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         LET m_email_list[l_pos].body = l_body.trim()
@@ -325,7 +325,7 @@ DEFINE
     LET l_ok = FALSE
     LET l_body = base.stringbuffer.create()
 
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         IF gt_file_exists(l_file) THEN
@@ -379,7 +379,7 @@ DEFINE
     LET l_attachment = l_attachment.trim()
     LET l_body = base.stringbuffer.create()
 
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
         LET l_apos = m_email_list[l_pos].attachment_list.getlength()
@@ -430,10 +430,10 @@ DEFINE
     l_pos    INTEGER
 
     LET l_ok = FALSE
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_pos > 0 THEN
-        IF p_gt_dispatch_email(l_pos) THEN
+        IF gtp_dispatch_email(l_pos) THEN
             LET l_ok = TRUE
         ELSE
             LET l_ok = FALSE
@@ -456,7 +456,7 @@ DEFINE
 
     LET l_ok = FALSE
 
-    IF p_gt_dispatch_email(0) THEN
+    IF gtp_dispatch_email(0) THEN
         LET l_ok = TRUE
     END IF
 
@@ -495,7 +495,7 @@ DEFINE
 
     LET l_emailhdl = gt_create_email()
 
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_emailhdl IS NOT NULL THEN
         LET l_ok = gt_set_email_from_address(l_emailhdl, l_from)
@@ -521,7 +521,7 @@ DEFINE
         END IF
 
         IF l_ok THEN
-            IF p_gt_dispatch_email(l_pos) THEN
+            IF gtp_dispatch_email(l_pos) THEN
                 LET l_ok = TRUE
             ELSE
                 CALL gt_set_error("ERROR", SFMT(%"Error in sending email notification %1", l_emailhdl))
@@ -562,7 +562,7 @@ DEFINE
 
     LET l_emailhdl = gt_create_email()
 
-    LET l_pos = p_gt_find_email(l_emailhdl)
+    LET l_pos = gtp_find_email(l_emailhdl)
 
     IF l_emailhdl IS NOT NULL THEN
         LET l_ok = gt_set_email_from_address(l_emailhdl, l_from)
@@ -592,7 +592,7 @@ DEFINE
         END IF
 
         IF l_ok THEN
-            IF p_gt_dispatch_email(l_pos) THEN
+            IF gtp_dispatch_email(l_pos) THEN
                 LET l_ok = TRUE
             ELSE
                 CALL gt_set_error("ERROR", SFMT(%"Error in sending email notification %1", l_emailhdl))
@@ -743,6 +743,23 @@ DEFINE
 END FUNCTION
 
 #------------------------------------------------------------------------------#
+# DEBUG FUNCTIONS                                                              #
+#------------------------------------------------------------------------------#
+
+FUNCTION gtd_dump_email_list(l_filename)
+
+DEFINE
+    l_filename   STRING
+
+DEFINE
+    l_node   om.DomNode
+
+    LET l_node = base.TypeInfo.create(m_email_list)
+    CALL l_node.writeXML(l_filename)
+
+END FUNCTION
+
+#------------------------------------------------------------------------------#
 # PRIVATE FUNCTIONS                                                            #
 #------------------------------------------------------------------------------#
 
@@ -753,7 +770,7 @@ END FUNCTION
 # @return l_pos The position of the email in the list, 0 if not found.
 #
 
-FUNCTION p_gt_find_email(l_emailhdl)
+FUNCTION gtp_find_email(l_emailhdl)
 
 DEFINE
     l_emailhdl   STRING
@@ -782,7 +799,7 @@ END FUNCTION
 # @param l_pos
 # @return l_email The email source to send.
 
-FUNCTION p_gt_create_email_message(l_pos)
+FUNCTION gtp_create_email_message(l_pos)
 
 DEFINE
     l_pos   INTEGER
@@ -844,7 +861,7 @@ END FUNCTION
 # @return l_ok TRUE is email(s) successfully sent, FALSE otherwise.
 #
 
-FUNCTION p_gt_dispatch_email(l_pos)
+FUNCTION gtp_dispatch_email(l_pos)
 
 DEFINE
     l_pos   INTEGER
@@ -894,7 +911,7 @@ DEFINE
             END IF
 
             IF l_ok THEN
-                IF gt_smtp_data(l_sockethdl, p_gt_create_email_message(i)) THEN
+                IF gt_smtp_data(l_sockethdl, gtp_create_email_message(i)) THEN
                     LET l_ok = TRUE
                 ELSE
                     LET l_ok = FALSE
@@ -929,7 +946,7 @@ DEFINE
         END IF
 
         IF l_ok THEN
-            IF gt_smtp_data(l_sockethdl, p_gt_create_email_message(l_pos)) THEN
+            IF gt_smtp_data(l_sockethdl, gtp_create_email_message(l_pos)) THEN
                 LET l_ok = TRUE
             ELSE
                 LET l_ok = FALSE

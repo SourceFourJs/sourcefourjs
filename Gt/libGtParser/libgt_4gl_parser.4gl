@@ -104,7 +104,7 @@ DEFINE
             DISPLAY "File too long"
             EXIT PROGRAM
         END IF
-        CALL p_gt_tokens(l_include_comments)
+        CALL gtp_tokens(l_include_comments)
     END IF
 
 
@@ -187,7 +187,7 @@ END FUNCTION
 # @return i The position the given character was found in.
 #
 
-FUNCTION p_gt_wait_for(i, l_char)
+FUNCTION gtp_wait_for(i, l_char)
 
 DEFINE
     i        INTEGER,
@@ -208,7 +208,7 @@ END FUNCTION
 #                           token array, FALSE otherwise.
 #
 
-FUNCTION p_gt_tokens(l_include_comments)
+FUNCTION gtp_tokens(l_include_comments)
 
 DEFINE
     l_include_comments   SMALLINT
@@ -245,7 +245,7 @@ DEFINE
         END IF
 
         IF l_char == "{" THEN
-            LET j = p_gt_wait_for(i, "}")
+            LET j = gtp_wait_for(i, "}")
             IF l_include_comments THEN
                 LET m_token_count = m_token_count + 1
                 LET m_tokens[m_token_count] = m_line.subString(i, j)
@@ -257,7 +257,7 @@ DEFINE
         IF l_char == "#" THEN
             IF NOT l_in_single_quotes
             AND NOT l_in_double_quotes THEN
-                LET j = p_gt_wait_for(i, "\n")
+                LET j = gtp_wait_for(i, "\n")
                 IF l_include_comments THEN
                     LET m_token_count = m_token_count + 1
                     LET m_tokens[m_token_count] = m_line.subString(i, j)
@@ -269,7 +269,7 @@ DEFINE
 
         IF l_char == "-" THEN
             IF m_line.getCharAt(i + 1) == "-" THEN
-                LET j = p_gt_wait_for(i, "\n")
+                LET j = gtp_wait_for(i, "\n")
                 IF l_include_comments THEN
                     LET m_token_count = m_token_count + 1
                     LET m_tokens[m_token_count] = m_line.subString(i, j)

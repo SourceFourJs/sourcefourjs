@@ -7,7 +7,7 @@ The latest development version can be found in the subversion repository (http:/
 Coding Standards used:
 
 Functions:
-Functions start with gt_ to try and avoid naming clashes with people's existing functions. Private functions (ones that should only be called from within that module) are prefixed with p_gt_.
+Functions start with gt_ to try and avoid naming clashes with people's existing functions. Private functions (ones that should only be called from within that module) are prefixed with gtp_. Debug functions are prefixed with gtd_.
 
 Variables:
 Variables are prefixed according to their scope.
@@ -16,6 +16,7 @@ g_ - Global variables.
 m_ - Module variables.
 l_ - Local variables.
 c_ - Cursors.
+s_ - Statements.
 
 Forms:
 Each form widget is prefixed with an identifier indicating what sort of widget it is.
