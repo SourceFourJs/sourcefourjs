@@ -1,9 +1,11 @@
 #summary Configuration Files for vim users
 
-----
-*DRAFT 
-let me check what I've typed and get the downloads in place reuben 14/3/2008 
-----
+<font color="red" >
+* JANUARY 2010: Genero has shipped with vim files since 2.20 http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#auto-completion-vim *
+
+* AUGUST 2010: Genero Studio 2.30 will have a vim editing mode in the Code Editor *
+
+</font>
 
 
 = Introduction =
