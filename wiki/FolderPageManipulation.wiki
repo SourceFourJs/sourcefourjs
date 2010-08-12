@@ -1,5 +1,9 @@
 #summary Tips for Manipulating Folder Pages
 
+<font color="red">
+* AUGUST 2010: In Genero 2.30, a method was added to ensure that a certain field was visible.  This can be used with Folder Pages to ensure that the page with that field on it is visible http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#ensure-field-visible *
+</font>
+
 = Introduction =
 
 One of the often repeated questions in the 4js developer mailing lists is how to manipulate the FOLDER widgets so that a particular PAGE is on top.  Here are some tips/advice for manipulating the FOLDER widget.
