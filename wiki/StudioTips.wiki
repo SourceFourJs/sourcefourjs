@@ -2,9 +2,11 @@
 
 = Introduction =
 
-A summary of some useful tips on how to do some of the things you want to do with Genero Studio.  
+A summary of some useful tips on how to do some of the things you want to do with Genero Studio. 
 
 *DISCLAIMER* None of these are 'official' or 'recommended practices', use at your own risk.
+
+Any editing of configuration files should be done when Studio is not open.  Studio may write what it has in memory back to these files when it is closed, thus overwriting changes you make whilst Studio is open
 
 
 = Tools->Configurations =
@@ -37,5 +39,23 @@ I modify the template.4pw so that the Target Directory property does not include
 }}}  
 
 = Adding Templates =
+
+You can add new template files into the GSTDIR/bin/src/studio/tpl directory but then how do you make Studio use them or offer them as a choice to be used.
+
+In %APPDATA%\FourJs\Genero Studio [version]\user.conf find an instance of a similar template file...
+
+For instance if I want to create an additional templates for .4pw, find the existing .4pw entry template entry that opens template.4pw ...
+
+{{{
+<Creatable action="PMOpenWorkspace" description="Create a project" extension="4pw" file="template.4pw" icon="workspace" isTemplate="true" label="Simple Project (.4pw)" name="PMSimpleProject"/>
+}}}
+
+and copy and paste this line in the same place in user.conf and edit the description, file, label attributes
+
+{{{
+<Creatable action="PMOpenWorkspace" description="Create my project" extension="4pw" file="my_template.4pw" icon="workspace" isTemplate="true" label="My Simple Project (.4pw)" name="PMSimpleProject"/>
+}}}
+
+
 
 
