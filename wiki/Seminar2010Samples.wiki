@@ -18,6 +18,7 @@ The number beside the entry is just something I added in the Genero Studio proje
   * *15 Tree Widget*
 
        Refer to $FGLDIR/demo/Tree/aui-tree
+
   * *16 Tree Widget BOM*
 
        Refer to $FGLDIR/demo/Tree/bill-of-material
@@ -42,7 +43,7 @@ The number beside the entry is just something I added in the Genero Studio proje
 
   * *51 Drag & Drop Excel*
 
-       Add the following to any DISPLAY ARRAY and compile in Genero 2.30 or later
+       Add the following to any DISPLAY ARRAY and compile in Genero 2.30 or later.  (you will need to also add a DEFINE dnd ui.DragDrop).  Run and then Drag & Drop one or more rows from this array to Excel.  Also select multiple rows, click editcopy and paste into Excel.
 
 {{{
       BEFORE DISPLAY
