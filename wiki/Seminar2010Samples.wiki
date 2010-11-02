@@ -2,18 +2,20 @@
 
 = Introduction =
 
-The following lists where you will find the sources I used as part of my demonstrations on the 2010 Four J's Asia Pacific Tour.
+The following lists the programs I used as part of my demonstrations on the 2010 Four J's Asia Pacific Tour.
 
 A number of them were taken from the Four J's demo directories so I will direct you to the appropriate demo in the 2.30 release which is now available rather than duplicating them here.
 
+Similarly some of the other programs I'll list the change I made (typically adding something to the .4st or a few lines of code) and you can apply this change to your code and note the effect
+
 The number beside the entry is just something I added in the Genero Studio project workspace to get the programs in the order I intended to display them
 
-= Details =
 
-*Releases prior to Genero 2.30*
+
+= Releases prior to Genero 2.30 =
   * *10 Multi Dialog*
  
-       TODO
+       TODO - I'll add comments to my examples and flesh them out a bit.  In the interim, refer to $FGLDIR/demo/MultiDialogs
 
   * *15 Tree Widget*
 
@@ -33,10 +35,15 @@ The number beside the entry is just something I added in the Genero Studio proje
 
   * *25 Rich Text Edit*
 
-       TODO
+       Add the following to your .4st stylesheet.  Run a program that has an INPUT on a TEXTEDIT.  You will get the rich text edit toolbox, and if you look at the text that is saved to the variable you will see that it is HTML
+    {{{
+   <Style name="TextEdit" >
+      <StyleAttribute name="textFormat" value="html" /> 
+      <StyleAttribute name="showEditToolBox" value="yes" /> 
+   </Style>
+    }}}
 
-
-*Genero 2.30 Release*
+= Genero 2.30 Release =
   * *50 Drag & Drop*
 
        Refer to $FGLDIR/demo/DragAndDrop/orders_and_trucks_tree
@@ -85,7 +92,57 @@ The number beside the entry is just something I added in the Genero Studio proje
 
   * *71 Presentation Styles*
 
-       TODO
+       That program had the following entries in the .4st stylesheet file
+
+       To make the ERROR in the statusbar, red, bold and double-size ...
+{{{
+   <Style name="Message:error">
+      <StyleAttribute name="textColor" value="red" />
+      <StyleAttribute name="fontWeight" value="bold" />
+      <StyleAttribute name="fontStyle" value="normal" />
+      <StyleAttribute name="fontSize" value="2em" />
+   </Style>
+}}}
+
+      To make the Table column headings match the alignment of the data
+{{{
+   <Style name="Table" >
+      <StyleAttribute name="headerAlignment" value="auto" />
+   </Style>
+}}}
+      To allow the user to freeze table columns, and to freeze the first column
+{{{
+   <Style name="Table" >
+      <StyleAttribute name="tableType" value="frozenTable" />
+      <StyleAttribute name="leftFrozenColumns" value="1" />
+   </Style>
+      Change the background color of the toolbar  
+   <Style name="ToolBar" >
+      <StyleAttribute name="backgroundColor" value="yellow" />
+   </Style>
+
+}}}
+      Its not new but in case you haven't seen how to get the alternate line shading 
+{{{
+   <Style name="Table:odd" >
+      <StyleAttribute name="backgroundColor" value="#EEEEEE" />
+   </Style>
+   <Style name="Table:even" >
+      <StyleAttribute name="backgroundColor" value="#DDDDDD" />
+   </Style>
+}}}
+    
+      Again not new in 2.30 but how to change the appearance of buttons, you would need to add STYLE="commandLink" and STYLE="link" to the BUTTON definition in the form
+{{{
+   <Style name="Button.commandLink">
+       <StyleAttribute name="buttonType" value="commandLink"/>
+   </Style>
+   <Style name="Button.link">
+       <StyleAttribute name="buttonType" value="link"/>
+   </Style>
+}}}
+
+
 
   * *72 Animated GIF*
      
@@ -100,14 +157,20 @@ The number beside the entry is just something I added in the Genero Studio proje
        TODO
 
 
-*Genero 2.30 Release Migration Issues*
+= Genero 2.30 Release Migration Issues =
   * *90 Set Current Row*
 
-       TODO
+    With a DISPLAY ARRAY you have that has multiple-row select, add the following action (replace "scr" with the name of your screen record)
+
+{{{
+      ON ACTION goto1
+         CALL dialog.setCurrentRow("scr",1)
+}}}
+    Observe the difference in behaviour between 2.21 and 2.30 when you select some rows, and then click the goto1 action.  In 2.21 the selected rows will remain selected, in 2.30 the selected rows will be unselected.
 
   * *91 Menu Action Close*
 
-    Compile and run this program in both 2.21 and 2.30, observe the difference in behaviour when you click on the red-cross.  In 2.21, int_flag would be set and the MENU would exit without setting the result variable.  Typical 4gl didn't cater for this case.
+    Compile and run this program in both 2.21 and 2.30, observe the difference in behaviour when you click on the red-cross (close) in the top right corner of the dialog box.  In 2.21, int_flag would be set and the MENU would exit without setting the result variable.  Typical 4gl didn't cater for this case.
 {{{
 MAIN
 DEFINE result CHAR(1)
