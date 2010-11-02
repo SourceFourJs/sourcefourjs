@@ -106,7 +106,31 @@ Genero 2.30 Release Migration Issues
 
   * 91 Menu Action Close
 
-       TODO
+    Compile and run this program in both 2.21 and 2.30, observe the difference in behaviour when you click on the red-cross.  In 2.21, int_flag would be set and the MENU would exit without setting the result variable.  Typical 4gl didn't cater for this case.
+{{{
+MAIN
+DEFINE result CHAR(1)
+
+   MENU "" ATTRIBUTES(COMMENT="Menu with two options", STYLE="dialog")
+      COMMAND "Yes"
+         LET result = "Y"
+         EXIT MENU
+      COMMAND "No"
+         LET result = "N"
+         EXIT MENU
+      --ON ACTION close
+         --LET result = "C"
+         --EXIT MENU
+   END MENU
+
+   -- With 2.21 you can click on the red cross and int_flag will be set to 1 and result will be NULL!!!
+
+   DISPLAY SFMT("int_flag=%1", int_flag)
+   DISPLAY SFMT("result=%1", result )
+   
+END MAIN
+
+}}}
 
   
 
