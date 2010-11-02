@@ -204,7 +204,67 @@ BUTTON b01: interrupt;
 
   * *74 CSV* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#csv-channel-delimiter)
 
-       TODO
+       The program below generates two 100 line files of random data.   Double-click on the files and note how csv.csv loads into Excel better then comma.csv
+
+{{{
+-- Generate 2 100 line files of random data, one using the "," delimiter, the other using the CSV delimiter
+IMPORT util
+MAIN
+
+DEFINE comma,csv base.Channel
+DEFINE i INTEGER
+DEFINE code CHAR(3)
+DEFINE qty DECIMAL(11,2)
+DEFINE name STRING
+
+   LET comma = base.Channel.create()
+   LET csv = base.Channel.create()
+   
+   CALL comma.openFile("comma.csv","w")
+   CALL csv.openFile("csv.csv","w")
+
+   -- Note the two different delimiters
+   CALL comma.setDelimiter(",")
+   CALL csv.setDelimiter("CSV")
+
+   FOR i = 1 TO 100
+      LET code = random_letter("UPPER"),random_letter("UPPER"),random_letter("UPPER")
+      LET name = random_name()
+      LET qty = util.Math.rand(1000000)/100
+      CALL comma.write([code,name,qty])
+      CALL csv.write([code,name,qty])
+   END FOR
+   
+   CALL comma.close()
+   CALL csv.close()
+END MAIN
+
+FUNCTION random_letter(case)
+DEFINE case STRING
+   CASE case --
+      WHEN "UPPER"  RETURN ASCII(util.Math.rand(26)+65)
+      OTHERWISE RETURN ASCII(util.Math.rand(26)+97)
+   END CASE
+END FUNCTION
+
+FUNCTION random_name()
+DEFINE sb base.StringBuffer
+DEFINE i INTEGER
+
+   LET sb = base.StringBuffer.create()
+   CALL sb.append(random_letter("UPPER"))
+   FOR i = util.Math.rand(4)+4 TO 1 STEP -1
+      CALL sb.append(random_letter("LOWER"))
+   END FOR
+   CALL sb.append(",")
+   CALL sb.append(random_letter("UPPER"))
+   FOR i = util.Math.rand(4)+4 TO 1 STEP -1
+      CALL sb.append(random_letter("LOWER"))
+   END FOR
+   RETURN sb.toString()
+END FUNCTION
+
+}}}
 
 
 = Genero 2.30 Release Migration Issues =
