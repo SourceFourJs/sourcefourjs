@@ -13,27 +13,27 @@ The number beside the entry is just something I added in the Genero Studio proje
 
 
 = Releases prior to Genero 2.30 =
-  * *10 Multi Dialog*
+  * *10 Multi Dialog* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Multiple_Dialogs_2.10)
  
        TODO - I'll add comments to my examples and flesh them out a bit.  In the interim, refer to $FGLDIR/demo/MultiDialogs
 
-  * *15 Tree Widget*
+  * *15 Tree Widget* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#tree-view-tables)
 
        Refer to $FGLDIR/demo/Tree/aui-tree
 
-  * *16 Tree Widget BOM*
+  * *16 Tree Widget BOM* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#tree-view-tables)
 
        Refer to $FGLDIR/demo/Tree/bill-of-material
 
-  * *18 Picture Flow*
+  * *18 Picture Flow* (http://www.4js.com/techdocs/genero/gdc/devel/DocRoot/User/NewFeatures220.html#220TablePFlow)
 
        [http://code.google.com/p/sourcefourjs/downloads/detail?name=PictureFlow_1_0.zip Download this example]
 
-  * *20 Module*
+  * *20 Module* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Modules_2_21)
 
        TODO
 
-  * *25 Rich Text Edit*
+  * *25 Rich Text Edit* (http://www.4js.com/techdocs/genero/gdc/devel/DocRoot/User/NewFeatures222.html#222RichText)
 
        Add the following to your .4st stylesheet.  Run a program that has an INPUT on a TEXTEDIT.  You will get the rich text edit toolbox, and if you look at the text that is saved to the variable you will see that it is HTML
     {{{
@@ -44,11 +44,11 @@ The number beside the entry is just something I added in the Genero Studio proje
     }}}
 
 = Genero 2.30 Release =
-  * *50 Drag & Drop*
+  * *50 Drag & Drop* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Drag_and_Drop)
 
        Refer to $FGLDIR/demo/DragAndDrop/orders_and_trucks_tree
 
-  * *51 Drag & Drop Excel*
+  * *51 Drag & Drop Excel* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Drag_and_Drop
 
        Add the following to any DISPLAY ARRAY and compile in Genero 2.30 or later.  (you will need to also add a DEFINE dnd ui.DragDrop).  Run and then Drag & Drop one or more rows from this array to Excel.  Also select multiple rows, click editcopy and paste into Excel.
 
@@ -66,27 +66,27 @@ The number beside the entry is just something I added in the Genero Studio proje
          CALL dnd.setOperation("copy")
 }}}
 
-  * *52 Drag & Drop Explorer*
+  * *52 Drag & Drop Explorer* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Drag_and_Drop
 
        TODO
 
-  * *53 Drag & Drop 2 List (A)*
+  * *53 Drag & Drop 2 List (A)* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Drag_and_Drop
 
        Refer to $FGLDIR/demo/DragAndDrop/two_lists/nodnd.4gl
 
-  * *54 Drag & Drop 2 List (B)*
+  * *54 Drag & Drop 2 List (B)* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Drag_and_Drop
 
        Refer to $FGLDIR/demo/DragAndDrop/two_lists/dnd.4gl
 
-  * *60 Image Map*
+  * *60 Image Map* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Web_Component)
       
        Refer to $FGLASDIR/demo/app/webComponentMap
 
-  * *61 Google Maps*
+  * *61 Google Maps* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Web_Component)
 
        Awaiting contributing authors permission to post
 
-  * *62 Charts*
+  * *62 Charts* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Web_Component)
 
        Refer to $FGLASDIR/demo/app/webComponentChart
 
@@ -144,21 +144,71 @@ The number beside the entry is just something I added in the Genero Studio proje
 
 
 
-  * *72 Animated GIF*
+  * *72 Animated GIF* (http://www.4js.com/techdocs/genero/gdc/devel/DocRoot/User/NewFeatures230.html#230AnimatedGifs)
      
-       Display any animated gif to an IMAGE field and from 2.30 the animation will occur.
+       Display any animated gif to an IMAGE field and from 2.30 the animation will occur.  I used a file processing.gif that I downloaded from our documentation (use the link above).  Consider using an Animated GIF in places where you'd consider using a PROGRESSBAR but don't know how long the processing will take.
 
-  * *73 Window Size*
+       For those that hadn't seen the code that interrupted a WHILE, FOR, FOREACH loop whilst it is in progress, the 4gl I had was ...
+
+{{{
+MAIN
+DEFINE i INTEGER
+
+   DEFER INTERRUPT
+   MENU ""
+      COMMAND "Run"
+         OPEN WINDOW w WITH FORM "animatedgif"
+         CALL ui.Interface.refresh()
+         FOR i = 1 TO 10
+            IF INT_FLAG THEN
+               EXIT FOR
+            END IF
+            DISPLAY i TO progress
+            CALL ui.Interface.refresh()
+            SLEEP 1
+         END FOR
+         CLOSE WINDOW w
+         LET INT_FLAG = 0
+      COMMAND "Exit"
+         EXIT MENU
+   END MENU
+END MAIN
+}}}
+
+{{{
+LAYOUT (TEXT="Animated GIF")
+GRID
+{
+[f01       ]
+[          ]
+[          ]
+[          ]
+[          ]
+[p01       ]
+[b01       ]
+}
+END
+END
+ATTRIBUTES
+
+-- Nothing special required to indicate an animated GIF
+IMAGE f01: IMAGE= "processing", HEIGHT=10, WIDTH=20, STRETCH=BOTH;
+PROGRESSBAR p01 = formonly.progress, VALUEMIN=0, VALUEMAX=10;
+BUTTON b01: interrupt;
+}}}
+    ... the key thing is to have a BUTTON named interrupt on the form, in your 4gl have a DEFER INTERRUPT, and then in your loop test if the int_flag has been set, if it has exit the loop (don't forget to resest the int_flag).   A BUTTON that is named interrupt will be made active when the back-end takes its time (I think it is more than 1 second).  If you click on it, int_flag will be set to TRUE, and the 4gl loop can be made to exit by testing if int_flag is TRUE on each iteration.
+
+  * *73 Window Size* (http://www.4js.com/techdocs/genero/gdc/devel/DocRoot/User/NewFeatures230.html#230ResetFormSize)
 
        TODO
 
-  * *74 CSV*
+  * *74 CSV* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#csv-channel-delimiter)
 
        TODO
 
 
 = Genero 2.30 Release Migration Issues =
-  * *90 Set Current Row*
+  * *90 Set Current Row* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/Mig0005.html#DIALOG.setCurrentRow)
 
     With a DISPLAY ARRAY you have that has multiple-row select, add the following action (replace "scr" with the name of your screen record)
 
@@ -168,7 +218,7 @@ The number beside the entry is just something I added in the Genero Studio proje
 }}}
     Observe the difference in behaviour between 2.21 and 2.30 when you select some rows, and then click the goto1 action.  In 2.21 the selected rows will remain selected, in 2.30 the selected rows will be unselected.
 
-  * *91 Menu Action Close*
+  * *91 Menu Action Close* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/Mig0005.html#MenuAction-close)
 
     Compile and run this program in both 2.21 and 2.30, observe the difference in behaviour when you click on the red-cross (close) in the top right corner of the dialog box.  In 2.21, int_flag would be set and the MENU would exit without setting the result variable.  Typical 4gl didn't cater for this case.
 {{{
