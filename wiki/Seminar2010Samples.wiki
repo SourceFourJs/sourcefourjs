@@ -1,0 +1,70 @@
+#summary Programs Reuben demonstrated as part of 2010 Four J's Asia Pacific seminar tour
+
+= Introduction =
+
+The following lists where you will find the sources I used as part of my demonstrations on the 2010 Four J's Asia Pacific Tour.
+
+A number of them were taken from the Four J's demo directories so I will direct you to the appropriate demo in the 2.30 release which is now available rather than duplicating them here.
+
+The number beside the entry is just something I added in the Genero Studio project workspace to get the programs in the order I intended to display them
+
+= Details =
+
+Releases prior to Genero 2.30
+  * 10 Multi Dialog
+  * 15 Tree Widget
+  * 16 Tree Widget BOM
+  * 18 Picture Flow
+  * 20 Module
+  * 25 Rich Text Edit
+
+Genero 2.30 Release
+  * 50 Drag & Drop
+
+       Refer to $FGLDIR/demo/DragAndDrop/orders_and_trucks_tree
+
+  * 51 Drag & Drop Excel
+
+       Add the following to any DISPLAY ARRAY and compile in Genero 2.30 or later
+
+{{{
+      BEFORE DISPLAY
+         CALL DIALOG.setSelectionMode("scr",TRUE)
+
+      -- Copy selected rows to clipboard
+      -- Use DIALOG.selectionToString method
+      ON ACTION editcopy
+         CALL ui.Interface.frontCall("standard","cbset",DIALOG.selectionToString("scr"),[])
+
+      -- Allow drag operations from here
+      ON DRAG_START(dnd)
+         CALL dnd.setOperation("copy")
+}}}
+
+  * 52 Drag & Drop Explorer
+  * 53 Drag & Drop 2 List (A)
+  * 54 Drag & Drop 2 List (B)
+  * 60 Image Map
+      
+       Refer to $FGLASDIR/demo/app/webComponentMap
+
+  * 61 Google Maps
+  * 62 Charts
+
+       Refer to $FGLASDIR/demo/app/webComponentChart
+
+  * 71 Tables
+  * 72 Animated GIF
+  * 73 Window Size
+  * 74 CSV
+
+Genero 2.30 Release Migration Issues
+  * 90 Set Current Row
+  * 91 Menu Action Close
+
+  
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
