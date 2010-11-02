@@ -12,11 +12,28 @@ The number beside the entry is just something I added in the Genero Studio proje
 
 Releases prior to Genero 2.30
   * 10 Multi Dialog
+ 
+       TODO
+
   * 15 Tree Widget
+
+       Refer to $FGLDIR/demo/Tree/aui-tree
   * 16 Tree Widget BOM
+
+       Refer to $FGLDIR/demo/Tree/bill-of-material
+
   * 18 Picture Flow
+
+       TODO
+
   * 20 Module
+
+       TODO
+
   * 25 Rich Text Edit
+
+       TODO
+
 
 Genero 2.30 Release
   * 50 Drag & Drop
@@ -42,25 +59,54 @@ Genero 2.30 Release
 }}}
 
   * 52 Drag & Drop Explorer
+
+       TODO
+
   * 53 Drag & Drop 2 List (A)
+
+       Refer to $FGLDIR/demo/DragAndDrop/two_lists/nodnd.4gl
+
   * 54 Drag & Drop 2 List (B)
+
+       Refer to $FGLDIR/demo/DragAndDrop/two_lists/dnd.4gl
+
   * 60 Image Map
       
        Refer to $FGLASDIR/demo/app/webComponentMap
 
   * 61 Google Maps
+
+       Awaiting contributing authors permission to post
+
   * 62 Charts
 
        Refer to $FGLASDIR/demo/app/webComponentChart
 
   * 71 Tables
+
+       TODO
+
   * 72 Animated GIF
+     
+       Display any animated gif to an IMAGE field and from 2.30 the animation will occur.
+
   * 73 Window Size
+
+       TODO
+
   * 74 CSV
+
+       TODO
+
 
 Genero 2.30 Release Migration Issues
   * 90 Set Current Row
+
+       TODO
+
   * 91 Menu Action Close
+
+       TODO
 
   
 
