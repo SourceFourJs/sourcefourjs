@@ -84,7 +84,7 @@ The number beside the entry is just something I added in the Genero Studio proje
 
   * *61 Google Maps* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Web_Component)
 
-       Awaiting contributing authors permission to post
+       [http://code.google.com/p/sourcefourjs/downloads/detail?name=wc_googlemaps_1_0.zip Download this example]
 
   * *62 Charts* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Web_Component)
 
