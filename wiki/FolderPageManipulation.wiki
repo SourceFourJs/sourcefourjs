@@ -1,7 +1,7 @@
 #summary Tips for Manipulating Folder Pages
 
 <font color="red">
-* AUGUST 2010: In Genero 2.30, a method was added to ensure that a certain field was visible.  This can be used with Folder Pages to ensure that the page with that field on it is visible http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#ensure-field-visible *
+* AUGUST 2010: In Genero 2.30, new methods were added to ensure that a certain form field or form element was visible.  The ui.Form.ensureElementVisible(_element-name_) method can be used to ensure that the named Folder page is visible http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#ensure-field-visible *
 </font>
 
 = Introduction =
