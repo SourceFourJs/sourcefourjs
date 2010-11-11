@@ -68,7 +68,73 @@ The number beside the entry is just something I added in the Genero Studio proje
 
   * *52 Drag & Drop Explorer* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Drag_and_Drop
 
-       TODO
+      Compile and run the following program.  Simply drag some files from Explorer onto the DISPLAY ARRAY and the filenames will be added to the array.  
+
+      Key thing to note is in the ON DRAG_ENTER we determine if dropping is allowed based on what is in the drag and drop content, and then when we drop it we interrogate the content to populate the DISPLAY ARRAY 
+{{{
+MAIN
+DEFINE dnd ui.DragDrop
+DEFINE arr DYNAMIC ARRAY OF RECORD
+   filename STRING
+END RECORD
+DEFINE tok base.StringTokenizer
+DEFINE filename_list STRING
+DEFINE ok INTEGER
+
+   CLOSE WINDOW SCREEN
+   
+   OPEN WINDOW w WITH FORM "dropfilename"
+   CALL ui.Interface.frontCall("standard","execute",["explorer",0],ok)
+
+   DISPLAY ARRAY arr TO scr.* ATTRIBUTES(UNBUFFERED)
+      -- When content dragged into array
+      ON DRAG_ENTER(dnd)
+         CASE
+            WHEN dnd.selectMimeType("text/uri-list")
+               -- This will set operation if contents are uri-list
+            OTHERWISE
+               -- Set operation to NULL if unexpected MIME type found
+               CALL dnd.setOperation(NULL)
+         END CASE
+
+      -- When dragged around array
+      ON DRAG_OVER(dnd)
+         -- don't do anything special
+
+      -- When dropped into array
+      ON DROP(dnd)
+         -- extract filenames from the buffer and populate array
+         LET filename_list = dnd.getBuffer()
+         LET tok = base.StringTokenizer.create(filename_list,"\n")
+         WHILE tok.hasMoreTokens()
+            CALL arr.appendElement()
+            LET arr[arr.getLength()].filename = tok.nextToken()
+         END WHILE
+   END DISPLAY
+END MAIN
+}}}
+{{{
+LAYOUT (TEXT="Drop files into the array")
+TABLE (WIDTH=80 COLUMNS)
+{
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+[f01                                                                           ]
+}
+END
+END
+ATTRIBUTES
+f01 = formonly.filename, TITLE="Filename";
+INSTRUCTIONS
+SCREEN RECORD scr(filename);
+}}}
 
   * *53 Drag & Drop 2 List (A)* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Drag_and_Drop
 
@@ -265,6 +331,9 @@ DEFINE i INTEGER
 END FUNCTION
 
 }}}
+  * *76 Folder Page* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#ensure-field-visible)
+
+    TODO
 
 
 = Genero 2.30 Release Migration Issues =
