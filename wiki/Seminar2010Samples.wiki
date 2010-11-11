@@ -333,7 +333,52 @@ END FUNCTION
 }}}
   * *76 Folder Page* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#ensure-field-visible)
 
-    TODO
+    This wasn't the example I used in the seminars but it is a better one.  It uses the new ensureElementVisible method instead of the new ensureFieldVisible method.  The ensureElementVisible method IMHO being better to use as you can use the name of the folder page element, and not an arbitrary field that happens to be on the page.
+
+{{{
+MAIN
+DEFINE w ui.Window
+DEFINE f ui.Form
+
+   CLOSE WINDOW SCREEN
+
+   OPEN WINDOW w WITH FORM "folderpage"
+   LET w = ui.Window.getCurrent()
+   LET f = w.getForm()
+
+   MENU ""
+      ON ACTION one
+         CALL f.ensureElementVisible("pagone")
+
+      ON ACTION two
+         CALL f.ensureElementVisible("pagtwo")
+
+      ON ACTION close
+         EXIT MENU
+   END MENU
+END MAIN
+}}}
+
+{{{
+LAYOUT
+FOLDER
+PAGE pagone(TEXT="Page One")
+GRID 
+{
+Page One
+}
+END #GRID
+END #PAGE
+PAGE pagtwo (TEXT="Page Two")
+GRID 
+{
+Page Two
+}
+END #GRID
+END #PAGE
+END #FOLDER
+END #LAYOUT
+}}}
 
 
 = Genero 2.30 Release Migration Issues =
