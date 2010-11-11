@@ -15,7 +15,7 @@ The number beside the entry is just something I added in the Genero Studio proje
 = Releases prior to Genero 2.30 =
   * *10 Multi Dialog* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Multiple_Dialogs_2.10)
  
-       TODO - I'll add comments to my examples and flesh them out a bit.  In the interim, refer to $FGLDIR/demo/MultiDialogs
+       Refer to $FGLDIR/demo/MultiDialogs for now. I intend to tidy up and embellish the four programs I demonstrated that illustrated the four design patterns I referred to.
 
   * *15 Tree Widget* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#tree-view-tables)
 
@@ -31,7 +31,7 @@ The number beside the entry is just something I added in the Genero Studio proje
 
   * *20 Module* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#Modules_2_21)
 
-       TODO
+       TODO - This will appear as a separate download when I have completed the generic zoom window example I am using as an example
 
   * *25 Rich Text Edit* (http://www.4js.com/techdocs/genero/gdc/devel/DocRoot/User/NewFeatures222.html#222RichText)
 
@@ -266,7 +266,53 @@ BUTTON b01: interrupt;
 
   * *73 Window Size* (http://www.4js.com/techdocs/genero/gdc/devel/DocRoot/User/NewFeatures230.html#230ResetFormSize)
 
-       TODO
+       Compile and run this example in both 2.21 and 2.30 and note the difference in behaviour when you click on the big and small buttons.  In 2.21 the window will stay at the biggest size, it will never shrink.  In 2.30 the window will shrink or expand to match the form size
+
+{{{
+MAIN
+   OPEN FORM big FROM "windowsize_big"
+   OPEN FORM small FROM "windowsize_small"
+
+   CALL ui.Interface.loadStyles("windowsize")
+   MENU
+      COMMAND "Big"
+         DISPLAY FORM big 
+      COMMAND "Small"
+         DISPLAY FORM small
+      ON ACTION CLOSE
+         EXIT MENU
+   END MENU
+END MAIN
+}}}
+
+{{{
+<!-- windowsize.4st -->
+<StyleList>
+   <Style name="Form">
+     <StyleAttribute name="resetFormSize" value="yes" />
+   </Style>
+</StyleList>
+}}}
+
+{{{
+-- windowsize_big.per
+LAYOUT (TEXT="Big", MINWIDTH=80, MINHEIGHT=30)
+GRID
+{
+Big
+}
+END
+}}}
+
+{{{
+-- windowsize_small.per
+LAYOUT (TEXT="Small", MINWIDTH=10, MINHEIGHT=10)
+GRID
+{
+Small
+}
+END
+}}}
 
   * *74 CSV* (http://www.4js.com/techdocs/genero/fgl/devel/DocRoot/User/NewFeatures.html#csv-channel-delimiter)
 
