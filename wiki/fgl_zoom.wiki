@@ -8,7 +8,7 @@ fgl_zoom is an example of a generic zoom window routine that you can use repeate
 
 = Details =
 
-I have added fgl_zoom to the downloads area here.  This is the first release.
+I have added fgl_zoom to the downloads area [http://code.google.com/p/sourcefourjs/downloads/detail?name=fgl_zoom_2_30_00.zip here].  This is the first release.
 
 It is intended to be used with Genero 2.30 or above.  It can be made to work with 2.21 but as it uses IMPORT FGL it is not practical to reengineer it to work with earlier Genero versions.
 
