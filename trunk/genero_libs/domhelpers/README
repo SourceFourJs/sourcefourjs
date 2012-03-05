@@ -1,0 +1,25 @@
+DOM Helpers Module
+
+This module was originally created for my IIUG 2012 Conference talk -
+ "RESTful Genero Applications" so that code samples were not cluttered
+with DOM queries. It has turned out to quite useful for everyday Genero
+DOM programming.
+
+It was inspired by an article titled:
+
+ "Effective XML processing with DOM and XPath in Perl"
+(http://www.ibm.com/developerworks/xml/library/x-domprl/)
+
+A paragraph in the article best sums up by it is useful:
+
+"Your experience using DOM will be significantly improved if you 
+ follow a few basic principles:
+
+  * Do not use DOM to traverse the document
+
+  * Whenever possible, use XPath to find nodes or traverse the document
+
+  * Use a library of higher-level functions to make DOM use easier"
+
+This module attempts to provide some higher-level functions in Genero
+that make working with the XML DOM easier similar to x-domprl.
