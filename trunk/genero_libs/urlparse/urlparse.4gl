@@ -11,7 +11,7 @@
 #+
 #+ This module was originally created for my IIUG 2012 Conference talk -
 #+ "RESTful Genero Applications". Currently correctly supports
-#+ parsing of URL's with a scheme of eiher http or https.
+#+ parsing of URL's with a scheme of either http or https.
 #+
 #+ @code
 #+ IMPORT FGL parse
