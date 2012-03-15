@@ -1,0 +1,12 @@
+#summary Creating Restful Web Service Clients and Servers
+
+= Introduction =
+
+At the IIUG 2012 conference I will be presenting a session about RESTful web services with Genero. This page will be used to link to the presentation and the code used for the session. 
+
+= Code =
+
+domhelper - module to simplify DOM manipulation  [http://code.google.com/p/sourcefourjs/source/browse/trunk/genero_libs/domhelper/domhelper.4gl Source] [http://code.google.com/p/sourcefourjs/downloads/detail?name=domhelpers-1.0.zip&can=2&q=#makechanges Download]
+
+urlparse - module to parse http and https URL's into components 
+  
