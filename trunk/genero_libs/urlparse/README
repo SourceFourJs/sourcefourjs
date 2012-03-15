@@ -1,0 +1,21 @@
+urlparse Module
+
+Parse (absolute and relative) URLS.
+
+This module was originally created for my IIUG 2012 Conference talk -
+"RESTful Genero Applications". Currently correctly supports
+parsing of URL's with a scheme of eiher http or https.
+
+Example of usage:
+
+IMPORT FGL parse
+....
+DEFINE url_parts urlparse_result
+....
+CALL urlparse.urlparse("http://www.centurysoftware.com.my/support?rfs=222222")
+ RETURNING url_parts.*
+DISPLAY url_parts.scheme
+DISPLAY url_parts.netloc
+DISPLAY url_parts.path
+DISPLAY url_parts.query
+
